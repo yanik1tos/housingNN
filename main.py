@@ -17,13 +17,10 @@ readData = DataLoaderCSV(pathdata_2021)
 (x_train, y_train), (x_test, y_test) = readData.load_data()
 
 
-print(x_train[0])
-print(y_train[0])
-
 
 LEARNING_RATE = 0.0001
-EPOCHS = 10
-BATCH_SIZE = 1024
+EPOCHS = 2000
+BATCH_SIZE = 32
 
 INPUT_NODES   = 4
 HIDDEN_LAYERS = 1

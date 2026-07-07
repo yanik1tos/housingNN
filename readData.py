@@ -22,11 +22,28 @@ class DataLoaderCSV:
 
         return x
 
-    def load_data(self, ratio=60):
+
+    def normalize_y(self, y):
+        mn = y.min()
+        mx = y.max()
+
+        y = (y - mn) / (mx - mn)
+
+        return y
+
+
+    def load_data(self):
+        print("Loading the data in...")
+
         data = pd.read_csv(self.path)
 
-        x = data[["Area", "Room", "Lon", "Lat"]].to_numpy(dtype=float)
-        y = data["Price"].to_numpy(dtype=float)
+        features = ["Area", "Room", "Lon", "Lat"]
+        target = "Price"
+
+        data = data.dropna(subset=features + [target])
+
+        x = data[features].to_numpy(dtype=float)
+        y = data[target].to_numpy(dtype=float)
 
         x = self.normalize_x(x)
         x = x.reshape(
@@ -38,20 +55,28 @@ class DataLoaderCSV:
             len(y), 1
         )
 
-        train_ln = len(data) // (ratio + 1) * ratio
+        train_ln = 800
         x_train = x[:train_ln]
         y_train = y[:train_ln]
 
         x_test = x[train_ln:]
         y_test = y[train_ln:]
 
-        # print(len(data), train_ln, train_ln / (len(data) - train_ln))
+        print("Data ready")
 
-        # print(x)
-        # print(y)
+        print("Train_ln:", train_ln)
+        print("Test_ln:", len(data) - train_ln)
 
-        # print(x.std())
-        # print(x.min(), x.max())
+        print("X std:", round(x.std(), 3))
+        print("X min max:", x.min(), x.max())
+
+        print("Y std:", round(y.std(), 1))
+        print("Y min max:", y.min(), y.max())
+
+        print("X nan + inf:", np.isnan(x).sum(), np.isinf(x).sum())
+        print("Y nan + inf:", np.isnan(y).sum(), np.isinf(y).sum())
+
+        print()
 
 
         return (x_train, y_train), (x_test, y_test)

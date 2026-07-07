@@ -50,8 +50,12 @@ class NN:
                     [np.zeros((self.output_nodes, 1))]
 
 
-        print(self.weight[0].std())
-        print(self.weight[0].min(), self.weight[0].max())
+        self.nmnx = [[0, 0] for _ in range(self.hidden_layers + 2)]
+        self.amnx = [[0, 0] for _ in range(self.hidden_layers + 2)]
+
+
+        print("Weight std:", round(self.weight[0].std(), 3))
+        print("Weight min max:", round(self.weight[0].min(), 3), round(self.weight[0].max(), 3))
 
 
         print("Finished initialization\n")
@@ -63,6 +67,12 @@ class NN:
         for i in range(1, self.output_layer):
             self.node[i]  = self.weight[i - 1] @ self.node[i - 1] + self.bias[i - 1]
             self.anode[i] = self.act(self.node[i])
+
+
+            self.nmnx[i] = [min(self.nmnx[i][0], float(self.node [i].min())),
+                            max(self.nmnx[i][1], float(self.node [i].max()))]
+            self.amnx[i] = [min(self.amnx[i][0], float(self.anode[i].min())),
+                            max(self.amnx[i][1], float(self.anode[i].max()))]
 
             if (test):
                 print(
@@ -76,6 +86,11 @@ class NN:
 
         self.node[i]  = self.weight[i - 1] @ self.node[i - 1] + self.bias[i - 1]
         self.anode[i] = self.outact(self.node[i])
+
+        self.nmnx[i] = [min(self.nmnx[i][0], float(self.node [i].min())),
+                        max(self.nmnx[i][1], float(self.node [i].max()))]
+        self.amnx[i] = [min(self.amnx[i][0], float(self.anode[i].min())),
+                        max(self.amnx[i][1], float(self.anode[i].max()))]
 
 
         if test:
@@ -94,6 +109,10 @@ class NN:
 
         dn = (y - t) * self.outact_prime(self.node[-1], self.anode[-1])
 
+        # print()
+        # print("y:", y)
+        # print("t:", t)
+        # print("dn:", dn)
 
         for i in range(self.hidden_layers, -1, -1):
             dw = dn * self.anode[i].T
@@ -137,6 +156,9 @@ class NN:
             loss += nloss
 
 
+            # print(dw[0] / self.batch_size)
+
+
             batch += 1
 
             if (batch == self.batch_size):
@@ -152,12 +174,12 @@ class NN:
                 db = [np.zeros_like(b) for b in self.bias]
 
 
-        # if (self.data_len % self.batch_size != 0):
-        #     for i in range(len(self.weight)):
-        #         self.weight[i] -= dw[i] / (self.data_len % self.batch_size) * self.learning_rate
+        if (self.data_len % self.batch_size != 0):
+            for i in range(len(self.weight)):
+                self.weight[i] -= dw[i] / (self.data_len % self.batch_size) * self.learning_rate
 
-        #     for i in range(len(self.bias)):
-        #         self.bias[i]   -= db[i] / (self.data_len % self.batch_size) * self.learning_rate
+            for i in range(len(self.bias)):
+                self.bias[i]   -= db[i] / (self.data_len % self.batch_size) * self.learning_rate
 
 
 
@@ -188,26 +210,33 @@ class NN:
 
 
         while self.epoch < self.epochs:
+            loss = self.doEpoch()
             self.epoch += 1
 
 
             if self.epoch != 0 and (self.epoch * 10) % self.epochs == 0:
-                loss = self.doEpoch(test=True)
+                for i in range(1, self.hidden_layers + 2):
+                    print(
+                        f"Layer {i}: "
+                        f"z=[{round(self.nmnx[i][0], 3)}, {round(self.nmnx[i][1], 3)}] "
+                        f"a=[{round(self.amnx[i][0], 3)}, {round(self.amnx[i][1], 3)}]"
+                    )
+
+                self.nmnx = [[0, 0] for _ in range(self.hidden_layers + 2)]
+                self.amnx = [[0, 0] for _ in range(self.hidden_layers + 2)]
+
 
                 print(f"Epoch: {self.epoch * 100 // self.epochs}%")
                 print(f"Learning rate: {self.learning_rate}")
-                print("Loss: ", loss)
-
-            else:
-                loss = self.doEpoch()
+                print("Loss: ", round(loss[0][0], 1))
 
 
         print("Learning finished\n")
 
 
         print("Stats:\n")
-        print("Min:", self.anode[-1].min())
-        print("Max:", self.anode[-1].max())
+        print("Out min:", round(self.anode[-1].min(), 1))
+        print("Out max:", round(self.anode[-1].max(), 1))
 
         # print("\n###")
 
@@ -255,14 +284,14 @@ class NN:
         avg_erper = avg_erper / test_len * 100
 
         print()
-        print("avg_loss:", avg_loss)
-        print("avg_error:", self.avg_error)
-        print(f"avg_erper: {avg_erper}%")
+        print("avg_loss :", round(avg_loss, 1))
+        print("avg_error:", round(self.avg_error, 1))
+        print(f"avg_erper: {round(avg_erper, 1)}%")
 
         print()
         print("One test: ")
         print("Target:", print_t)
-        print("Output:", print_y)
+        print("Output:", round(print_y, 1))
 
 
     def testOne(self, x, test):
