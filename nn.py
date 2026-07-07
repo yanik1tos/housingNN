@@ -1,0 +1,304 @@
+#!/usr/bin/env python3
+
+import numpy as np
+import random as r
+import datetime
+import activation
+
+
+class NN:
+    def __init__(self, learning_rate, epochs, batch_size,
+                 input_nodes, hidden_layers, hidden_nodes, output_nodes,
+                 act, act_prime, outact, outact_prime):
+        print("Initialization...\n")
+
+
+        self.learning_rate = learning_rate
+        self.epochs = epochs
+        self.epoch = 0
+        self.batch_size = batch_size
+
+        self.input_nodes   = input_nodes
+        self.hidden_layers = hidden_layers
+        self.hidden_nodes  = hidden_nodes
+        self.output_nodes  = output_nodes
+        self.output_layer = self.hidden_layers + 1
+
+        self.act       = act
+        self.act_prime = act_prime
+        self.outact       = outact
+        self.outact_prime = outact_prime
+
+        self.avg_error = None
+
+
+        self.node  = [np.zeros((self.input_nodes , 1))] + \
+                     [np.zeros((self.hidden_nodes, 1)) for _ in range(self.hidden_layers)] + \
+                     [np.zeros((self.output_nodes, 1))]
+
+        self.anode = [np.zeros((self.input_nodes , 1))] + \
+                     [np.zeros((self.hidden_nodes, 1)) for _ in range(self.hidden_layers)] + \
+                     [np.zeros((self.output_nodes, 1))]
+
+
+        self.weight = [np.random.randn(self.hidden_nodes, self.input_nodes)  * np.sqrt(1 / self.input_nodes) ] + \
+                      [np.random.randn(self.hidden_nodes, self.hidden_nodes) * np.sqrt(1 / self.hidden_nodes) for _ in range(self.hidden_layers - 1)] + \
+                      [np.random.randn(self.output_nodes, self.hidden_nodes) * np.sqrt(1 / self.hidden_nodes)]
+
+
+        self.bias = [np.zeros((self.hidden_nodes, 1)) for _ in range(self.hidden_layers)] + \
+                    [np.zeros((self.output_nodes, 1))]
+
+
+        print(self.weight[0].std())
+        print(self.weight[0].min(), self.weight[0].max())
+
+
+        print("Finished initialization\n")
+
+
+
+    def calculate(self, test=False):
+        # hidden layer
+        for i in range(1, self.output_layer):
+            self.node[i]  = self.weight[i - 1] @ self.node[i - 1] + self.bias[i - 1]
+            self.anode[i] = self.act(self.node[i])
+
+            if (test):
+                print(
+                    f"Layer {i}: "
+                    f"z=[{self.node[i].min():.2f}, {self.node[i].max():.2f}] "
+                    f"a=[{self.anode[i].min():.2f}, {self.anode[i].max():.2f}]"
+                )
+
+        # output layer
+        i = self.output_layer
+
+        self.node[i]  = self.weight[i - 1] @ self.node[i - 1] + self.bias[i - 1]
+        self.anode[i] = self.outact(self.node[i])
+
+
+        if test:
+            print(
+                f"Layer {i}: "
+                f"z=[{self.node[i].min():.2f}, {self.node[i].max():.2f}] "
+                f"a=[{self.anode[i].min():.2f}, {self.anode[i].max():.2f}]"
+            )
+
+
+
+    def learn(self, t, der_weight, der_bias):
+        y = self.anode[self.output_layer]
+
+        loss = 1/2 * (y - t) ** 2
+
+        dn = (y - t) * self.outact_prime(self.node[-1], self.anode[-1])
+
+
+        for i in range(self.hidden_layers, -1, -1):
+            dw = dn * self.anode[i].T
+
+            der_weight[i] += dw
+            der_bias[i]   += dn
+
+            dn = (self.weight[i].T @ dn) * self.act_prime(self.node[i], self.anode[i])
+
+
+        return loss
+
+
+    def doEpoch(self, test=False):
+        loss = 0
+        batch = 0
+
+        dw = [np.zeros_like(w) for w in self.weight]
+        db = [np.zeros_like(b) for b in self.bias]
+
+
+        for i in range(self.data_len):
+            x = self.data_images[i]
+            y = self.data_labels[i]
+
+            self.node = [x] + \
+                        [np.zeros((self.hidden_nodes, 1)) for _ in range(self.hidden_layers)] + \
+                        [np.zeros((self.output_nodes, 1))]
+
+            self.anode = [x] + \
+                         [np.zeros((self.hidden_nodes, 1)) for _ in range(self.hidden_layers)] + \
+                         [np.zeros((self.output_nodes, 1))]
+
+
+            if (i != self.data_len - 1):
+                self.calculate()
+            else:
+                self.calculate(test=test)
+
+            nloss = self.learn(y, dw, db)
+            loss += nloss
+
+
+            batch += 1
+
+            if (batch == self.batch_size):
+                batch = 0
+
+                for i in range(len(self.weight)):
+                    self.weight[i] -= dw[i] / self.batch_size * self.learning_rate
+
+                for i in range(len(self.bias)):
+                    self.bias[i]   -= db[i] / self.batch_size * self.learning_rate
+
+                dw = [np.zeros_like(w) for w in self.weight]
+                db = [np.zeros_like(b) for b in self.bias]
+
+
+        # if (self.data_len % self.batch_size != 0):
+        #     for i in range(len(self.weight)):
+        #         self.weight[i] -= dw[i] / (self.data_len % self.batch_size) * self.learning_rate
+
+        #     for i in range(len(self.bias)):
+        #         self.bias[i]   -= db[i] / (self.data_len % self.batch_size) * self.learning_rate
+
+
+
+        # decay learning rate
+        # self.learning_rate *= 0.99
+        # self.learning_rate = max(0.001, self.learning_rate)
+
+
+        loss /= self.data_len
+
+
+        # print(self.weight)
+
+        return loss
+
+
+    def run(self, data_images, data_labels):
+        self.data_len = len(data_labels)
+        print(f"Unpacking data {self.data_len}...")
+
+        self.data_labels = data_labels
+        self.data_images = data_images
+
+        print("Data prepared\n")
+
+
+        print(f"Started learning for {self.epochs} epochs")
+
+
+        while self.epoch < self.epochs:
+            self.epoch += 1
+
+
+            if self.epoch != 0 and (self.epoch * 10) % self.epochs == 0:
+                loss = self.doEpoch(test=True)
+
+                print(f"Epoch: {self.epoch * 100 // self.epochs}%")
+                print(f"Learning rate: {self.learning_rate}")
+                print("Loss: ", loss)
+
+            else:
+                loss = self.doEpoch()
+
+
+        print("Learning finished\n")
+
+
+        print("Stats:\n")
+        print("Min:", self.anode[-1].min())
+        print("Max:", self.anode[-1].max())
+
+        # print("\n###")
+
+        # print("Weights: ", self.weight)
+        # print("Biases: ", self.bias)
+
+        # print("Nodes: ", self.node)
+        # print("Anodes: ", self.anode)
+
+        # print("###")
+
+        print()
+
+
+
+    def test(self, test_x, test_t):
+        test_len = len(test_x)
+
+        print_i = r.randint(0, test_len)
+        print_t = None
+        print_y = None
+
+        avg_loss = 0
+        self.avg_error = 0
+        avg_erper = 0
+
+        for i in range(test_len):
+            x = test_x[i]
+            t = test_t[i][0]
+
+            y = self.testOne(x, test=(i == 0))[0][0]
+
+            avg_loss  += 1 / 2 * (y - t) ** 2
+            self.avg_error += abs(y - t)
+            avg_erper += abs(y - t) / t
+
+
+            if (i == print_i):
+                print_t = t
+                print_y = y
+
+
+        avg_loss  = avg_loss / test_len
+        self.avg_error = self.avg_error / test_len
+        avg_erper = avg_erper / test_len * 100
+
+        print()
+        print("avg_loss:", avg_loss)
+        print("avg_error:", self.avg_error)
+        print(f"avg_erper: {avg_erper}%")
+
+        print()
+        print("One test: ")
+        print("Target:", print_t)
+        print("Output:", print_y)
+
+
+    def testOne(self, x, test):
+        self.node = [x] + \
+                    [np.zeros((self.hidden_nodes, 1)) for _ in range(self.hidden_layers)] + \
+                    [np.zeros((self.output_nodes, 1))]
+
+        self.anode = [x] + \
+                     [np.zeros((self.hidden_nodes, 1)) for _ in range(self.hidden_layers)] + \
+                     [np.zeros((self.output_nodes, 1))]
+
+        self.calculate(test=test)
+
+        return self.anode[-1]
+
+
+    def save(self, pref="nw"):
+        print(f"Saving the checkpoint...")
+        name = f"checkpoint/{pref}-{str(round(self.avg_error, 3))}%-{str(datetime.datetime.now())}"
+
+
+        params = {
+            "weight": np.array(self.weight, dtype=object),
+            "bias": np.array(self.bias, dtype=object)
+        }
+
+        np.savez(name, **params)
+
+
+        print("Saved at", name)
+
+
+    def load(self, name):
+        ckpt = np.load(name, allow_pickle=True)
+
+        self.weight = ckpt["weight"]
+        self.bias = ckpt["bias"]
+
+
