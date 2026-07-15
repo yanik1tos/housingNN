@@ -10,7 +10,7 @@ from readData import DataLoaderCSV
 
 
 
-pathdata_2021 = "data/HousingPrices-Amsterdam-August-2021.csv"
+pathdata_2021 = "data/amsterdam_houses5000.csv"
 
 
 readData = DataLoaderCSV(pathdata_2021)
@@ -18,13 +18,13 @@ readData = DataLoaderCSV(pathdata_2021)
 
 
 
-LEARNING_RATE = 0.0001
-EPOCHS = 2000
+LEARNING_RATE = 0.001
+EPOCHS = 1000
 BATCH_SIZE = 32
 
-INPUT_NODES   = 4
+INPUT_NODES   = 6
 HIDDEN_LAYERS = 1
-HIDDEN_NODES  = 5
+HIDDEN_NODES  = 10
 OUTPUT_NODES  = 1
 
 ACTIVATION_HID = activation.relu
@@ -42,7 +42,9 @@ nn = NN(LEARNING_RATE, EPOCHS, BATCH_SIZE,
 
 # train
 
-nn.run(x_train, y_train)
-nn.test(x_test, y_test)
-# nn.save(pref="na")
+# nn.run(x_train, y_train)
+# nn.load("checkpoint/rl-371.495%-2026-07-08 23:25:34.556658.npz")
+
+# nn.test(x_test, y_test, readData)
+# nn.save(pref="rl")
 

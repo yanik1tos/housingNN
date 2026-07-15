@@ -18,44 +18,65 @@ class DataLoaderCSV:
         mn = x.min(axis=0)
         mx = x.max(axis=0)
 
+        self.x_min = mn
+        self.x_max = mx
+
         x = (x - mn) / (mx - mn)
 
         return x
+
+
+    def denormalize_x(self, x):
+        return x * (self.x_max - self.x_min) + self.x_min
 
 
     def normalize_y(self, y):
         mn = y.min()
         mx = y.max()
 
+        self.y_min = mn
+        self.y_max = mx
+
         y = (y - mn) / (mx - mn)
 
         return y
 
 
-    def load_data(self):
-        print("Loading the data in...")
+    def denormalize_y(self, y):
+        return y * (self.y_max - self.y_min) + self.y_min
 
+
+    def load_data_raw(self):
         data = pd.read_csv(self.path)
 
-        features = ["Area", "Room", "Lon", "Lat"]
-        target = "Price"
+        # features = ["Area", "Room", "Lon", "Lat"]
+        features = ["area", "energy", "rooms", "bedrooms", "bathrooms", "year", "distance"]
+        target = "price"
 
         data = data.dropna(subset=features + [target])
 
         x = data[features].to_numpy(dtype=float)
         y = data[target].to_numpy(dtype=float)
 
+        return x, y
+
+
+    def load_data(self):
+        print("Loading the data in...")
+
+        x, y = self.load_data_raw()
+
         x = self.normalize_x(x)
         x = x.reshape(
-            len(x), 4, 1
+            len(x), 6, 1
         )
 
-        y = y / 1000
+        y = self.normalize_y(y)
         y = y.reshape(
             len(y), 1
         )
 
-        train_ln = 800
+        train_ln = int(len(x) * 0.95)
         x_train = x[:train_ln]
         y_train = y[:train_ln]
 
@@ -80,3 +101,16 @@ class DataLoaderCSV:
 
 
         return (x_train, y_train), (x_test, y_test)
+
+
+
+if "__main__" in __name__:
+    pathdata_2021 = "data/amsterdam_houses5000.csv"
+
+
+    readData = DataLoaderCSV(pathdata_2021)
+    (x_train, y_train), (x_test, y_test) = readData.load_data()
+
+
+    print(x_train[0])
+    print(y_train[0])

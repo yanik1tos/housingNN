@@ -252,7 +252,7 @@ class NN:
 
 
 
-    def test(self, test_x, test_t):
+    def test(self, test_x, test_t, readData):
         test_len = len(test_x)
 
         print_i = r.randint(0, test_len)
@@ -265,9 +265,9 @@ class NN:
 
         for i in range(test_len):
             x = test_x[i]
-            t = test_t[i][0]
+            t = readData.denormalize_y(test_t[i][0]) / 1000
 
-            y = self.testOne(x, test=(i == 0))[0][0]
+            y = readData.denormalize_y(self.testOne(x, test=(i == 0))[0][0]) / 1000
 
             avg_loss  += 1 / 2 * (y - t) ** 2
             self.avg_error += abs(y - t)
@@ -277,6 +277,10 @@ class NN:
             if (i == print_i):
                 print_t = t
                 print_y = y
+
+            print("---Test")
+            print("Target:", t)
+            print("Output:", round(y, 1))
 
 
         avg_loss  = avg_loss / test_len
@@ -292,6 +296,7 @@ class NN:
         print("One test: ")
         print("Target:", print_t)
         print("Output:", round(print_y, 1))
+
 
 
     def testOne(self, x, test):
@@ -310,7 +315,7 @@ class NN:
 
     def save(self, pref="nw"):
         print(f"Saving the checkpoint...")
-        name = f"checkpoint/{pref}-{str(round(self.avg_error, 3))}%-{str(datetime.datetime.now())}"
+        name = f"checkpoint/{pref}-{str(round(self.avg_error, 3))}-{str(datetime.datetime.now())}"
 
 
         params = {
