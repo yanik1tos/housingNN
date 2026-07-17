@@ -31,8 +31,8 @@ class DataLoaderCSV:
 
 
     def normalize_y(self, y):
-        mn = y.min()
-        mx = y.max()
+        mn = y.min(axis=0)
+        mx = y.max(axis=0)
 
         self.y_min = mn
         self.y_max = mx
@@ -46,12 +46,11 @@ class DataLoaderCSV:
         return y * (self.y_max - self.y_min) + self.y_min
 
 
-    def load_data_raw(self):
+    def load_data_raw(self,
+                      target="price",
+                      features=["area", "energy", "rooms", "bedrooms", "bathrooms", "year", "distance"]
+                      ):
         data = pd.read_csv(self.path)
-
-        # features = ["Area", "Room", "Lon", "Lat"]
-        features = ["area", "energy", "rooms", "bedrooms", "bathrooms", "year", "distance"]
-        target = "price"
 
         data = data.dropna(subset=features + [target])
 
@@ -61,14 +60,17 @@ class DataLoaderCSV:
         return x, y
 
 
-    def load_data(self):
+    def load_data(self, ratio=0.95,
+                  target="price",
+                  features=["area", "energy", "rooms", "bedrooms", "bathrooms", "year", "distance"]
+                  ):
         print("Loading the data in...")
 
-        x, y = self.load_data_raw()
+        x, y = self.load_data_raw(features=features)
 
         x = self.normalize_x(x)
         x = x.reshape(
-            len(x), 6, 1
+            len(x), len(features), 1
         )
 
         y = self.normalize_y(y)
@@ -76,7 +78,7 @@ class DataLoaderCSV:
             len(y), 1
         )
 
-        train_ln = int(len(x) * 0.95)
+        train_ln = int(len(x) * ratio)
         x_train = x[:train_ln]
         y_train = y[:train_ln]
 
@@ -86,7 +88,7 @@ class DataLoaderCSV:
         print("Data ready")
 
         print("Train_ln:", train_ln)
-        print("Test_ln:", len(data) - train_ln)
+        print("Test_ln:", len(x) - train_ln)
 
         print("X std:", round(x.std(), 3))
         print("X min max:", x.min(), x.max())

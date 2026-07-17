@@ -9,22 +9,26 @@ from nn import NN
 from readData import DataLoaderCSV
 
 
+TARGET = "price"
+FEATURES = ["area", "energy", "rooms", "bedrooms", "bathrooms", "year", "distance"]
+# FEATURES = ["distance"]
 
-pathdata_2021 = "data/amsterdam_houses5000.csv"
+
+pathdata_2021 = "data/amsterdam_houses_all_distance.csv"
 
 
 readData = DataLoaderCSV(pathdata_2021)
-(x_train, y_train), (x_test, y_test) = readData.load_data()
+(x_train, y_train), (x_test, y_test) = readData.load_data(target=TARGET, features=FEATURES)
 
 
 
 LEARNING_RATE = 0.001
-EPOCHS = 1000
+EPOCHS = 100
 BATCH_SIZE = 32
 
-INPUT_NODES   = 6
+INPUT_NODES   = len(FEATURES)
 HIDDEN_LAYERS = 1
-HIDDEN_NODES  = 10
+HIDDEN_NODES  = 3
 OUTPUT_NODES  = 1
 
 ACTIVATION_HID = activation.relu
@@ -42,9 +46,9 @@ nn = NN(LEARNING_RATE, EPOCHS, BATCH_SIZE,
 
 # train
 
-# nn.run(x_train, y_train)
+nn.run(x_train, y_train)
 # nn.load("checkpoint/rl-371.495%-2026-07-08 23:25:34.556658.npz")
 
-# nn.test(x_test, y_test, readData)
-# nn.save(pref="rl")
+nn.test(x_test, y_test, readData)
+nn.save(pref="f7")
 

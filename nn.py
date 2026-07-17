@@ -22,7 +22,7 @@ class NN:
         self.hidden_layers = hidden_layers
         self.hidden_nodes  = hidden_nodes
         self.output_nodes  = output_nodes
-        self.output_layer = self.hidden_layers + 1
+        self.output_layer  = hidden_layers + 1
 
         self.act       = act
         self.act_prime = act_prime
@@ -59,6 +59,33 @@ class NN:
 
 
         print("Finished initialization\n")
+
+
+    @classmethod
+    def fromSave(cls, path, learning_rate=0.001, epochs=10, batch_size=32,
+                 act=activation.relu, act_prime=activation.relu_prime,
+                 outact=activation.f, outact_prime=activation.f_prime):
+
+        ckpt = np.load(path, allow_pickle=True)
+
+        weight = ckpt["weight"]
+        bias   = ckpt["bias"]
+
+
+        input_nodes   = len(weight[0][0])
+        hidden_nodes  = len(weight[0])
+        hidden_layers = len(weight) - 1
+        output_nodes  = len(weight[-1])
+
+
+        model = cls(learning_rate, epochs, batch_size,
+                    input_nodes, hidden_layers, hidden_nodes, output_nodes,
+                    act, act_prime, outact, outact_prime)
+
+        model.weight = weight
+        model.bias   = bias
+
+        return model
 
 
 
@@ -228,7 +255,7 @@ class NN:
 
                 print(f"Epoch: {self.epoch * 100 // self.epochs}%")
                 print(f"Learning rate: {self.learning_rate}")
-                print("Loss: ", round(loss[0][0], 1))
+                print("Loss: ", round(loss[0][0], 10))
 
 
         print("Learning finished\n")
@@ -255,9 +282,9 @@ class NN:
     def test(self, test_x, test_t, readData):
         test_len = len(test_x)
 
-        print_i = r.randint(0, test_len)
-        print_t = None
-        print_y = None
+        print_i = [r.randint(0, test_len) for _ in range(10)]
+        print_t = []
+        print_y = []
 
         avg_loss = 0
         self.avg_error = 0
@@ -274,13 +301,9 @@ class NN:
             avg_erper += abs(y - t) / t
 
 
-            if (i == print_i):
-                print_t = t
-                print_y = y
-
-            print("---Test")
-            print("Target:", t)
-            print("Output:", round(y, 1))
+            if (i in print_i):
+                print_t.append(t)
+                print_y.append(y)
 
 
         avg_loss  = avg_loss / test_len
@@ -293,9 +316,9 @@ class NN:
         print(f"avg_erper: {round(avg_erper, 1)}%")
 
         print()
-        print("One test: ")
-        print("Target:", print_t)
-        print("Output:", round(print_y, 1))
+        print("---Tests: ")
+        for t, y in zip(print_t, print_y):
+            print("Target:", t, "->", round(y, 1))
 
 
 
