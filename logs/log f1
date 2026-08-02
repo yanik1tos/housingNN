@@ -1,0 +1,91 @@
+Loading the data in...
+Data ready
+Data_ln: 4577
+Train_ln: 4348
+Test_ln: 229
+X std: 0.088
+X min max: 0.0 1.0
+Y std: 0.1
+Y min max: 0.0 1.0
+X nan + inf: 0 0
+Y nan + inf: 0 0
+
+Initialization...
+
+Weight std: 0.0
+Weight min max: 0.101 0.101
+Finished initialization
+
+Unpacking data 4348...
+Data prepared
+
+Started learning for 1000 epochs
+Layer 1: z=[-0.02181, 0.53050] a=[-0.02181, 0.53050]
+Epoch: 10%
+Learning rate: 0.01
+Loss: 0.0005235499
+Layer 1: z=[-0.02181, 0.53050] a=[-0.02181, 0.53050]
+Epoch: 20%
+Learning rate: 0.01
+Loss: 0.0005235499
+Layer 1: z=[-0.02181, 0.53050] a=[-0.02181, 0.53050]
+Epoch: 30%
+Learning rate: 0.01
+Loss: 0.0005235499
+Layer 1: z=[-0.02181, 0.53050] a=[-0.02181, 0.53050]
+Epoch: 40%
+Learning rate: 0.01
+Loss: 0.0005235499
+Layer 1: z=[-0.02181, 0.53050] a=[-0.02181, 0.53050]
+Epoch: 50%
+Learning rate: 0.01
+Loss: 0.0005235499
+Layer 1: z=[-0.02181, 0.53050] a=[-0.02181, 0.53050]
+Epoch: 60%
+Learning rate: 0.01
+Loss: 0.0005235499
+Layer 1: z=[-0.02181, 0.53050] a=[-0.02181, 0.53050]
+Epoch: 70%
+Learning rate: 0.01
+Loss: 0.0005235499
+Layer 1: z=[-0.02181, 0.53050] a=[-0.02181, 0.53050]
+Epoch: 80%
+Learning rate: 0.01
+Loss: 0.0005235499
+Layer 1: z=[-0.02181, 0.53050] a=[-0.02181, 0.53050]
+Epoch: 90%
+Learning rate: 0.01
+Loss: 0.0005235499
+Layer 1: z=[-0.02181, 0.53050] a=[-0.02181, 0.53050]
+Epoch: 100%
+Learning rate: 0.01
+Loss: 0.0005235499
+Learning finished
+
+Stats:
+
+Out min: 0.0
+Out max: 0.0
+
+
+Weight: 0.5496970942572335
+Bias  : -0.01863066932034376
+
+Layer 1: z=[0.07, 0.07] a=[0.07, 0.07]
+
+avg_loss : 0.0003748731254105888
+avg_error: 162.0
+avg_erper: 25.5%
+
+---Tests: 
+Target: 605.0 -> 475.5
+Target: 685.0 -> 786.8
+Target: 710.0 -> 1033.6
+Target: 475.0 -> 593.6
+Target: 250.0 -> 378.9
+Target: 425.0 -> 658.0
+Target: 435.0 -> 615.0
+Target: 1750.0 -> 1806.3
+Target: 995.0 -> 969.2
+Saving the checkpoint...
+Saved at checkpoint/f1_n0_ep1000_b1_lr0.01-162.044-2026-08-02 18:42:12.382926

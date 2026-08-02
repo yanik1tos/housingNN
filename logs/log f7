@@ -1,0 +1,92 @@
+(nn) lenikitos@lenikitos:~/program/housingNN$ ./main.py 
+Loading the data in...
+Data ready
+Data_ln: 4577
+Train_ln: 4348
+Test_ln: 229
+X std: 0.29
+X min max: 0.0 1.0
+Y std: 0.1
+Y min max: 0.0 1.0
+X nan + inf: 0 0
+Y nan + inf: 0 0
+
+Initialization...
+
+Weight std: 0.255
+Weight min max: -0.21 0.537
+Finished initialization
+
+Unpacking data 4348...
+Data prepared
+
+Started learning for 1000 epochs
+Layer 1: z=[-0.37896, 0.47855] a=[-0.37896, 0.47855]
+Epoch: 10%
+Learning rate: 0.01
+Loss: 0.0008286848
+Layer 1: z=[-0.05582, 0.41515] a=[-0.05582, 0.41515]
+Epoch: 20%
+Learning rate: 0.01
+Loss: 0.0005918139
+Layer 1: z=[-0.04905, 0.47057] a=[-0.04905, 0.47057]
+Epoch: 30%
+Learning rate: 0.01
+Loss: 0.0004980043
+Layer 1: z=[-0.04268, 0.50581] a=[-0.04268, 0.50581]
+Epoch: 40%
+Learning rate: 0.01
+Loss: 0.0004595097
+Layer 1: z=[-0.03922, 0.52812] a=[-0.03922, 0.52812]
+Epoch: 50%
+Learning rate: 0.01
+Loss: 0.0004433943
+Layer 1: z=[-0.04039, 0.54215] a=[-0.04039, 0.54215]
+Epoch: 60%
+Learning rate: 0.01
+Loss: 0.0004365365
+Layer 1: z=[-0.04114, 0.55091] a=[-0.04114, 0.55091]
+Epoch: 70%
+Learning rate: 0.01
+Loss: 0.0004335704
+Layer 1: z=[-0.04163, 0.55635] a=[-0.04163, 0.55635]
+Epoch: 80%
+Learning rate: 0.01
+Loss: 0.0004322642
+Layer 1: z=[-0.04195, 0.55968] a=[-0.04195, 0.55968]
+Epoch: 90%
+Learning rate: 0.01
+Loss: 0.0004316767
+Layer 1: z=[-0.04216, 0.56170] a=[-0.04216, 0.56170]
+Epoch: 100%
+Learning rate: 0.01
+Loss: 0.0004314059
+Learning finished
+
+Stats:
+
+Out min: 0.0
+Out max: 0.0
+
+[array([[ 0.60605589, -0.01644925,  0.01285448, -0.07341264, -0.01414486,
+        -0.02208601, -0.05005921]])]
+[array([[0.02055169]])]
+Layer 1: z=[0.05, 0.05] a=[0.05, 0.05]
+
+avg_loss : 0.00026468399869310585
+avg_error: 128.5
+avg_erper: 18.4%
+
+---Tests: 
+Target: 497.99999999999994 -> 580.3
+Target: 1295.0 -> 1242.3
+Target: 760.0 -> 757.7
+Target: 540.0 -> 554.2
+Target: 425.0 -> 350.5
+Target: 585.0 -> 429.2
+Target: 995.0 -> 681.9
+Target: 648.917 -> 579.6
+Target: 439.612 -> 426.2
+Target: 679.0 -> 639.7
+Saving the checkpoint...
+Saved at checkpoint/f7_n0_ep1000_b32_lr0.01-128.474-2026-08-02 12:33:31.259567

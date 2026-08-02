@@ -11,7 +11,7 @@ from readData import DataLoaderCSV
 
 TARGET = "price"
 # FEATURES = ["area", "energy", "rooms", "bedrooms", "bathrooms", "year", "distance"]
-FEATURES = ["area"]
+FEATURES = ["area", "year", "distance"]
 
 
 pathdata_2021 = "data/amsterdam_houses_all_distance.csv"
@@ -47,10 +47,10 @@ nn = NN(LEARNING_RATE, EPOCHS, BATCH_SIZE,
 # train
 
 nn.run(x_train, y_train)
-# nn.load("checkpoint/f1_n0_ep100_b1_lr0.01-183.566-2026-07-28 12:25:01.428639.npz")
+# nn.load("checkpoint/f1_n0_ep1000_b1_lr0.01-162.044-2026-08-02 18:42:12.382926.npz")
 
-print(nn.weight)
-print(nn.bias)
+print(*[nn.weight[0][0][i] for i in range(len(FEATURES))])
+print(nn.bias[0][0][0])
 
 nn.test(x_test, y_test, readData)
 nn.save(pref=f"f{len(FEATURES)}_n{HIDDEN_LAYERS}_ep{EPOCHS}_b{BATCH_SIZE}_lr{LEARNING_RATE}")

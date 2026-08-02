@@ -1,0 +1,90 @@
+(nn) lenikitos@lenikitos:~/program/housingNN$ ./main.py 
+Loading the data in...
+Data ready
+Data_ln: 4577
+Train_ln: 4348
+Test_ln: 229
+X std: 0.378
+X min max: 0.0 1.0
+Y std: 0.1
+Y min max: 0.0 1.0
+X nan + inf: 0 0
+Y nan + inf: 0 0
+
+Initialization...
+
+Weight std: 0.039
+Weight min max: 0.04 0.117
+Finished initialization
+
+Unpacking data 4348...
+Data prepared
+
+Started learning for 1000 epochs
+Layer 1: z=[-0.02583, 0.52596] a=[-0.02583, 0.52596]
+Epoch: 10%
+Learning rate: 0.01
+Loss: 0.0005067767
+Layer 1: z=[-0.02583, 0.52596] a=[-0.02583, 0.52596]
+Epoch: 20%
+Learning rate: 0.01
+Loss: 0.0005067767
+Layer 1: z=[-0.02583, 0.52596] a=[-0.02583, 0.52596]
+Epoch: 30%
+Learning rate: 0.01
+Loss: 0.0005067767
+Layer 1: z=[-0.02583, 0.52596] a=[-0.02583, 0.52596]
+Epoch: 40%
+Learning rate: 0.01
+Loss: 0.0005067767
+Layer 1: z=[-0.02583, 0.52596] a=[-0.02583, 0.52596]
+Epoch: 50%
+Learning rate: 0.01
+Loss: 0.0005067767
+Layer 1: z=[-0.02583, 0.52596] a=[-0.02583, 0.52596]
+Epoch: 60%
+Learning rate: 0.01
+Loss: 0.0005067767
+Layer 1: z=[-0.02583, 0.52596] a=[-0.02583, 0.52596]
+Epoch: 70%
+Learning rate: 0.01
+Loss: 0.0005067767
+Layer 1: z=[-0.02583, 0.52596] a=[-0.02583, 0.52596]
+Epoch: 80%
+Learning rate: 0.01
+Loss: 0.0005067767
+Layer 1: z=[-0.02583, 0.52596] a=[-0.02583, 0.52596]
+Epoch: 90%
+Learning rate: 0.01
+Loss: 0.0005067767
+Layer 1: z=[-0.02583, 0.52596] a=[-0.02583, 0.52596]
+Epoch: 100%
+Learning rate: 0.01
+Loss: 0.0005067767
+Learning finished
+
+Stats:
+
+Out min: 0.0
+Out max: 0.0
+
+0.5502263107396134 -0.051537916131255315
+0.025947024978324622
+Layer 1: z=[0.07, 0.07] a=[0.07, 0.07]
+
+avg_loss : 0.0003484409509604352
+avg_error: 149.5
+avg_erper: 22.9%
+
+---Tests: 
+Target: 450.0 -> 398.7
+Target: 895.0 -> 1219.1
+Target: 350.0 -> 574.7
+Target: 425.0 -> 654.5
+Target: 520.0 -> 514.7
+Target: 743.7 -> 937.9
+Target: 1925.0 -> 2259.2
+Target: 1685.0 -> 663.2
+Target: 1050.0 -> 1211.3
+Saving the checkpoint...
+Saved at checkpoint/f2_n0_ep1000_b1_lr0.01-149.489-2026-08-02 19:13:51.666382

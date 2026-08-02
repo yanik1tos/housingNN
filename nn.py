@@ -81,6 +81,8 @@ class NN:
         hidden_layers = len(weight) - 1
         output_nodes  = len(weight[-1])
 
+        # print(input_nodes, hidden_nodes, hidden_layers, output_nodes)
+
 
         model = cls(learning_rate, epochs, batch_size,
                     input_nodes, hidden_layers, hidden_nodes, output_nodes,

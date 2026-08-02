@@ -117,6 +117,7 @@ if "__main__" in __name__:
 
     np.set_printoptions(suppress=True, precision=2)
 
+    print("X     :", *["area", "energy", "rooms", "bedrooms", "bathrooms", "year", "distance"])
     print("X mins:", readData.x_min)
     print("X maxs:", readData.x_max)
     print("Y mins: ", readData.y_min / 1000, "k €", sep="")
