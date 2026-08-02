@@ -41,13 +41,17 @@ class NN:
                      [np.zeros((self.output_nodes, 1))]
 
 
-        self.weight = [np.random.randn(self.hidden_nodes, self.input_nodes)  * np.sqrt(1 / self.input_nodes) ] + \
-                      [np.random.randn(self.hidden_nodes, self.hidden_nodes) * np.sqrt(1 / self.hidden_nodes) for _ in range(self.hidden_layers - 1)] + \
-                      [np.random.randn(self.output_nodes, self.hidden_nodes) * np.sqrt(1 / self.hidden_nodes)]
+        if self.hidden_layers > 0:
+            self.weight = [np.random.randn(self.hidden_nodes, self.input_nodes)  * np.sqrt(1 / self.input_nodes) ] + \
+                        [np.random.randn(self.hidden_nodes, self.hidden_nodes) * np.sqrt(1 / self.hidden_nodes) for _ in range(self.hidden_layers - 1)] + \
+                        [np.random.randn(self.output_nodes, self.hidden_nodes) * np.sqrt(1 / self.hidden_nodes)]
 
 
-        self.bias = [np.zeros((self.hidden_nodes, 1)) for _ in range(self.hidden_layers)] + \
-                    [np.zeros((self.output_nodes, 1))]
+            self.bias = [np.zeros((self.hidden_nodes, 1)) for _ in range(self.hidden_layers)] + \
+                        [np.zeros((self.output_nodes, 1))]
+        else:
+            self.weight = [np.random.randn(self.output_nodes, self.input_nodes) * np.sqrt(1 / self.input_nodes)]
+            self.bias   = [np.zeros((self.output_nodes, 1))]
 
 
         self.nmnx = [[0, 0] for _ in range(self.hidden_layers + 2)]
@@ -245,8 +249,8 @@ class NN:
                 for i in range(1, self.hidden_layers + 2):
                     print(
                         f"Layer {i}: "
-                        f"z=[{round(self.nmnx[i][0], 3)}, {round(self.nmnx[i][1], 3)}] "
-                        f"a=[{round(self.amnx[i][0], 3)}, {round(self.amnx[i][1], 3)}]"
+                        f"z=[{self.nmnx[i][0]:.5f}, {self.nmnx[i][1]:.5f}] "
+                        f"a=[{self.amnx[i][0]:.5f}, {self.amnx[i][1]:.5f}]"
                     )
 
                 self.nmnx = [[0, 0] for _ in range(self.hidden_layers + 2)]
@@ -255,7 +259,7 @@ class NN:
 
                 print(f"Epoch: {self.epoch * 100 // self.epochs}%")
                 print(f"Learning rate: {self.learning_rate}")
-                print("Loss: ", round(loss[0][0], 10))
+                print(f"Loss: {loss[0][0]:.10f}")
 
 
         print("Learning finished\n")
@@ -292,18 +296,20 @@ class NN:
 
         for i in range(test_len):
             x = test_x[i]
-            t = readData.denormalize_y(test_t[i][0]) / 1000
+            t = test_t[i][0]
+            y = self.testOne(x, test=(i == 0))[0][0]
 
-            y = readData.denormalize_y(self.testOne(x, test=(i == 0))[0][0]) / 1000
+            t_n = readData.denormalize_y(t) / 1000
+            y_n = readData.denormalize_y(y) / 1000
 
             avg_loss  += 1 / 2 * (y - t) ** 2
-            self.avg_error += abs(y - t)
-            avg_erper += abs(y - t) / t
+            self.avg_error += abs(y_n - t_n)
+            avg_erper += abs(y_n - t_n) / t_n
 
 
             if (i in print_i):
-                print_t.append(t)
-                print_y.append(y)
+                print_t.append(t_n)
+                print_y.append(y_n)
 
 
         avg_loss  = avg_loss / test_len
@@ -311,7 +317,7 @@ class NN:
         avg_erper = avg_erper / test_len * 100
 
         print()
-        print("avg_loss :", round(avg_loss, 1))
+        print("avg_loss :", avg_loss)
         print("avg_error:", round(self.avg_error, 1))
         print(f"avg_erper: {round(avg_erper, 1)}%")
 

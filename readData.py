@@ -52,6 +52,7 @@ class DataLoaderCSV:
                       ):
         data = pd.read_csv(self.path)
 
+        data = data.sample(frac=1, random_state=42).reset_index(drop=True)
         data = data.dropna(subset=features + [target])
 
         x = data[features].to_numpy(dtype=float)
@@ -87,6 +88,7 @@ class DataLoaderCSV:
 
         print("Data ready")
 
+        print("Data_ln:", len(x))
         print("Train_ln:", train_ln)
         print("Test_ln:", len(x) - train_ln)
 
@@ -107,12 +109,15 @@ class DataLoaderCSV:
 
 
 if "__main__" in __name__:
-    pathdata_2021 = "data/amsterdam_houses5000.csv"
+    pathdata_2021 = "data/amsterdam_houses_all_distance.csv"
 
 
     readData = DataLoaderCSV(pathdata_2021)
     (x_train, y_train), (x_test, y_test) = readData.load_data()
 
+    np.set_printoptions(suppress=True, precision=2)
 
-    print(x_train[0])
-    print(y_train[0])
+    print("X mins:", readData.x_min)
+    print("X maxs:", readData.x_max)
+    print("Y mins: ", readData.y_min / 1000, "k €", sep="")
+    print("Y maxs: ", readData.y_max / 1000, "k €", sep="")

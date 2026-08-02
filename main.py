@@ -10,8 +10,8 @@ from readData import DataLoaderCSV
 
 
 TARGET = "price"
-FEATURES = ["area", "energy", "rooms", "bedrooms", "bathrooms", "year", "distance"]
-# FEATURES = ["distance"]
+# FEATURES = ["area", "energy", "rooms", "bedrooms", "bathrooms", "year", "distance"]
+FEATURES = ["area"]
 
 
 pathdata_2021 = "data/amsterdam_houses_all_distance.csv"
@@ -22,18 +22,18 @@ readData = DataLoaderCSV(pathdata_2021)
 
 
 
-LEARNING_RATE = 0.001
+LEARNING_RATE = 0.01
 EPOCHS = 100
-BATCH_SIZE = 32
+BATCH_SIZE = 1
 
 INPUT_NODES   = len(FEATURES)
-HIDDEN_LAYERS = 1
-HIDDEN_NODES  = 3
+HIDDEN_LAYERS = 0
+HIDDEN_NODES  = 0
 OUTPUT_NODES  = 1
 
-ACTIVATION_HID = activation.relu
+ACTIVATION_HID = activation.f
 ACTIVATION_OUT = activation.f
-ACTIVATION_HID_PRIME = activation.relu_prime
+ACTIVATION_HID_PRIME = activation.f_prime
 ACTIVATION_OUT_PRIME = activation.f_prime
 
 
@@ -47,8 +47,11 @@ nn = NN(LEARNING_RATE, EPOCHS, BATCH_SIZE,
 # train
 
 nn.run(x_train, y_train)
-# nn.load("checkpoint/rl-371.495%-2026-07-08 23:25:34.556658.npz")
+# nn.load("checkpoint/f1_n0_ep100_b1_lr0.01-183.566-2026-07-28 12:25:01.428639.npz")
+
+print(nn.weight)
+print(nn.bias)
 
 nn.test(x_test, y_test, readData)
-nn.save(pref="f7")
+nn.save(pref=f"f{len(FEATURES)}_n{HIDDEN_LAYERS}_ep{EPOCHS}_b{BATCH_SIZE}_lr{LEARNING_RATE}")
 

@@ -8,11 +8,11 @@ from nn import NN
 
 
 # FEATURES = ["area", "energy", "rooms", "bedrooms", "bathrooms", "year", "distance"]
-FEATURES = ["distance"]
+FEATURES = ["area"]
 
 
 reader = DataLoaderCSV("data/amsterdam_houses_all_distance.csv")
-x0, y0 = reader.load_data_raw(features=["distance"])
+x0, y0 = reader.load_data_raw(features=["area"])
 (x_train, y_train), (x_test, y_test) = reader.load_data(ratio=0.999, features=FEATURES)
 
 x0 = x0.reshape(
@@ -29,11 +29,11 @@ y = y0
 
 plt.figure(figsize=(10, 8), dpi=150)
 
-# plt.xlim(np.min(x), np.max(x))
-# plt.ylim(np.min(y), np.max(y))
+plt.xlim(right=400)
+plt.ylim(top=6000)
 
 
-nn = NN.fromSave("checkpoint/f7-567.525-2026-07-16 16:32:58.262571.npz")
+nn = NN.fromSave("checkpoint/f1_n0_ep100_b1_lr0.01-183.566-2026-07-28 12:25:01.428639.npz")
 
 
 x_nn = []
@@ -49,13 +49,12 @@ for x_now in x_train:
 # print(reader.denormalize_y(y_test[0]) / 1000)
 
 
-plt.scatter(x, y, color="blue", alpha=0.4)
-plt.scatter(x_nn, y_nn, color="red", alpha=0.4)
-
+plt.scatter(x, y, color="blue", alpha=0.4, s=10)
+plt.scatter(x_nn, y_nn, color="red", alpha=0.4, s=10)
 
 plt.xlabel("area m²")
 plt.ylabel("price €k")
 plt.grid("True")
 
-# plt.savefig("results/graph.png", dpi=300)
+# plt.savefig("results/nn/graph_area_zoom.png", dpi=300)
 plt.show()
