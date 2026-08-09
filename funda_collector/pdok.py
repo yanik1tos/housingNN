@@ -125,6 +125,6 @@ def addDistanceCSV():
 
 
 if "__main__" in __name__:
-    # print(getLonLat("Lichboei 43, Amstelveen"))
-    addDistanceCSV()
-    # print(distanceAddress("1186 DD Amstelveen"))
+    print(getLonLat("1073 SB Amsterdam"))
+    # addDistanceCSV()
+    print(distanceAddress("1073 SB Amsterdam"))

@@ -1,0 +1,90 @@
+(nn) lenikitos@lenikitos:~/program/housingNN$ ./main.py 
+Loading the data in...
+Data ready
+Data_ln: 4577
+Train_ln: 4348
+Test_ln: 229
+X std: 0.336
+X min max: 0.0 1.0
+Y std: 0.1
+Y min max: 0.0 1.0
+X nan + inf: 0 0
+Y nan + inf: 0 0
+
+Initialization...
+
+Weight std: 0.289
+Weight min max: -0.458 0.22
+Finished initialization
+
+Unpacking data 4348...
+Data prepared
+
+Started learning for 1000 epochs
+Layer 1: z=[-0.27414, 0.52196] a=[-0.27414, 0.52196]
+Epoch: 10%
+Learning rate: 0.01
+Loss: 0.0004619554
+Layer 1: z=[-0.04777, 0.52196] a=[-0.04777, 0.52196]
+Epoch: 20%
+Learning rate: 0.01
+Loss: 0.0004619554
+Layer 1: z=[-0.04777, 0.52196] a=[-0.04777, 0.52196]
+Epoch: 30%
+Learning rate: 0.01
+Loss: 0.0004619554
+Layer 1: z=[-0.04777, 0.52196] a=[-0.04777, 0.52196]
+Epoch: 40%
+Learning rate: 0.01
+Loss: 0.0004619554
+Layer 1: z=[-0.04777, 0.52196] a=[-0.04777, 0.52196]
+Epoch: 50%
+Learning rate: 0.01
+Loss: 0.0004619554
+Layer 1: z=[-0.04777, 0.52196] a=[-0.04777, 0.52196]
+Epoch: 60%
+Learning rate: 0.01
+Loss: 0.0004619554
+Layer 1: z=[-0.04777, 0.52196] a=[-0.04777, 0.52196]
+Epoch: 70%
+Learning rate: 0.01
+Loss: 0.0004619554
+Layer 1: z=[-0.04777, 0.52196] a=[-0.04777, 0.52196]
+Epoch: 80%
+Learning rate: 0.01
+Loss: 0.0004619554
+Layer 1: z=[-0.04777, 0.52196] a=[-0.04777, 0.52196]
+Epoch: 90%
+Learning rate: 0.01
+Loss: 0.0004619554
+Layer 1: z=[-0.04777, 0.52196] a=[-0.04777, 0.52196]
+Epoch: 100%
+Learning rate: 0.01
+Loss: 0.0004619554
+Learning finished
+
+Stats:
+
+Out min: 0.0
+Out max: 0.0
+
+0.5429342163552492 -0.007691012657930867 -0.05343163479893157
+0.007221659677945865
+Layer 1: z=[0.07, 0.07] a=[0.07, 0.07]
+
+avg_loss : 0.0003009063201646961
+avg_error: 130.2
+avg_erper: 18.3%
+
+---Tests: 
+Target: 850.0000000000001 -> 818.2
+Target: 497.99999999999994 -> 579.5
+Target: 750.0 -> 784.0
+Target: 650.0 -> 674.1
+Target: 325.0 -> 519.0
+Target: 450.0 -> 348.9
+Target: 795.0 -> 750.6
+Target: 480.0 -> 558.2
+Target: 439.612 -> 360.6
+Saving the checkpoint...
+Saved at checkpoint/f3_n0_ep1000_b1_lr0.01-130.195-2026-08-07 21:53:43.941127

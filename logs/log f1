@@ -87,5 +87,17 @@ Target: 425.0 -> 658.0
 Target: 435.0 -> 615.0
 Target: 1750.0 -> 1806.3
 Target: 995.0 -> 969.2
+
+Target: 359.0 -> 454.1
+Target: 499.99999999999994 -> 357.5
+Target: 475.0 -> 378.9
+Target: 650.0 -> 604.3
+Target: 685.0 -> 840.4
+Target: 880.0 -> 1205.3
+Target: 395.84 -> 325.3
+Target: 350.0 -> 185.8
+Target: 750.0 -> 808.2
+Target: 295.0 -> 121.4
+
 Saving the checkpoint...
 Saved at checkpoint/f1_n0_ep1000_b1_lr0.01-162.044-2026-08-02 18:42:12.382926

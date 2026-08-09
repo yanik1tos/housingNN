@@ -6,6 +6,9 @@ import datetime
 import activation
 
 
+r.seed(42)
+
+
 class NN:
     def __init__(self, learning_rate, epochs, batch_size,
                  input_nodes, hidden_layers, hidden_nodes, output_nodes,

@@ -1,11 +1,481 @@
 \documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx, float}
+\usepackage{eurosym}
+\graphicspath{{../images/}}
+
+\title{Math IA}
+\author{Nikita Manushin}
+\date{June 2026}
 
 \begin{document}
 
-Hello LaTeX!
+\maketitle
+
+\section{Introduction}
+
+\subsection{Research Question}
+
+To what extent does increasing the number of input features for a neural network
+improve its accuracy at predicting housing current prices of apartments in Amsterdam.
+
+\subsection{Personal Connection}
+
+Since I was a child, I have always wondered how a price is being created as it is
+difficult to determine the value of an object without any anchor to compare your price to.
+However, this study will explore the prices of housing in Amsterdam and the factors they
+depend on. I will determine to what extent a neural network is capable of predicting this.
+
+When I started learning math, in the very first grade, I have always wondered how connected,
+the numbers and the real world are. In the past few years Neural Networks became so powerful
+they could communicate like humans, all of that using tons of numbers, that create words
+and sentences. This neural network I am about to present, is an example, how what seem to
+ be meanless numbers can create something human.
+
+\section{What is a Neural Network}
+
+\subsection{A Simple Neural Network}
+
+Neural Network is a human-brain inspired computing system that stacks simple “neurons”
+to achieve complex tasks. I see it as a method of approximating a complex process with
+a mathematical function.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{input1.jpg}
+    \caption{A Simple Neural Network with Two Neurons}
+\end{figure}
+
+Here is a simple Neural Network consisting of independent variable $x$ and dependent variable $y$.
+The circles represent neurons, where neuron is just a variable and independent variable is called
+the input neuron and the dependent variable is called the output neuron. The line connecting
+them means that the function of $y$ is $wx + b$, where w and b are constants; they are called
+weight and bias, respectively.
+
+\subsection{Machine Learning and Gradient Descent}
+
+The goal of machine learning is to find the specific weight and bias that will approximate a
+process with the least loss. Loss function is used to calculate how incorrect the network is.
+$L = \frac{1}{2}{(y - t)} ^ 2$, where y is the output of the network and t is the actual target answer.
+$(y - t)$ calculates the error the network has made, squaring removes any negative results and
+$\frac{1}{2}$ makes the derivative cleaner: $dL/dy = y - t$.
+
+Machine learning is the process of finding the correct weights and biases that minimize loss.
+Let's take a look at this diagram of a neural network that learns to predict housing prices in
+Amsterdam from the area of the apartment. The input is the area, and the output is the price of
+the house.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{graph_jumps_dots_labels.png}
+    \caption{Gradient Descent with Fixed Bias}
+\end{figure}
+
+
+On the graph, the bias is fixed so that it is easier to visualize. Now, to minimize the
+loss, gradient descent is used. It works by finding the gradients of weight(s) and bias(es)
+(here it is fixed) and then moving in the direction of the steepest gradient, achieving the
+minimum of the function.
+
+At the very start, the weight is random; it is around 0.51. The gradient is calculated and
+subtracted from the weight, because we want to minimize the loss. The same thing is repeated
+as many times as possible to achieve the smallest loss, and the gradient ensures that the loss
+is decreasing.
+
+The gradient of weight in this graph is just the partial derivative of the loss by the weight.
+I will start of with writing down all of the equations we have:
+
+\begin{align}
+L(x) &= \frac{1}{2}{(y - t)} ^ 2
+\label{eq:loss} \\
+y &= wx + b
+\label{eq:input1}
+\end{align}
+
+Now we derive:
 
 \[
-E = mc^2
+{\partial}L/{\partial}y = y - t
 \]
+
+Partial derivative by $w$, so I treat $b$ as a constant:
+
+\[
+{\partial}y/{\partial}w = x
+\]
+
+Then combine using chain rule:
+
+\begin{equation}
+\begin{split}
+{\partial}L/{\partial}w &= {\partial}L/{\partial}y {\times} {\partial}y/{\partial}w = \\
+&= (y - t) {\times} x
+\end{split}
+\label{eq:dL/dw}
+\end{equation}
+
+This is how the neural network knows how to change the weight. In order to minimize loss,
+we substract the derivative from the weight.
+
+\[
+w = w - {\partial}L/{\partial}w
+\]
+
+However, the derivative might be a too big, and the weight could change too much. This could
+cause instability, as the weight could overshoot all the time, and it might never reach the
+minimum. To address this a learning rate constant is introduced - $\eta$. The derivative is
+multiplied by it too ensure that the steps are small so that the minimum is achieved no matter
+what. The formula for weight change becomes:
+
+\begin{equation}
+w = w - {\partial}L/{\partial}w {\times} \eta
+\label{eq:w_change}
+\end{equation}
+
+$\eta$ is usually somewhere around 0.1 to 0.001.
+
+Now the same thing must be repeated with the bias, although I treated it as a constant for the sake of the clean visuals, in the process of learning the bias must also be adjusted. 
+
+The equations:
+
+\begin{align*}
+L &= \frac{1}{2}{(y - t)} ^ 2 \\
+y &= wx + b
+\end{align*}
+
+Derived previously:
+
+\[
+{\partial}L/{\partial}y = y - t
+\]
+
+Patial derivative by bias, treating weight as a constant.
+
+\[
+{\partial}y/{\partial}b = 1
+\]
+
+Chain rule:
+
+\begin{equation}
+\begin{split}
+{\partial}L/{\partial}b &= {\partial}L/{\partial}y {\times} {\partial}y/{\partial}b = \\
+&= (y - t) {\times} 1 = \\
+&= y - t
+\end{split}
+\label{eq:dL/db}
+\end{equation}
+
+And now the bias is changed:
+
+\begin{equation}
+b = b - {\partial}L/{\partial}b {\times} \eta
+\label{eq:b_change}
+\end{equation}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{graph_weight_bias_loss_sharp.png}
+    \caption{Countour Map of $L(w, b)$}
+\end{figure}
+
+This diagram illustrates the loss function with parameters of weight and bias, instead of
+fixing one of them. The x and y axis are weight and bias, respectively, and the color
+represents loss as shown on the right side with the colorbar.
+
+\[
+L(w, b) = \frac{1}{2}{((wx + b) - t)} ^ 2
+\]
+
+Apart from showing the dependency of loss on weight and bias, this diagram also highlights
+the limitation of the learning method. Gradient decent finds the local minimum of loss
+function, however this particular local minimum that the model would converge to might
+not be the global minimum. As can be seen by the
+
+
+One of the things I have not mentioned yet is where I got the $x$ and $t$ from. As I said $x$
+is the living area, and $t$ is the price of an apartment. I have collected data from funda.nl
+and I only picked the apartments that are in Amsterdam and that are for sale in July of 2026.
+In total, I have collected around 4500 apartments with their respective prices and features.
+
+Because the function does calculation of only one apartment at a time, I took average of all
+losses for each apartment with a certain weight and bias and that is what is being presented
+on the previous graphs. That is why I have not used $x$ nor $t$ as arguments for functions $y$
+and $L$, for the process of learning it is treated as a constant. The weight and bias are the
+independent variables that must be changed. After the network has finished its learning and,
+therefore, has constant weight and bias, the function will become $y(x) = wx + b$ and $x$
+will be the independent variable again.
+
+
+\subsection{Not Normalized}
+
+Another thing that must be done for a network to work is normalization of inputs and outputs.
+Here is an example, that will explain the importance of normalization:
+
+I will take learning rate as 0.001, it is 10 times less than I normally would use because
+this will illustrate the influence of normalization clearer.
+
+An apartment that is located at 1061 AV Amsterdam has price is 930 000 {\euro} and it has living
+area of 108 $m^2$. Let $w$ be 8700 and $b$ be 348, those are values that achieve a decent
+amount of accuracy for this example. The functions are:
+
+\[
+y(x) = 8700 {\times} x + 348
+\]
+
+$x$ is the living area, so it is 108 $m^2$. $y$ is the predicted price:
+
+\[
+y(x) = 8700 {\times} 108 + 348 = 939 948 \text{ \euro}
+\]
+
+$t$ is the target price, so it is 930 000 {\euro}. Using $t$ and $y$ we can now calculate the loss:
+
+\[
+\begin{split}
+L(x) &= \frac{1}{2}{(y(x) - 930000)} ^ 2 \\
+\Rightarrow L(108) &= \frac{1}{2}{(939948 - 930000)} ^ 2 = \\
+&= 4.95 \times 10^{7}
+\end{split}
+\]
+
+
+Now we calculate the gradient decent:
+
+
+\[
+\begin{split}
+{\partial}L/{\partial}w &= (y - t) {\times} x = (939948 - 930000) {\times} 108 = 1074.4 \times 10^{3} \\
+w &= w - {\partial}L/{\partial}w {\times} \eta = (8700 - 1074.4 \times 10^{3}) {\times} 0.001 = 7625.616 \\
+{\partial}L/{\partial}b &= (y - t) = (939948 - 930000) = 9.9 \times 10^{3} \\
+b &= b - {\partial}L/{\partial}b {\times} \eta = (348 - 9.9 \times 10^{3}) {\times} 0.001 = 338.052
+\end{split}
+\]
+
+And calculate the loss again with new weight and bias:
+
+\[
+\begin{split}
+y(108) &= 7625.616 {\times} 108 + 338.052 = \\
+&= 823 904.58 \text{ \euro} \\
+L(108) &= \frac{1}{2}{(y - t)} ^ 2 = \frac{1}{2}{(823904.58 - 930000)} ^ 2 = \\
+&= 562.8 \times 10^{7} \\
+\end{split}
+\]
+
+The new loss is significantly larger than the first one:
+$4.95 \times 10^{7} < 562.8 \times 10^{7}$
+Although the gradient descent should have decreased the loss, it overshoot instead.
+The initial weights and biases were definitely wrong, as the first prediction
+was around 54 \euro. However, because of the huge inputs - 108 and the target outputs
+- 930 000, the gradients skyrocketed: $1074.4 \times 10^{3}$, $9.9 \times 10^{3}$. Although the
+learning rate was small - 0.001, the weight and bias still overshot. This experiment can be
+repeated with any other weights and most of the time, the derivative will overshoot and the
+network will not minimize the loss function and therefore will not learn.
+
+\subsection{Normalization}
+
+To address this normalization of data is introduced. The goal is to fit any inputs and
+outputs into range from 0 to 1. For that this formula can be used:
+
+\begin{equation}
+x_{\mathrm{norm}} = \frac{x - x_{\min}}{x_{\max} - x_{\min}}
+\end{equation}
+
+This is done for every piece of data: both price and living area and other features.
+Normalization will ensure that weights are also in a small range, usually from -1 to 1,
+rarely might reach -2, or 2. This also allows for a larger learning rate, and 0.1 will be
+used here, otherwise the result will be difficult to see.
+
+For my data the min and max for prices and living areas are respectively:
+
+\[
+\begin{split}
+189k &- 9850k \text{ \euro} \\
+19 &- 500 \text{ $m^2$}
+\end{split}
+\]
+
+Also, I divide the price by $10^{3}$ to make the difference between prices more significant,
+and it is clearer to visualize the prices in thousand euros instead of just euros, therefore
+I will be using k {\euro} from now on.
+
+I will repeat the same example but with normalized values now, the weight and biases are
+also chosen so that the function is somewhat accurate:
+
+\[
+\begin{split}
+w &= 0.5 \\
+b &= -0.03 \\
+\\
+x &= 108 \text{ $m^2$} \\
+t &= 930k \text{ \euro} \\
+\\
+x_{\mathrm{norm}} &= (x - x_{\min}) / (x_{\max} - x_{\min}) \\
+&= (108 - 19) / (500 - 19) = 0.185 \\
+t_{\mathrm{norm}} &= (t - t_{\min}) / (t_{\max} - t_{\min}) \\
+&= (930 - 189) / (9850 - 189) = 0.0767
+\end{split}
+\]
+
+
+Since all of the values will be normalized from now on, I will not use the \_norm suffix.
+
+\[
+\begin{split}
+y &= 0.5 {\times} x - 0.03 = 0.5 {\times} 0.185 - 0.03 = 0.0625 \\
+L &= \frac{1}{2}{(y - t)} ^ 2 = \frac{1}{2}{(0.0625 - 0.0767)} ^ 2 = 1.006 {\times} 10^{-4}
+\end{split}
+\]
+
+\[
+\begin{split}
+{\partial}L/{\partial}w &= (y - t) {\times} x = (0.0625 - 0.0767) {\times} 0.185 = -2.62 {\times} 10^{-3} \\
+w &= w - {\partial}L/{\partial}w {\times} \eta = 0.5 - -0.00262 {\times} 0.1 = 0.50026 \\
+\\
+{\partial}L/{\partial}b &= (y - t) = 0. 0625 - 0.0767 = -1.42 {\times} 10^{-2} \\
+b &= b - {\partial}L/{\partial}b {\times} \eta = -0.03 - -0.0142 {\times} 0.1 = -0.0286
+\end{split}
+\]
+
+\[
+\begin{split}
+y &= wx + b = 0.50026 {\times} 0.185 - 0.0286 = 0.064 \\
+L &= \frac{1}{2}{(y - t)} ^ 2 = \frac{1}{2}{(0.064 - 0.0767)} ^ 2 = 0.809 {\times} 10^{-4}
+\end{split}
+\]
+
+
+As can be seen here the loss decreased from $1.00 {\times} 10^{-4}$ to
+$0.81 {\times} 10^{-4}$. Normalization allows for a more stable learning process and
+less overshooting during the gradient descent. Moreover, normalization helps with weights
+and biases initialization, as we can assume that they are going to be most frequently
+around -1.0 to 1.0. On the other hand, without normalization the weights might go to
+thousands like in the last example. The diagram below shows how centered the blue
+graph (normalized data) to the zero compared to the red graph (not normalized data).
+Furthermore, the gradient is much less steep for the blue graph, which again shows that
+the gradient descent will be more smooth and less overshooting.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{orig_vs_norm.png}
+    \caption{Normalized vs not Normalized}
+\end{figure}
+
+
+\subsection{Learning Process}
+
+I have a few thousand apartments data from which my neural network must learn.
+The term epoch is introduced at this point, which refers to a single, complete
+pass of the entire training dataset through the model. In this case, gradient
+descent will be done for each apartment in the dataset. $x$ is the living area,
+and $t$ is the respective price for the apartments. This will make the neural
+network find the middle ground for weight and bias to minimize the loss across
+all the apartments. For a model to minimize loss as much as possible, numerous
+epochs are done. Depending on the length of the dataset this number can range,
+but I will be doing around 100-1000 epochs.
+
+As I mentioned earlier, the dataset includes around 4500 entries; it is exactly
+4577 apartments. I have separated the data into training and test datasets. The
+training entries are used to train the model, in the process mentioned above.
+On the other hand, the test dataset is used to test the accuracy of predictions
+of the model. The test process illustrates how good the network performs on
+apartments it has never seen before. To separate the dataset into training and
+test datasets, I will be using a 0.95 ratio - 4348 and 229 entries, respectively.
+
+Here is the model I have trained on my dataset with the structure $y = wx + b$,
+learning rate 0.01 and 1000 epochs.
+Blue points are the entries from the dataset, and the red dots are the predictions
+made by the model.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{graph_area.png}
+    \caption{Model Results}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{graph_area_zoom.png}
+    \caption{Model Results Without Outliers}
+\end{figure}
+
+
+This model has converged its weight and bias values to around 0.553 and -0.0197,
+respectively. This achieved the loss of $4.798 {\times} 10^{-4}$. I want to remind you that in
+previous example I achieved less loss, $0.81 {\times} 10^{-4}$ because the loss was calculated
+across one entry which practically has a certain weight and bias that achieves
+0 loss. $y = wx + b$ where $y$ and $x$ are constants means that there are infinitely many
+solutions.
+
+On the other hand, here are 4500 entries that are impossible to cover with a linear
+equation like this. This line that my model has learned is just the best perfect line.
+Furthermore, the blue dots are arranged in a mostly chaotic way with a tendency of the
+price increasing as the area increases. This suggests that only area is not enough to
+fully predict price of house.
+
+Nevertheless, this model can predict housing, although accuracy is limited. I can build
+a function according to the weight and bias I got:
+
+\[
+y(x) = 0.5497 {\times} x - 0.0186
+\]
+
+Let's test it on this example:
+
+\[
+\begin{split}
+\text{Area } &- \text{ 79 $m^2$} \\
+\text{Target price } &- \text{700k {\euro}}
+\end{split}
+\]
+
+First normalize the data:
+
+\[
+x = \frac{79 - 19}{500 - 19} = 0.1247
+\]
+
+Use the function:
+
+\[
+\begin{split}
+y(x) &= 0.5497 {\times} x - 0.0186 \\
+{\Rightarrow} \: y(0.1247) &= 0.5497 {\times} 0.1247 - 0.0186 = 0.0499
+\end{split}
+\]
+
+Now we can denormalize $y$ by rearranging the normalization function:
+
+\[
+\begin{split}
+y_{\mathrm{norm}} &= \frac{y - y_{\min}}{y_{\max} - y_{\min}} \\
+y_{\mathrm{norm}} {\times} (y_{\max} - y_{\min}) &= y - y_{\min} \\
+y &= y_{\mathrm{norm}} {\times} (y_{\max} - y_{\min}) + y_{\min} \\
+\\
+y &= 0.0493 {\times} (9850 - 189) + 189 = 671.46
+\end{split}
+\]
+
+The target was 700k and the model predicted 671.46k which is not too bad for a network that
+only has the information about living area.
+
+I repeated the same thing with few other apartments:
+
+
+\begin{table}[h]
+\centering
+\caption{More Results}
+\begin{tabular}{c|c|c|c|c}
+$x_1$ & 1 & 2 & 3 & 4 \\
+\hline
+$x_2$ & 3 & 4 & 5 & 6
+\end{tabular}
+\end{table}
 
 \end{document}

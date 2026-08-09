@@ -15,18 +15,19 @@ class DataLoaderCSV:
 
         # x = (x - mean) / std
 
-        mn = x.min(axis=0)
-        mx = x.max(axis=0)
+        self.x_min = x.min(axis=0)
+        self.x_max = x.max(axis=0)
 
-        self.x_min = mn
-        self.x_max = mx
-
-        x = (x - mn) / (mx - mn)
+        x = (x - self.x_min) / (self.x_max - self.x_min)
 
         return x
 
 
     def denormalize_x(self, x):
+        x = x.reshape(
+            -1, len(self.features)
+        )
+
         return x * (self.x_max - self.x_min) + self.x_min
 
 
@@ -55,8 +56,12 @@ class DataLoaderCSV:
         data = data.sample(frac=1, random_state=42).reset_index(drop=True)
         data = data.dropna(subset=features + [target])
 
-        x = data[features].to_numpy(dtype=float)
-        y = data[target].to_numpy(dtype=float)
+        try:
+            x = data[features].to_numpy(dtype=float)
+            y = data[target].to_numpy(dtype=float)
+        except:
+            x = data[features].to_numpy()
+            y = data[target].to_numpy()
 
         return x, y
 
@@ -66,6 +71,8 @@ class DataLoaderCSV:
                   features=["area", "energy", "rooms", "bedrooms", "bathrooms", "year", "distance"]
                   ):
         print("Loading the data in...")
+
+        self.features = features
 
         x, y = self.load_data_raw(features=features)
 
