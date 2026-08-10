@@ -3,39 +3,59 @@
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage{graphicx, float}
 \usepackage{eurosym}
+\usepackage{hyperref}
 \graphicspath{{../images/}}
 
-\title{Math IA}
+
+\title{
+    Exploring the Ability of a Linear Regression Model in Predicting Housing Prices\\[0.7em]
+    \large Mathematics: Analysis and Approaches HL \\
+    Internal Assessment
+}
 \author{Nikita Manushin}
 \date{June 2026}
+
+
 
 \begin{document}
 
 \maketitle
 
+
+
 \section{Introduction}
 
-\subsection{Research Question}
-
-To what extent does increasing the number of input features for a neural network
-improve its accuracy at predicting housing current prices of apartments in Amsterdam.
-
 \subsection{Personal Connection}
-
-Since I was a child, I have always wondered how a price is being created as it is
-difficult to determine the value of an object without any anchor to compare your price to.
-However, this study will explore the prices of housing in Amsterdam and the factors they
-depend on. I will determine to what extent a neural network is capable of predicting this.
 
 When I started learning math, in the very first grade, I have always wondered how connected,
 the numbers and the real world are. In the past few years Neural Networks became so powerful
 they could communicate like humans, all of that using tons of numbers, that create words
-and sentences. This neural network I am about to present, is an example, how what seem to
- be meanless numbers can create something human.
+and sentences. This linear regression model I am about to present, is an example, how what
+seem to be meaningless numbers can make predictions about something that humans care about.
 
-\section{What is a Neural Network}
+\subsection{Aims of the Investigation}
 
-\subsection{A Simple Neural Network}
+In this paper, I will explore how a linear regression model can be trained using gradient descent
+and adjusted so that it predicts current prices of apartments in Amsterdam. I will look into three
+features of an apartment: living area, construction year and the distance from the center
+of Amsterdam. I will implement those features as independent variables into the model one
+by one, to see the influence of each of them on the price. The reason I am using gradient descent
+rather than ordinary least squares for solving my model is that I want to resemble
+a neural network, which is what I take my inspiration from for this model. Furthermore, this
+allows me to observe and explore how weights and biases are optimized iteratively using the
+gradients of the loss function.
+
+\subsection{Research Question}
+
+To what extent does increasing the number of input features for a linear regression
+model improve its accuracy at predicting housing current prices of apartments i
+Amsterdam.
+
+
+
+\section{What is a Linear Regression Model}
+
+\subsection{A Simple Linear Regression Model}
 
 Neural Network is a human-brain inspired computing system that stacks simple “neurons”
 to achieve complex tasks. I see it as a method of approximating a complex process with
@@ -43,7 +63,7 @@ a mathematical function.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=4in]{input1.jpg}
+    \includegraphics[width=0.9\textwidth]{input1.jpg}
     \caption{A Simple Neural Network with Two Neurons}
 \end{figure}
 
@@ -57,7 +77,7 @@ weight and bias, respectively.
 
 The goal of machine learning is to find the specific weight and bias that will approximate a
 process with the least loss. Loss function is used to calculate how incorrect the network is.
-$L = \frac{1}{2}{(y - t)} ^ 2$, where y is the output of the network and t is the actual target answer.
+$L(y) = \frac{1}{2}{(y - t)} ^ 2$, where y is the output of the network and t is the actual target answer.
 $(y - t)$ calculates the error the network has made, squaring removes any negative results and
 $\frac{1}{2}$ makes the derivative cleaner: $dL/dy = y - t$.
 
@@ -69,7 +89,7 @@ the house.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=4in]{graph_jumps_dots_labels.png}
+    \includegraphics[width=\textwidth]{graph_jumps_dots_labels.png}
     \caption{Gradient Descent with Fixed Bias}
 \end{figure}
 
@@ -88,7 +108,7 @@ The gradient of weight in this graph is just the partial derivative of the loss 
 I will start of with writing down all of the equations we have:
 
 \begin{align}
-L(x) &= \frac{1}{2}{(y - t)} ^ 2
+L(y) &= \frac{1}{2}{(y - t)} ^ 2
 \label{eq:loss} \\
 y &= wx + b
 \label{eq:input1}
@@ -96,9 +116,10 @@ y &= wx + b
 
 Now we derive:
 
-\[
+\begin{equation}
 {\partial}L/{\partial}y = y - t
-\]
+\label{eq:dLdy}
+\end{equation}
 
 Partial derivative by $w$, so I treat $b$ as a constant:
 
@@ -113,7 +134,7 @@ Then combine using chain rule:
 {\partial}L/{\partial}w &= {\partial}L/{\partial}y {\times} {\partial}y/{\partial}w = \\
 &= (y - t) {\times} x
 \end{split}
-\label{eq:dL/dw}
+\label{eq:dLdw}
 \end{equation}
 
 This is how the neural network knows how to change the weight. In order to minimize loss,
@@ -165,7 +186,7 @@ Chain rule:
 &= (y - t) {\times} 1 = \\
 &= y - t
 \end{split}
-\label{eq:dL/db}
+\label{eq:dLdb}
 \end{equation}
 
 And now the bias is changed:
@@ -178,7 +199,7 @@ b = b - {\partial}L/{\partial}b {\times} \eta
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=4in]{graph_weight_bias_loss_sharp.png}
+    \includegraphics[width=0.9\textwidth]{graph_weight_bias_loss_sharp.png}
     \caption{Countour Map of $L(w, b)$}
 \end{figure}
 
@@ -193,7 +214,7 @@ L(w, b) = \frac{1}{2}{((wx + b) - t)} ^ 2
 Apart from showing the dependency of loss on weight and bias, this diagram also highlights
 the limitation of the learning method. Gradient decent finds the local minimum of loss
 function, however this particular local minimum that the model would converge to might
-not be the global minimum. As can be seen by the
+not be the global minimum.
 
 
 One of the things I have not mentioned yet is where I got the $x$ and $t$ from. As I said $x$
@@ -220,7 +241,7 @@ this will illustrate the influence of normalization clearer.
 
 An apartment that is located at 1061 AV Amsterdam has price is 930 000 {\euro} and it has living
 area of 108 $m^2$. Let $w$ be 8700 and $b$ be 348, those are values that achieve a decent
-amount of accuracy for this example. The functions are:
+amount of accuracy for this example. The function is:
 
 \[
 y(x) = 8700 {\times} x + 348
@@ -361,7 +382,7 @@ the gradient descent will be more smooth and less overshooting.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=4in]{orig_vs_norm.png}
+    \includegraphics[width=0.9\textwidth]{orig_vs_norm.png}
     \caption{Normalized vs not Normalized}
 \end{figure}
 
@@ -394,14 +415,14 @@ made by the model.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=4in]{graph_area.png}
+    \includegraphics[height=0.4\textheight]{graph_area.png}
     \caption{Model Results}
 \end{figure}
 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=4in]{graph_area_zoom.png}
+    \includegraphics[height=0.4\textheight]{graph_area_zoom.png}
     \caption{Model Results Without Outliers}
 \end{figure}
 
@@ -452,30 +473,491 @@ y(x) &= 0.5497 {\times} x - 0.0186 \\
 
 Now we can denormalize $y$ by rearranging the normalization function:
 
-\[
+\begin{equation}
 \begin{split}
 y_{\mathrm{norm}} &= \frac{y - y_{\min}}{y_{\max} - y_{\min}} \\
 y_{\mathrm{norm}} {\times} (y_{\max} - y_{\min}) &= y - y_{\min} \\
 y &= y_{\mathrm{norm}} {\times} (y_{\max} - y_{\min}) + y_{\min} \\
-\\
-y &= 0.0493 {\times} (9850 - 189) + 189 = 671.46
 \end{split}
+\label{eq:y_norm}
+\end{equation}
+
+\[
+y = 0.0493 {\times} (9850 - 189) + 189 = 671.46
 \]
 
-The target was 700k and the model predicted 671.46k which is not too bad for a network that
-only has the information about living area.
+The target was 700k and the model predicted 671.46k which is not
+too bad for a network that only has the information about living
+area.
 
-I repeated the same thing with few other apartments:
+To assess how good this model actually is, this process must be done for
+more than one apartment. I put this model through my test dataset, with the
+results I got I can calculate the mean absolute error $\mathrm{MAE}$ and mean
+percentage absolute error $\mathrm{MAPE}$.
+
+\begin{align}
+{\mathrm{MAE}}  = \frac{1}{n} \sum_{i=1}^{n} |y_i - t_i|
+\label{eq:MAE} \\
+{\mathrm{MAPE}} = \frac{100\%}{n} \sum_{i=1}^{n} \frac{|y_i - t_i|}{t_i}
+\label{eq:MAPE}
+\end{align}
+
+I got $\mathrm{MAE} = 162.0k$ and $\mathrm{MAPE} = 25.5\%$. Here are few other examples of
+predictions this model has made:
 
 
 \begin{table}[h]
 \centering
-\caption{More Results}
-\begin{tabular}{c|c|c|c|c}
-$x_1$ & 1 & 2 & 3 & 4 \\
+\begin{tabular}{c|c|c|c|c|c|c}
+Target $t$ (k {\euro})
+& 359.0 & 450.0 & 475.0 & 650.0 & 685.0 & 880.0 \\
 \hline
-$x_2$ & 3 & 4 & 5 & 6
+Predicted $y$ (k {\euro})
+& 454.1 & 357.5 & 378.9 & 604.3 & 840.4 & 1205.3 \\
 \end{tabular}
 \end{table}
+
+
+3.749e-04 is the least loss I was able to get while using only one feature of the
+apartments.
+
+
+\section{Two Input Neural Network}
+
+\subsection{Training Process}
+
+The next step of minimizing loss is adding more information about the apartment
+for the network to use. I will be using the construction year as the second input.
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{input2.jpg}
+    \caption{Neural Network with Two Inputs}
+\end{figure}
+
+As shown on the diagram, there are three neurons: two inputs and one output. Each input
+has its own weight with which it is connected to the output. The first input $x_1$ is the
+living area and the second input $x_2$ is the construction year of the apartments. Output
+$y$ is the predicted price, that will not change. The bias is still present but there
+is no need for two biases (one for each input), only one is used. The function of y becomes:
+
+\[
+y(x_1, x_2) = w_1x_1 + w_2x_2 + b
+\]
+
+The loss $L(y)$ function (Equation~\ref{eq:loss}) nor the
+${\partial}L/{\partial}y$ (Equation~\ref{eq:dLdy}) do not change.
+Weight derivatives will not change significantly and will be similar to
+(Equation~\ref{eq:dLdw}). The partial derivative must be
+done for each weight, while every other weight and bias are treated as constants.
+
+\[
+\begin{split}
+{\partial}L/{\partial}w_1 = (y - t) {\times} x_1 \\
+{\partial}L/{\partial}w_2 = (y - t) {\times} x_2
+\end{split}
+\]
+
+
+The partial derivative for bias stays the exactly same, Equation~\ref{eq:dLdb}:
+
+\[
+{\partial}L/{\partial}b = y - t
+\]
+
+
+The second input will be the construction year of the apartment. Although it might
+not seem like an important feature of a house, the construction year suggests the
+quality of the materials and the electronics of the apartment. The data about that
+was also collected from funda.nl.
+
+This diagram illustrates the dependency of price on the construction year of the
+apartment. There is a correlation that newer apartments are able to be more expensive
+than the old ones, however this tendency is much less clear than the one with area.
+This means that the area will have more impact on the price rather than the construction year.
+
+This input like any other will also be normalized, the minimum year is 1507 and maximum is
+2028. Most apartments in year range 2026-2028 weren't been built yet, however, I will still
+be using data about them to increase my dataset and thereby improve my model.
+
+\[
+x_{\mathrm{2norm}} = \frac{x_2 - 1507}{2028 - 1507}
+\]
+
+
+I trained model with 1000 epochs, and it converged to weights and biases:
+
+\[
+\begin{split}
+w_1 = 0.5502 \\
+w_2 = -0.0515 \\
+b = 0.2595
+\end{split}
+\]
+
+\[
+\begin{split}
+y(x_1, x_2) &= w_1x_1 + w_2x_1 + b \\
+{\Rightarrow} {\:} y(x_1, x_2) &= 0.5502 * x_1 - 0.0515 * x_2 + 0.2595
+\end{split}
+\]
+
+Let's do the same example as I did with area:
+
+\[
+\begin{split}
+\text{Area } &- \text{79 $m^2$} \\
+\text{Year } &- \text{2005} \\
+\text{Target price} &- \text{700k {\euro}}
+\end{split}
+\]
+
+\[
+\begin{split}
+x_1 &= \frac{79 - 19}{500 - 19} = 0.1247 \\
+x_2 &= \frac{2005 - 1507}{2028 - 1507} = 0.9559
+\end{split}
+\]
+
+\[
+\begin{split}
+y(0.1247, 0.9559) &= \\
+&= 0.5502 {\times} 0.1247 - \\
+&- 0.0515 {\times} 0.9559 + \\
+&+ 0.2595 = \\
+&= 0.0453
+\end{split}
+\]
+
+De-normalize:
+
+\[
+y = 0.0453 {\times} (9850 - 189) + 189 = 626.83 \text{k {\euro}}
+\]
+
+This model predicted 626k {\euro} with the target of 700k {\euro}. Although, on this entry
+this model performed worse than the last one, it has achieved a less average loss across
+the test dataset: 3.484e-04. This model achieved mean absolute error of 149.5k {\euro} and 
+mean absolute percentage error 22.9\%, which is a noticeable improvement compared to 162k
+{\euro} and 25.5\% of the previous model. ${\mathrm{MAE}}$ and ${\mathrm{MAPE}}$ are
+calculated using formulas from Equations~\ref{eq:MAE} and \ref{eq:MAPE}.
+
+Here is the performance of this model on other examples:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c|c|c|c|c|c}
+Target $t$ (k {\euro})
+& 359.0 & 450.0 & 475.0 & 650.0 & 685.0 & 880.0 \\
+\hline
+Predicted $y$ (k {\euro})
+& 428.1 & 408.6 & 403.1 & 624.1 & 896.6 & 1146.7 \\
+\end{tabular}
+\end{table}
+
+
+\subsection{Influence Of Construction Year on the Results}
+
+
+According to the loss improvement, information about construction year does have a clear
+impact on the price of apartments. To measure significance of a feature we can look at
+the weights of the model. We only need the absolute values, as the negative sign just
+means that the correlation is inverse.
+
+\[
+\begin{split}
+| w_1 | = 0.5502 \\
+| w_2 | = 0.0515
+\end{split}
+\]
+
+As I mentioned earlier, living area does have a bigger influence on price. Here is a
+diagram of this model results against living areas and construction years:
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{graph_f2_area_nn.png}
+    \caption{Area Against Price}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{graph_f2_year_nn.png}
+    \caption{Year Against Price}
+\end{figure}
+
+As expected, model have built a best fit line for area just like last time. However,
+if we look at the construction year diagram, it does not look like a linear function,
+but rather a really chaotic spread that tries to resemble the actual price to year graph.
+The reason it looks that way is because having a function $y = w_1x_1 + w_2x_2 + b$ creates
+a plane in 3 dimensional space. Here is how this function looks in
+\href{https://www.desmos.com/3d}{desmos 3d}.
+
+\begin{figure}[htbp]
+    \centering
+
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{desmos_f2_area.png}
+        \caption{Area}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{desmos_f2_year.png}
+        \caption{Year}
+    \end{minipage}
+
+\end{figure}
+
+From area price side it looks almost like one line, because $| w_2 |$ is big, around
+0.55. On the other hand, $| w_2 |$ is small, around 0.05, and it creates a surface for
+construction year graph. This surface is what creates what looked like a random spread,
+the truth is that this surface looked random because of the dataset which has random data.
+
+
+\section{Neural Network with 3 Inputs}
+
+\subsection{Calculate Distance to the Center of Amsterdam}
+
+Until this point, the information of the apartment has only contained the details of the
+building itself, however to further improve the model I decided to add information about
+the location of this apartment. As I mentioned earlier, all apartments in my dataset are
+located in Amsterdam, so I decided to use the distance between the apartment and the center
+of Amsterdam.
+
+First of all, I chose a point which will be the center of Amsterdam. It has latitude of
+52.3676 and longitude of 4.9041, and here is a
+\href{https://www.google.com/maps/place/52%C2%B022'03.4%22N+4%C2%B054'14.8%22E/@52.3676032,4.9015197,17z/data=!3m1!4b1!4m4!3m3!8m2!3d52.3676!4d4.9041?entry=ttu&g_ep=EgoyMDI2MDgwMy4wIKXMDSoASAFQAw%3D%3D|}
+{google maps} link.
+
+In my dataset, I know the address of each apartment, that is what I am going to use to get
+coordinates of the apartments. In order to gather the coordinates of an apartment just from
+its address, I am using
+\href{https://pdok.nl}{pdok}
+, which is a website that provides geodatasets from the Dutch goverment. I have built
+a script so I used the
+\href{https://api.pdok.nl/bzk/locatieserver/search/v3_1/free}{pdok api}
+but there is also a
+\href{https://api.pdok.nl/kadaster/location-api/v1/search}{human friendly version}
+that I will be using for this next example.
+
+For this example, I will be using the apartment from previous illustrations, that is located
+at 1073 SB Amsterdam. I put the address into this website, and got latitude 52.3516
+and longitude 4.8995.
+
+Now to calculate the distance between those two points I will be using Haversine formula:
+
+\[
+\begin{split}
+\phi &= \mathrm{lat}_2 - \mathrm{lat}_1 \\
+\lambda &= \mathrm{lon}_2 - \mathrm{lon}_1 \\
+a &= \sin^2(\frac{\phi}{2}) + \cos(\mathrm{lat}_1) {\times} \cos(\mathrm{lat}_2) {\times} \sin^2(\frac{\lambda}{2}) \\
+c &= 2 {\times} \arcsin(\sqrt{a}) \\
+d &= R {\times} c
+\end{split}
+\]
+
+Independent values:
+
+\[
+\begin{split}
+R &= 6371 \text{ km{\,}the radius of the Earth} \\
+\mathrm{lat}_1 &= 52.3516 \\
+\mathrm{lon}_1 &= 4.8995 \\
+\mathrm{lat}_2 &= 52.3676 \\
+\mathrm{lon}_2 &= 4.9041
+\end{split}
+\]
+
+Calculate difference in latitude and longitude: 
+
+\[
+\begin{split}
+\phi &= \mathrm{lat}_2 - \mathrm{lat}_1 = 0.016 \\
+\lambda &= \mathrm{lon}_2 - \mathrm{lon}_1 = 0.0046
+\end{split}
+\]
+
+
+Use the Haversine formula:
+
+\[
+\begin{split}
+a &= \sin^2(\frac{0.016}{2}) + \cos(52.3516) {\times} \cos(52.3676) {\times} \sin^2(\frac{0.0046}{2}) \\
+  &= 2.01 {\times} 10^{-8} \\
+c &= 2 * \arcsin^2(\sqrt(2.01 {\times} 10^{-8})) = 2.8 {\times} 10^{-4} \\
+d &= c * R = 1.806 \text{ km}
+\end{split}
+\]
+
+
+We can check this result on
+\href{https://www.omnicalculator.com/other/latitude-longitude-distance}{omnicalculator}
+which is a website that provides alongside its other functionalities, a distance
+calculator between two points on Earth. The result I got on the website was identical
+to what I have got, therefore the formula is correct.
+
+
+\subsection{Building the Neural Network with 3 Inputs}
+
+Now, I can calculate the distance to the center of Amstedam for each apartment. On my
+dataset, I have got the minimum distance 0.07km and the maximum 9.98km. So to normalize
+the distance I will use:
+
+\[
+x_{\mathrm{norm}} = \frac{x - 0.07}{9.98 - 0.07}
+\]
+
+Using the data about the distance from the center of Amsterdam, I can add a new input
+neuron for the neural network - $x_3$. So, the function becomes:
+
+\[
+y(x_1, x_2, x_3) = w_1x_1 + w_2x_2 + w_3x_3 + b
+\]
+
+From here I can get all the derivatives necessary, using derivatives from Equations
+~\ref{eq:dLdy}, ~\ref{eq:dLdw} and ~\ref{eq:dLdb}. As always, while deriviving partially,
+I treat other variables as constants:
+
+
+\[
+\begin{split}
+{\partial}L/{\partial}w_1 &= (y - t) * x_1 \\
+{\partial}L/{\partial}w_2 &= (y - t) * x_2 \\
+{\partial}L/{\partial}w_3 &= (y - t) * x_3 \\
+{\partial}L/{\partial}b &= y - t
+\end{split}
+\]
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{input3.jpg}
+    \caption{Neural Network with 3 Inputs}
+\end{figure}
+
+
+With this I can train a model for 1000 epochs. These are the weights and the bias,
+the neural network has converged to:
+
+\[
+\begin{split}
+w_1 &= 0.5429 \\
+w_2 &= -0.0077 \\
+w_3 &= -0.0534 \\
+b &= 0.0072
+\end{split}
+\]
+
+
+Let's test it on the previous example:
+
+\[
+\begin{split}
+\text{Area } &- \text{ 79 $m^2$} \\
+\text{Year } &- \text{2005} \\
+\text{Distance} &- \text{1.806 km} \\
+\text{Target price} &- \text{700k {\euro}}
+\end{split}
+\]
+
+Normalize inputs:
+
+\[
+\begin{split}
+x_1 = \frac{79 - 19}{500 - 19} = 0.1247 \\
+x_2 = \frac{2005 - 1507}{2028 - 1507} = 0.9559 \\
+x_3 = \frac{1.806 - 0.07}{9.98 - 0.07} = 0.1752
+\end{split}
+\]
+
+Calculate:
+
+\[
+\begin{split}
+y(0.1247, 0.9559, 0.1752) &= 0.5429 {\times} 0.1247 + \\
+&+ -0.0077 {\times} 0.9559 + \\
+&+ -0.0534 {\times} 0.1752 + \\
+&+ 0.0072 = \\
+&= 0.0582
+\end{split}
+\]
+
+Denormalize according to Equation~\ref{eq:y_norm}:
+
+\[
+y {\times} (9850 - 189) + 189 = 751.34
+\]
+
+This time the model overshot the price, but this neural network has achieved the best
+results with the test dataset on average making $3.01 {\times} 10^{-4}$ loss, and having
+the $\mathrm{MAE}$ and $\mathrm{MAPE}$ of 130.2 and 18.3\%, respectively.
+
+Here are some other results:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c|c|c|c|c|c}
+Target $t$ (k {\euro})
+& 359.0 & 450.0 & 475.0 & 650.0 & 685.0 & 880.0 \\
+\hline
+Predicted $y$ (k {\euro})
+& 317.0 & 467.3 & 354.6 & 587.3 & 890.9 & 1105.1 \\
+\end{tabular}
+\end{table}
+
+\subsection{Influence of Distance on Price}
+
+Just like last time we can measure the influence of each input by the absolute
+values of their weights:
+
+\[
+\begin{split}
+| w_1 | = 0.5429 \\
+| w_2 | = 0.0077 \\
+| w_3 | = 0.0534
+\end{split}
+\]
+
+We can see that the most influential input is still area, but the importance of
+construction year dramatically fell from 0.05 to 0.008, and the influence of
+distance is in middle of two other inputs.
+
+Here is how the distribution of distance across the dataset looks like,
+(I have removed few outliers again):
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{graph_distance.png}
+    \caption{Distance against Price Data}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{graph_distance_nn.png}
+    \caption{Distance against Price Predictions}
+\end{figure}
+
+The model was able to even capture the two spikes in price at distance 0 - 4km and 6 - 8km.
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+\# of inputs & average loss & $\mathrm{MAE}$ & $\mathrm{MAPE}$ \\
+\hline
+1 & $3.7487 {\times} 10^{-4}$ & 162.0 & 25.5\% \\
+\hline
+2 & $3.4844 {\times} 10^{-4}$ & 149.5 & 22.9\% \\
+\hline
+3 & $3.0009 {\times} 10^{-4}$ & 130.2 & 18.3\% \\
+\hline
+\end{tabular}
+\end{table}
+
 
 \end{document}
