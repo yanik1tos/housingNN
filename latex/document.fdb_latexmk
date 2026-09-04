@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1786362074.4526 "/home/lenikitos/program/housingNN/latex/document.tex" "document.pdf" "document" 1786362077.38322 0
+["pdflatex"] 1786436109.01619 "/home/lenikitos/program/housingNN/latex/document.tex" "document.pdf" "document" 1786436112.26757 0
   "../images/desmos_f2_area.png" 1785915748.47784 21790 9cff68731b3e11bf9db22f5297f0f85f ""
   "../images/desmos_f2_year.png" 1785915777.13885 18578 44f8fa7e465c59b3a8e2b3a2d4207f27 ""
   "../images/graph_area.png" 1786359757.86902 237637 0a36fee1a166c9b26f4cf6bc12c76134 ""
@@ -15,7 +15,7 @@
   "../images/input3.jpg" 1786359843.79912 79207 5064567ead7472459631a47b0fad9fc5 ""
   "../images/orig_vs_norm.png" 1785188221.70892 58663 737cdb09a2ca176a291fa4fe878b5582 ""
   "/etc/texmf/web2c/texmf.cnf" 1785662883.42873 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/lenikitos/program/housingNN/latex/document.tex" 1786362074.28231 31666 70ffe6a45ebd3c4216006f60120a43ff ""
+  "/home/lenikitos/program/housingNN/latex/document.tex" 1786436108.78255 31717 4d627d6812b36680e2f1d4211036e4a3 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -106,9 +106,9 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1786213320.18004 128028 f533b797fba58d231669ea19e894e23e ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1786213330 6800796 33bf99c4d76bd3c1033e5801df1262bf ""
-  "document.aux" 1786362077.34628 5076 a9575cbcf56c56d14e82e09acbf3d5a7 "pdflatex"
-  "document.out" 1786362077.34728 3306 b3336a9a137887ef4d2fc43aef8ada9f "pdflatex"
-  "document.tex" 1786362074.28231 31666 70ffe6a45ebd3c4216006f60120a43ff ""
+  "document.aux" 1786436112.22331 5029 3c8704a7c27a2fe5ba0aebc1ee1c0dd0 "pdflatex"
+  "document.out" 1786436112.22331 3354 ebe4489d6c8f2fcf93b44c1d25bb2438 "pdflatex"
+  "document.tex" 1786436108.78255 31717 4d627d6812b36680e2f1d4211036e4a3 ""
   (generated)
   "document.aux"
   "document.log"

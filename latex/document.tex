@@ -57,32 +57,35 @@ Amsterdam.
 
 \subsection{A Simple Linear Regression Model}
 
-Neural Network is a human-brain inspired computing system that stacks simple “neurons”
-to achieve complex tasks. I see it as a method of approximating a complex process with
-a mathematical function.
+Linear regression is a tool used to predict a continous dependent output variable based on
+one or more independent input variables by fitting a line, a surface or a higher-dimensional
+shape to minimize the loss.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{input1.jpg}
-    \caption{A Simple Neural Network with Two Neurons}
+    \caption{A Simple Model}
 \end{figure}
 
-Here is a simple Neural Network consisting of independent variable $x$ and dependent variable $y$.
-The circles represent neurons, where neuron is just a variable and independent variable is called
-the input neuron and the dependent variable is called the output neuron. The line connecting
-them means that the function of $y$ is $wx + b$, where w and b are constants; they are called
+Here is a simple linear regression model consisting of independent variable $x$ and dependent variable $y$.
+The circles represent variables, independent variables are called
+the input and dependent variables are called the output. The line connecting
+them means that the function of $y$ is $wx + b$, where $w$ and $b$ are constants; they are called
 weight and bias, respectively.
 
 \subsection{Machine Learning and Gradient Descent}
 
-The goal of machine learning is to find the specific weight and bias that will approximate a
-process with the least loss. Loss function is used to calculate how incorrect the network is.
-$L(y) = \frac{1}{2}{(y - t)} ^ 2$, where y is the output of the network and t is the actual target answer.
-$(y - t)$ calculates the error the network has made, squaring removes any negative results and
-$\frac{1}{2}$ makes the derivative cleaner: $dL/dy = y - t$.
+The goal of machine learning is to find the specific weight and bias that will predict
+the output with the least loss, which is a measurement of how incorrect a model is, and it
+is calculated with the loss function. For this paper I will be using MSE (mean squared error) loss
+that looks like:
+$L(y) = \frac{1}{2}{(y - t)} ^ 2$, where $y$ is the prediction of the model and $t$ is the target output.
+$(y - t)$ calculates the error the model has made, squaring removes any negative results and
+$\frac{1}{2}$ makes the derivative cleaner: ${\partial}L/{\partial}y = y - t$.
 
-Machine learning is the process of finding the correct weights and biases that minimize loss.
-Let's take a look at this diagram of a neural network that learns to predict housing prices in
+Machine learning is the process of finding the correct weights and biases that minimize the loss
+across all of the data points.
+Let's take a look at this diagram of a linear regression model that learns to predict housing prices in
 Amsterdam from the area of the apartment. The input is the area, and the output is the price of
 the house.
 
@@ -137,7 +140,7 @@ Then combine using chain rule:
 \label{eq:dLdw}
 \end{equation}
 
-This is how the neural network knows how to change the weight. In order to minimize loss,
+This is how the model knows how to change the weight. In order to minimize loss,
 we substract the derivative from the weight.
 
 \[
@@ -157,7 +160,8 @@ w = w - {\partial}L/{\partial}w {\times} \eta
 
 $\eta$ is usually somewhere around 0.1 to 0.001.
 
-Now the same thing must be repeated with the bias, although I treated it as a constant for the sake of the clean visuals, in the process of learning the bias must also be adjusted. 
+Now the same thing must be repeated with the bias, although I treated it as a constant
+for the sake of the clean visuals, in the process of learning the bias must also be adjusted. 
 
 The equations:
 
@@ -226,14 +230,14 @@ Because the function does calculation of only one apartment at a time, I took av
 losses for each apartment with a certain weight and bias and that is what is being presented
 on the previous graphs. That is why I have not used $x$ nor $t$ as arguments for functions $y$
 and $L$, for the process of learning it is treated as a constant. The weight and bias are the
-independent variables that must be changed. After the network has finished its learning and,
+independent variables that must be changed. After the model has finished its learning and,
 therefore, has constant weight and bias, the function will become $y(x) = wx + b$ and $x$
 will be the independent variable again.
 
 
 \subsection{Not Normalized}
 
-Another thing that must be done for a network to work is normalization of inputs and outputs.
+Another thing that must be done for a model to work is normalization of inputs and outputs.
 Here is an example, that will explain the importance of normalization:
 
 I will take learning rate as 0.001, it is 10 times less than I normally would use because
@@ -253,7 +257,8 @@ $x$ is the living area, so it is 108 $m^2$. $y$ is the predicted price:
 y(x) = 8700 {\times} 108 + 348 = 939 948 \text{ \euro}
 \]
 
-$t$ is the target price, so it is 930 000 {\euro}. Using $t$ and $y$ we can now calculate the loss:
+$t$ is the target price, so it is 930 000 {\euro}. Using $t$ and $y$ we can now
+calculate the loss:
 
 \[
 \begin{split}
@@ -293,9 +298,9 @@ Although the gradient descent should have decreased the loss, it overshoot inste
 The initial weights and biases were definitely wrong, as the first prediction
 was around 54 \euro. However, because of the huge inputs - 108 and the target outputs
 - 930 000, the gradients skyrocketed: $1074.4 \times 10^{3}$, $9.9 \times 10^{3}$. Although the
-learning rate was small - 0.001, the weight and bias still overshot. This experiment can be
+learning rate was small - 0.001, smaller then normal, the weight and bias still overshot. This experiment can be
 repeated with any other weights and most of the time, the derivative will overshoot and the
-network will not minimize the loss function and therefore will not learn.
+model will not minimize the loss function and therefore will not learn.
 
 \subsection{Normalization}
 
@@ -389,12 +394,12 @@ the gradient descent will be more smooth and less overshooting.
 
 \subsection{Learning Process}
 
-I have a few thousand apartments data from which my neural network must learn.
+I have a few thousand apartments data from which my model must learn.
 The term epoch is introduced at this point, which refers to a single, complete
 pass of the entire training dataset through the model. In this case, gradient
 descent will be done for each apartment in the dataset. $x$ is the living area,
-and $t$ is the respective price for the apartments. This will make the neural
-network find the middle ground for weight and bias to minimize the loss across
+and $t$ is the respective price for the apartments. This will make the model
+find the middle ground for weight and bias to minimize the loss across
 all the apartments. For a model to minimize loss as much as possible, numerous
 epochs are done. Depending on the length of the dataset this number can range,
 but I will be doing around 100-1000 epochs.
@@ -403,7 +408,7 @@ As I mentioned earlier, the dataset includes around 4500 entries; it is exactly
 4577 apartments. I have separated the data into training and test datasets. The
 training entries are used to train the model, in the process mentioned above.
 On the other hand, the test dataset is used to test the accuracy of predictions
-of the model. The test process illustrates how good the network performs on
+of the model. The test process illustrates how good the model performs on
 apartments it has never seen before. To separate the dataset into training and
 test datasets, I will be using a 0.95 ratio - 4348 and 229 entries, respectively.
 
@@ -487,7 +492,7 @@ y = 0.0493 {\times} (9850 - 189) + 189 = 671.46
 \]
 
 The target was 700k and the model predicted 671.46k which is not
-too bad for a network that only has the information about living
+too bad for a model that only has the information about living
 area.
 
 To assess how good this model actually is, this process must be done for
@@ -522,21 +527,21 @@ Predicted $y$ (k {\euro})
 apartments.
 
 
-\section{Two Input Neural Network}
+\section{Two Input Linear Regression Model}
 
 \subsection{Training Process}
 
 The next step of minimizing loss is adding more information about the apartment
-for the network to use. I will be using the construction year as the second input.
+for the model to use. I will be using the construction year as the second input.
 
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.9\textwidth]{input2.jpg}
-    \caption{Neural Network with Two Inputs}
+    \caption{Two Input Model}
 \end{figure}
 
-As shown on the diagram, there are three neurons: two inputs and one output. Each input
+As shown on the diagram, there are three variables: two inputs and one output. Each input
 has its own weight with which it is connected to the output. The first input $x_1$ is the
 living area and the second input $x_2$ is the construction year of the apartments. Output
 $y$ is the predicted price, that will not change. The bias is still present but there
@@ -718,7 +723,7 @@ construction year graph. This surface is what creates what looked like a random 
 the truth is that this surface looked random because of the dataset which has random data.
 
 
-\section{Neural Network with 3 Inputs}
+\section{Linear Regression Model with 3 Inputs}
 
 \subsection{Calculate Distance to the Center of Amsterdam}
 
@@ -801,7 +806,7 @@ calculator between two points on Earth. The result I got on the website was iden
 to what I have got, therefore the formula is correct.
 
 
-\subsection{Building the Neural Network with 3 Inputs}
+\subsection{Building the Model with 3 Inputs}
 
 Now, I can calculate the distance to the center of Amstedam for each apartment. On my
 dataset, I have got the minimum distance 0.07km and the maximum 9.98km. So to normalize
@@ -812,7 +817,7 @@ x_{\mathrm{norm}} = \frac{x - 0.07}{9.98 - 0.07}
 \]
 
 Using the data about the distance from the center of Amsterdam, I can add a new input
-neuron for the neural network - $x_3$. So, the function becomes:
+variable for the model - $x_3$. So, the function becomes:
 
 \[
 y(x_1, x_2, x_3) = w_1x_1 + w_2x_2 + w_3x_3 + b
@@ -836,12 +841,12 @@ I treat other variables as constants:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{input3.jpg}
-    \caption{Neural Network with 3 Inputs}
+    \caption{3 Input Model}
 \end{figure}
 
 
 With this I can train a model for 1000 epochs. These are the weights and the bias,
-the neural network has converged to:
+the model has converged to:
 
 \[
 \begin{split}
@@ -892,7 +897,7 @@ Denormalize according to Equation~\ref{eq:y_norm}:
 y {\times} (9850 - 189) + 189 = 751.34
 \]
 
-This time the model overshot the price, but this neural network has achieved the best
+This time the model overshot the price, but this model has achieved the best
 results with the test dataset on average making $3.01 {\times} 10^{-4}$ loss, and having
 the $\mathrm{MAE}$ and $\mathrm{MAPE}$ of 130.2 and 18.3\%, respectively.
 
