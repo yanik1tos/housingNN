@@ -4,8 +4,11 @@
 \usepackage{graphicx, float}
 \usepackage{eurosym}
 \usepackage{hyperref}
+\usepackage{setspace}
 \graphicspath{{../images/}}
 
+
+\doublespacing
 
 \title{
     Exploring the Ability of a Linear Regression Model in Predicting Housing Prices\\[0.7em]
@@ -20,7 +23,6 @@
 \begin{document}
 
 \maketitle
-
 
 
 \section{Introduction}
@@ -48,12 +50,10 @@ gradients of the loss function.
 \subsection{Research Question}
 
 To what extent does increasing the number of input features for a linear regression
-model improve its accuracy at predicting housing current prices of apartments i
+model improve its accuracy at predicting housing current prices of apartments in
 Amsterdam.
 
-
-
-\section{What is a Linear Regression Model}
+\section{Theory}
 
 \subsection{A Simple Linear Regression Model}
 
@@ -63,21 +63,38 @@ shape to minimize the loss.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{input1.jpg}
-    \caption{A Simple Model}
+    \includegraphics[width=0.9\textwidth]{input3.jpg}
+    \caption{Model Representation}
 \end{figure}
 
-Here is a simple linear regression model consisting of independent variable $x$ and dependent variable $y$.
-The circles represent variables, independent variables are called
-the input and dependent variables are called the output. The line connecting
-them means that the function of $y$ is $wx + b$, where $w$ and $b$ are constants; they are called
-weight and bias, respectively.
+This is the structure of the linear regression model I will be using. It consists
+of independent variables $x_1$, $x_2$, $x_3$ called inputs and a dependent variable $y$
+called ouput. Inputs describe features of a particalur apartment: $x_1$ represents the
+living area, $x_2$ is the construction year and $x_3$ represents the distance between
+the aparment and the center of Amsterdam. The output $y$ is the price of the apartment.
+
+A linear function that has three inputs should have three slopes, which in machine
+learning are called weights $w_n$, where $w_n$ is the weight of $x_n$. Weights are constants
+that are used to create the linear funciton. However, a linear function also requires
+a y-intercept, which in machine learning is called a bias $b$. The whole function of y
+looks like:
+
+\[
+y = w_1x_1 + w_2x_2 + w_3x_3 + b
+\]
+
+The function suggests that the price of an apartment can be calculated using those
+three inputs and by multiplying them by their weights and adding a bias. The weights
+and biases are constants.
+
 
 \subsection{Machine Learning and Gradient Descent}
 
-The goal of machine learning is to find the specific weight and bias that will predict
-the output with the least loss, which is a measurement of how incorrect a model is, and it
-is calculated with the loss function. For this paper I will be using MSE (mean squared error) loss
+The goal of machine learning is to find the specific weights and bias that will predict
+the output the most accurate.
+
+In order to calculate the accuracy of weights and biases a loss function is used.
+For this paper I will be using MSE (mean squared error) loss
 that looks like:
 $L(y) = \frac{1}{2}{(y - t)} ^ 2$, where $y$ is the prediction of the model and $t$ is the target output.
 $(y - t)$ calculates the error the model has made, squaring removes any negative results and
@@ -525,286 +542,6 @@ Predicted $y$ (k {\euro})
 
 3.749e-04 is the least loss I was able to get while using only one feature of the
 apartments.
-
-
-\section{Two Input Linear Regression Model}
-
-\subsection{Training Process}
-
-The next step of minimizing loss is adding more information about the apartment
-for the model to use. I will be using the construction year as the second input.
-
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.9\textwidth]{input2.jpg}
-    \caption{Two Input Model}
-\end{figure}
-
-As shown on the diagram, there are three variables: two inputs and one output. Each input
-has its own weight with which it is connected to the output. The first input $x_1$ is the
-living area and the second input $x_2$ is the construction year of the apartments. Output
-$y$ is the predicted price, that will not change. The bias is still present but there
-is no need for two biases (one for each input), only one is used. The function of y becomes:
-
-\[
-y(x_1, x_2) = w_1x_1 + w_2x_2 + b
-\]
-
-The loss $L(y)$ function (Equation~\ref{eq:loss}) nor the
-${\partial}L/{\partial}y$ (Equation~\ref{eq:dLdy}) do not change.
-Weight derivatives will not change significantly and will be similar to
-(Equation~\ref{eq:dLdw}). The partial derivative must be
-done for each weight, while every other weight and bias are treated as constants.
-
-\[
-\begin{split}
-{\partial}L/{\partial}w_1 = (y - t) {\times} x_1 \\
-{\partial}L/{\partial}w_2 = (y - t) {\times} x_2
-\end{split}
-\]
-
-
-The partial derivative for bias stays the exactly same, Equation~\ref{eq:dLdb}:
-
-\[
-{\partial}L/{\partial}b = y - t
-\]
-
-
-The second input will be the construction year of the apartment. Although it might
-not seem like an important feature of a house, the construction year suggests the
-quality of the materials and the electronics of the apartment. The data about that
-was also collected from funda.nl.
-
-This diagram illustrates the dependency of price on the construction year of the
-apartment. There is a correlation that newer apartments are able to be more expensive
-than the old ones, however this tendency is much less clear than the one with area.
-This means that the area will have more impact on the price rather than the construction year.
-
-This input like any other will also be normalized, the minimum year is 1507 and maximum is
-2028. Most apartments in year range 2026-2028 weren't been built yet, however, I will still
-be using data about them to increase my dataset and thereby improve my model.
-
-\[
-x_{\mathrm{2norm}} = \frac{x_2 - 1507}{2028 - 1507}
-\]
-
-
-I trained model with 1000 epochs, and it converged to weights and biases:
-
-\[
-\begin{split}
-w_1 = 0.5502 \\
-w_2 = -0.0515 \\
-b = 0.2595
-\end{split}
-\]
-
-\[
-\begin{split}
-y(x_1, x_2) &= w_1x_1 + w_2x_1 + b \\
-{\Rightarrow} {\:} y(x_1, x_2) &= 0.5502 * x_1 - 0.0515 * x_2 + 0.2595
-\end{split}
-\]
-
-Let's do the same example as I did with area:
-
-\[
-\begin{split}
-\text{Area } &- \text{79 $m^2$} \\
-\text{Year } &- \text{2005} \\
-\text{Target price} &- \text{700k {\euro}}
-\end{split}
-\]
-
-\[
-\begin{split}
-x_1 &= \frac{79 - 19}{500 - 19} = 0.1247 \\
-x_2 &= \frac{2005 - 1507}{2028 - 1507} = 0.9559
-\end{split}
-\]
-
-\[
-\begin{split}
-y(0.1247, 0.9559) &= \\
-&= 0.5502 {\times} 0.1247 - \\
-&- 0.0515 {\times} 0.9559 + \\
-&+ 0.2595 = \\
-&= 0.0453
-\end{split}
-\]
-
-De-normalize:
-
-\[
-y = 0.0453 {\times} (9850 - 189) + 189 = 626.83 \text{k {\euro}}
-\]
-
-This model predicted 626k {\euro} with the target of 700k {\euro}. Although, on this entry
-this model performed worse than the last one, it has achieved a less average loss across
-the test dataset: 3.484e-04. This model achieved mean absolute error of 149.5k {\euro} and 
-mean absolute percentage error 22.9\%, which is a noticeable improvement compared to 162k
-{\euro} and 25.5\% of the previous model. ${\mathrm{MAE}}$ and ${\mathrm{MAPE}}$ are
-calculated using formulas from Equations~\ref{eq:MAE} and \ref{eq:MAPE}.
-
-Here is the performance of this model on other examples:
-
-\begin{table}[h]
-\centering
-\begin{tabular}{c|c|c|c|c|c|c}
-Target $t$ (k {\euro})
-& 359.0 & 450.0 & 475.0 & 650.0 & 685.0 & 880.0 \\
-\hline
-Predicted $y$ (k {\euro})
-& 428.1 & 408.6 & 403.1 & 624.1 & 896.6 & 1146.7 \\
-\end{tabular}
-\end{table}
-
-
-\subsection{Influence Of Construction Year on the Results}
-
-
-According to the loss improvement, information about construction year does have a clear
-impact on the price of apartments. To measure significance of a feature we can look at
-the weights of the model. We only need the absolute values, as the negative sign just
-means that the correlation is inverse.
-
-\[
-\begin{split}
-| w_1 | = 0.5502 \\
-| w_2 | = 0.0515
-\end{split}
-\]
-
-As I mentioned earlier, living area does have a bigger influence on price. Here is a
-diagram of this model results against living areas and construction years:
-
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{graph_f2_area_nn.png}
-    \caption{Area Against Price}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{graph_f2_year_nn.png}
-    \caption{Year Against Price}
-\end{figure}
-
-As expected, model have built a best fit line for area just like last time. However,
-if we look at the construction year diagram, it does not look like a linear function,
-but rather a really chaotic spread that tries to resemble the actual price to year graph.
-The reason it looks that way is because having a function $y = w_1x_1 + w_2x_2 + b$ creates
-a plane in 3 dimensional space. Here is how this function looks in
-\href{https://www.desmos.com/3d}{desmos 3d}.
-
-\begin{figure}[htbp]
-    \centering
-
-    \begin{minipage}{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{desmos_f2_area.png}
-        \caption{Area}
-    \end{minipage}
-    \hfill
-    \begin{minipage}{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{desmos_f2_year.png}
-        \caption{Year}
-    \end{minipage}
-
-\end{figure}
-
-From area price side it looks almost like one line, because $| w_2 |$ is big, around
-0.55. On the other hand, $| w_2 |$ is small, around 0.05, and it creates a surface for
-construction year graph. This surface is what creates what looked like a random spread,
-the truth is that this surface looked random because of the dataset which has random data.
-
-
-\section{Linear Regression Model with 3 Inputs}
-
-\subsection{Calculate Distance to the Center of Amsterdam}
-
-Until this point, the information of the apartment has only contained the details of the
-building itself, however to further improve the model I decided to add information about
-the location of this apartment. As I mentioned earlier, all apartments in my dataset are
-located in Amsterdam, so I decided to use the distance between the apartment and the center
-of Amsterdam.
-
-First of all, I chose a point which will be the center of Amsterdam. It has latitude of
-52.3676 and longitude of 4.9041, and here is a
-\href{https://www.google.com/maps/place/52%C2%B022'03.4%22N+4%C2%B054'14.8%22E/@52.3676032,4.9015197,17z/data=!3m1!4b1!4m4!3m3!8m2!3d52.3676!4d4.9041?entry=ttu&g_ep=EgoyMDI2MDgwMy4wIKXMDSoASAFQAw%3D%3D|}
-{google maps} link.
-
-In my dataset, I know the address of each apartment, that is what I am going to use to get
-coordinates of the apartments. In order to gather the coordinates of an apartment just from
-its address, I am using
-\href{https://pdok.nl}{pdok}
-, which is a website that provides geodatasets from the Dutch goverment. I have built
-a script so I used the
-\href{https://api.pdok.nl/bzk/locatieserver/search/v3_1/free}{pdok api}
-but there is also a
-\href{https://api.pdok.nl/kadaster/location-api/v1/search}{human friendly version}
-that I will be using for this next example.
-
-For this example, I will be using the apartment from previous illustrations, that is located
-at 1073 SB Amsterdam. I put the address into this website, and got latitude 52.3516
-and longitude 4.8995.
-
-Now to calculate the distance between those two points I will be using Haversine formula:
-
-\[
-\begin{split}
-\phi &= \mathrm{lat}_2 - \mathrm{lat}_1 \\
-\lambda &= \mathrm{lon}_2 - \mathrm{lon}_1 \\
-a &= \sin^2(\frac{\phi}{2}) + \cos(\mathrm{lat}_1) {\times} \cos(\mathrm{lat}_2) {\times} \sin^2(\frac{\lambda}{2}) \\
-c &= 2 {\times} \arcsin(\sqrt{a}) \\
-d &= R {\times} c
-\end{split}
-\]
-
-Independent values:
-
-\[
-\begin{split}
-R &= 6371 \text{ km{\,}the radius of the Earth} \\
-\mathrm{lat}_1 &= 52.3516 \\
-\mathrm{lon}_1 &= 4.8995 \\
-\mathrm{lat}_2 &= 52.3676 \\
-\mathrm{lon}_2 &= 4.9041
-\end{split}
-\]
-
-Calculate difference in latitude and longitude: 
-
-\[
-\begin{split}
-\phi &= \mathrm{lat}_2 - \mathrm{lat}_1 = 0.016 \\
-\lambda &= \mathrm{lon}_2 - \mathrm{lon}_1 = 0.0046
-\end{split}
-\]
-
-
-Use the Haversine formula:
-
-\[
-\begin{split}
-a &= \sin^2(\frac{0.016}{2}) + \cos(52.3516) {\times} \cos(52.3676) {\times} \sin^2(\frac{0.0046}{2}) \\
-  &= 2.01 {\times} 10^{-8} \\
-c &= 2 * \arcsin^2(\sqrt(2.01 {\times} 10^{-8})) = 2.8 {\times} 10^{-4} \\
-d &= c * R = 1.806 \text{ km}
-\end{split}
-\]
-
-
-We can check this result on
-\href{https://www.omnicalculator.com/other/latitude-longitude-distance}{omnicalculator}
-which is a website that provides alongside its other functionalities, a distance
-calculator between two points on Earth. The result I got on the website was identical
-to what I have got, therefore the formula is correct.
-
 
 \subsection{Building the Model with 3 Inputs}
 

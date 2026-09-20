@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.8.8)  11 AUG 2026 10:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.8.26)  17 SEP 2026 14:03
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -247,6 +247,8 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 285.
 )
 \Hy@SectionHShift=\skip56
+) (/usr/share/texlive/texmf-dist/tex/latex/setspace/setspace.sty
+Package: setspace 2022/12/04 v6.7b set line spacing
 ) (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count286
@@ -254,24 +256,24 @@ File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 ) (./document.aux)
 \openout1 = `document.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
  (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count287
@@ -291,123 +293,92 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring OFF on input line 20.
+Package hyperref Info: Link coloring OFF on input line 23.
  (./document.out) (./document.out)
 \@outlinefile=\write3
 \openout3 = `document.out'.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 23.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 26.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 23.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 26.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<../images/input1.jpg, id=81, 1480.53125pt x 679.53876pt>
-File: ../images/input1.jpg Graphic file (type jpg)
-<use ../images/input1.jpg>
-Package pdftex.def Info: ../images/input1.jpg  used on input line 66.
-(pdftex.def)             Requested size: 310.4979pt x 142.51035pt.
-<../images/graph_jumps_dots_labels.png, id=82, 722.7pt x 578.16pt>
-File: ../images/graph_jumps_dots_labels.png Graphic file (type png)
-<use ../images/graph_jumps_dots_labels.png>
-Package pdftex.def Info: ../images/graph_jumps_dots_labels.png  used on input line 95.
-(pdftex.def)             Requested size: 345.0pt x 275.99626pt.
- [2 <../images/input1.jpg>] [3 <../images/graph_jumps_dots_labels.png>]
-<../images/graph_weight_bias_loss_sharp.png, id=101, 722.7pt x 578.16pt>
-File: ../images/graph_weight_bias_loss_sharp.png Graphic file (type png)
-<use ../images/graph_weight_bias_loss_sharp.png>
-Package pdftex.def Info: ../images/graph_weight_bias_loss_sharp.png  used on input line 206.
-(pdftex.def)             Requested size: 310.4979pt x 248.40105pt.
- [4] [5 <../images/graph_weight_bias_loss_sharp.png>] [6] [7]
-<../images/orig_vs_norm.png, id=127, 1277.77374pt x 1050.92625pt>
-File: ../images/orig_vs_norm.png Graphic file (type png)
-<use ../images/orig_vs_norm.png>
-Package pdftex.def Info: ../images/orig_vs_norm.png  used on input line 390.
-(pdftex.def)             Requested size: 310.4979pt x 255.37048pt.
- [8]
-<../images/graph_area.png, id=133, 2655.9225pt x 2123.935pt>
-File: ../images/graph_area.png Graphic file (type png)
-<use ../images/graph_area.png>
-Package pdftex.def Info: ../images/graph_area.png  used on input line 423.
-(pdftex.def)             Requested size: 275.09091pt x 219.99664pt.
- [9 <../images/orig_vs_norm.png>]
-<../images/graph_area_zoom.png, id=140, 2655.9225pt x 2123.935pt>
-File: ../images/graph_area_zoom.png Graphic file (type png)
-<use ../images/graph_area_zoom.png>
-Package pdftex.def Info: ../images/graph_area_zoom.png  used on input line 430.
-(pdftex.def)             Requested size: 275.09091pt x 219.99664pt.
- [10 <../images/graph_area.png> <../images/graph_area_zoom.png>] [11]
-<../images/input2.jpg, id=154, 1221.56375pt x 824.07875pt>
-File: ../images/input2.jpg Graphic file (type jpg)
-<use ../images/input2.jpg>
-Package pdftex.def Info: ../images/input2.jpg  used on input line 540.
-(pdftex.def)             Requested size: 310.4979pt x 209.46457pt.
- [12 <../images/input2.jpg>] [13]
-<../images/graph_f2_area_nn.png, id=176, 722.7pt x 578.16pt>
-File: ../images/graph_f2_area_nn.png Graphic file (type png)
-<use ../images/graph_f2_area_nn.png>
-Package pdftex.def Info: ../images/graph_f2_area_nn.png  used on input line 686.
-(pdftex.def)             Requested size: 310.4979pt x 248.40105pt.
- [14]
-<../images/graph_f2_year_nn.png, id=181, 722.7pt x 578.16pt>
-File: ../images/graph_f2_year_nn.png Graphic file (type png)
-<use ../images/graph_f2_year_nn.png>
-Package pdftex.def Info: ../images/graph_f2_year_nn.png  used on input line 692.
-(pdftex.def)             Requested size: 310.4979pt x 248.40105pt.
- [15 <../images/graph_f2_area_nn.png>]
-<../images/desmos_f2_area.png, id=189, 1574.88374pt x 1190.4475pt>
-File: ../images/desmos_f2_area.png Graphic file (type png)
-<use ../images/desmos_f2_area.png>
-Package pdftex.def Info: ../images/desmos_f2_area.png  used on input line 708.
-(pdftex.def)             Requested size: 169.0519pt x 127.7708pt.
-<../images/desmos_f2_year.png, id=190, 1574.88374pt x 1190.4475pt>
-File: ../images/desmos_f2_year.png Graphic file (type png)
-<use ../images/desmos_f2_year.png>
-Package pdftex.def Info: ../images/desmos_f2_year.png  used on input line 714.
-(pdftex.def)             Requested size: 169.0519pt x 127.7708pt.
- [16 <../images/graph_f2_year_nn.png> <../images/desmos_f2_area.png> <../images/desmos_f2_year.png>] [17]
-<../images/input3.jpg, id=213, 1091.07625pt x 922.44624pt>
+<../images/input3.jpg, id=61, 1091.07625pt x 922.44624pt>
 File: ../images/input3.jpg Graphic file (type jpg)
 <use ../images/input3.jpg>
-Package pdftex.def Info: ../images/input3.jpg  used on input line 843.
+Package pdftex.def Info: ../images/input3.jpg  used on input line 66.
 (pdftex.def)             Requested size: 310.4979pt x 262.5058pt.
- [18] [19 <../images/input3.jpg>]
-<../images/graph_distance.png, id=225, 722.7pt x 578.16pt>
+ [2] [3 <../images/input3.jpg>]
+<../images/graph_jumps_dots_labels.png, id=74, 722.7pt x 578.16pt>
+File: ../images/graph_jumps_dots_labels.png Graphic file (type png)
+<use ../images/graph_jumps_dots_labels.png>
+Package pdftex.def Info: ../images/graph_jumps_dots_labels.png  used on input line 112.
+(pdftex.def)             Requested size: 345.0pt x 275.99626pt.
+ [4] [5 <../images/graph_jumps_dots_labels.png>] [6] [7]
+<../images/graph_weight_bias_loss_sharp.png, id=102, 722.7pt x 578.16pt>
+File: ../images/graph_weight_bias_loss_sharp.png Graphic file (type png)
+<use ../images/graph_weight_bias_loss_sharp.png>
+Package pdftex.def Info: ../images/graph_weight_bias_loss_sharp.png  used on input line 223.
+(pdftex.def)             Requested size: 310.4979pt x 248.40105pt.
+ [8 <../images/graph_weight_bias_loss_sharp.png>] [9] [10] [11] [12]
+<../images/orig_vs_norm.png, id=129, 1277.77374pt x 1050.92625pt>
+File: ../images/orig_vs_norm.png Graphic file (type png)
+<use ../images/orig_vs_norm.png>
+Package pdftex.def Info: ../images/orig_vs_norm.png  used on input line 407.
+(pdftex.def)             Requested size: 310.4979pt x 255.37048pt.
+ [13] [14 <../images/orig_vs_norm.png>]
+<../images/graph_area.png, id=141, 2655.9225pt x 2123.935pt>
+File: ../images/graph_area.png Graphic file (type png)
+<use ../images/graph_area.png>
+Package pdftex.def Info: ../images/graph_area.png  used on input line 440.
+(pdftex.def)             Requested size: 275.09091pt x 219.99664pt.
+<../images/graph_area_zoom.png, id=142, 2655.9225pt x 2123.935pt>
+File: ../images/graph_area_zoom.png Graphic file (type png)
+<use ../images/graph_area_zoom.png>
+Package pdftex.def Info: ../images/graph_area_zoom.png  used on input line 447.
+(pdftex.def)             Requested size: 275.09091pt x 219.99664pt.
+ [15 <../images/graph_area.png>] [16 <../images/graph_area_zoom.png>] [17] [18]
+File: ../images/input3.jpg Graphic file (type jpg)
+<use ../images/input3.jpg>
+Package pdftex.def Info: ../images/input3.jpg  used on input line 580.
+(pdftex.def)             Requested size: 310.4979pt x 262.5058pt.
+ [19] [20] [21]
+<../images/graph_distance.png, id=186, 722.7pt x 578.16pt>
 File: ../images/graph_distance.png Graphic file (type png)
 <use ../images/graph_distance.png>
-Package pdftex.def Info: ../images/graph_distance.png  used on input line 939.
+Package pdftex.def Info: ../images/graph_distance.png  used on input line 676.
 (pdftex.def)             Requested size: 310.4979pt x 248.40105pt.
- [20]
-<../images/graph_distance_nn.png, id=230, 722.7pt x 578.16pt>
+<../images/graph_distance_nn.png, id=187, 722.7pt x 578.16pt>
 File: ../images/graph_distance_nn.png Graphic file (type png)
 <use ../images/graph_distance_nn.png>
-Package pdftex.def Info: ../images/graph_distance_nn.png  used on input line 945.
+Package pdftex.def Info: ../images/graph_distance_nn.png  used on input line 682.
 (pdftex.def)             Requested size: 310.4979pt x 248.40105pt.
- [21 <../images/graph_distance.png>] [22 <../images/graph_distance_nn.png>] (./document.aux)
+ [22 <../images/graph_distance.png>] [23 <../images/graph_distance_nn.png>] (./document.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
 Package rerunfilecheck Info: File `document.out' has not changed.
-(rerunfilecheck)             Checksum: EBE4489D6C8F2FCF93B44C1D25BB2438;3354.
+(rerunfilecheck)             Checksum: F5D3BFAFBD9D074DD8F7D90AEFB7732C;1996.
  ) 
 Here is how much of TeX's memory you used:
- 10023 strings out of 476182
- 153541 string characters out of 5795596
- 1936975 words of memory out of 5000000
- 31841 multiletter control sequences out of 15000+600000
+ 9999 strings out of 476182
+ 152608 string characters out of 5795595
+ 1933975 words of memory out of 5000000
+ 31822 multiletter control sequences out of 15000+600000
  565975 words of font info for 69 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  75i,20n,79p,585b,450s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb>
-Output written on document.pdf (22 pages, 2848806 bytes).
+Output written on document.pdf (23 pages, 1962819 bytes).
 PDF statistics:
- 307 PDF objects out of 1000 (max. 8388607)
- 233 compressed objects within 3 object streams
- 65 named destinations out of 1000 (max. 500000)
- 207 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 262 PDF objects out of 1000 (max. 8388607)
+ 198 compressed objects within 2 object streams
+ 56 named destinations out of 1000 (max. 500000)
+ 137 words of extra memory for PDF output out of 10000 (max. 10000000)
 

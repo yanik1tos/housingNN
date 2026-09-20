@@ -1,0 +1,12 @@
+- Do the experiment
+
+- lim-> -+ to prove that |y - t| at 0 (kink) can't be evaluated
+
+Compare
+MSE - 1/2 * (y - t) ^ 2
+MAE - |y - t|
+Huber
+e = |y - t|
+=> 1/2 e^2
+=> k|e| - 1/2 k^2
+

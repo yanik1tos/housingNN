@@ -23,7 +23,7 @@ readData = DataLoaderCSV(pathdata_2021)
 
 
 LEARNING_RATE = 0.01
-EPOCHS = 1000
+EPOCHS = 100
 BATCH_SIZE = 1
 
 INPUT_NODES   = len(FEATURES)
@@ -46,12 +46,12 @@ nn = NN(LEARNING_RATE, EPOCHS, BATCH_SIZE,
 
 # train
 
-# nn.run(x_train, y_train)
-nn.load("checkpoint/f3_n0_ep1000_b1_lr0.01-130.195-2026-08-07 21:53:43.941127.npz")
+nn.run(x_train, y_train)
+# nn.load("checkpoint/f3_n0_ep1000_b1_lr0.01-130.195-2026-08-07 21:53:43.941127.npz")
 
 # print(*[nn.weight[0][0][i] for i in range(len(FEATURES))])
 # print(nn.bias[0][0][0])
 
-nn.test(x_test, y_test, readData)
+# nn.test(x_test, y_test, readData)
 # nn.save(pref=f"f{len(FEATURES)}_n{HIDDEN_LAYERS}_ep{EPOCHS}_b{BATCH_SIZE}_lr{LEARNING_RATE}")
 
