@@ -4,6 +4,7 @@ import numpy as np
 import random as r
 import datetime
 import activation
+import loss as floss
 
 
 r.seed(42)
@@ -12,7 +13,8 @@ r.seed(42)
 class NN:
     def __init__(self, learning_rate, epochs, batch_size,
                  input_nodes, hidden_layers, hidden_nodes, output_nodes,
-                 act, act_prime, outact, outact_prime):
+                 act, act_prime, outact, outact_prime,
+                 loss_f=floss.mse, loss_f_prime=floss.mse_prime):
         print("Initialization...\n")
 
 
@@ -31,6 +33,9 @@ class NN:
         self.act_prime = act_prime
         self.outact       = outact
         self.outact_prime = outact_prime
+
+        self.loss_f = loss_f
+        self.loss_f_prime = loss_f_prime
 
         self.avg_error = None
 
@@ -71,7 +76,8 @@ class NN:
     @classmethod
     def fromSave(cls, path, learning_rate=0.001, epochs=10, batch_size=32,
                  act=activation.relu, act_prime=activation.relu_prime,
-                 outact=activation.f, outact_prime=activation.f_prime):
+                 outact=activation.f, outact_prime=activation.f_prime,
+                 loss_f=floss.mse, loss_f_prime=floss.mse_prime):
 
         ckpt = np.load(path, allow_pickle=True)
 
@@ -89,7 +95,8 @@ class NN:
 
         model = cls(learning_rate, epochs, batch_size,
                     input_nodes, hidden_layers, hidden_nodes, output_nodes,
-                    act, act_prime, outact, outact_prime)
+                    act, act_prime, outact, outact_prime,
+                    loss_f, loss_f_prime)
 
         model.weight = weight
         model.bias   = bias
@@ -141,9 +148,9 @@ class NN:
     def learn(self, t, der_weight, der_bias):
         y = self.anode[self.output_layer]
 
-        loss = 1/2 * (y - t) ** 2
+        loss = self.loss_f(y - t)
 
-        dn = (y - t) * self.outact_prime(self.node[-1], self.anode[-1])
+        dn = self.loss_f_prime(y - t) * self.outact_prime(self.node[-1], self.anode[-1])
 
         # print()
         # print("y:", y)
