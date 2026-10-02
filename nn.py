@@ -368,5 +368,3 @@ class NN:
 
         self.weight = ckpt["weight"]
         self.bias = ckpt["bias"]
-
-

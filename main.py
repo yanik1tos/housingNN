@@ -54,4 +54,3 @@ nn.run(x_train, y_train)
 
 # nn.test(x_test, y_test, readData)
 # nn.save(pref=f"f{len(FEATURES)}_n{HIDDEN_LAYERS}_ep{EPOCHS}_b{BATCH_SIZE}_lr{LEARNING_RATE}")
-
