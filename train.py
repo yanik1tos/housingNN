@@ -4,6 +4,7 @@
 import numpy as np
 
 import activation
+import loss as floss
 from nn import NN
 
 from readData import DataLoaderCSV
@@ -35,22 +36,42 @@ ACTIVATION_HID = activation.f
 ACTIVATION_OUT = activation.f
 ACTIVATION_HID_PRIME = activation.f_prime
 ACTIVATION_OUT_PRIME = activation.f_prime
+LOSS_FUNCTION = floss.mae
+LOSS_FUNCTION_PRIME = floss.mae_prime
+
+
+if LOSS_FUNCTION == floss.mse:
+    loss_name = "MSE"
+elif LOSS_FUNCTION == floss.mae:
+    loss_name = "MAE"
+elif LOSS_FUNCTION == floss.huber:
+    loss_name = "HUBER"
+else:
+    loss_name = "IDK"
 
 
 nn = NN(LEARNING_RATE, EPOCHS, BATCH_SIZE,
         INPUT_NODES, HIDDEN_LAYERS, HIDDEN_NODES, OUTPUT_NODES,
         ACTIVATION_HID, ACTIVATION_HID_PRIME,
-        ACTIVATION_OUT, ACTIVATION_OUT_PRIME)
+        ACTIVATION_OUT, ACTIVATION_OUT_PRIME,
+        loss_f=LOSS_FUNCTION, loss_f_prime=LOSS_FUNCTION_PRIME)
 
 
 
 # train
 
 nn.run(x_train, y_train)
-# nn.load("checkpoint/f3_n0_ep1000_b1_lr0.01-130.195-2026-08-07 21:53:43.941127.npz")
+
 
 # print(*[nn.weight[0][0][i] for i in range(len(FEATURES))])
 # print(nn.bias[0][0][0])
 
+<<<<<<< HEAD:main.py
 # nn.test(x_test, y_test, readData)
 # nn.save(pref=f"f{len(FEATURES)}_n{HIDDEN_LAYERS}_ep{EPOCHS}_b{BATCH_SIZE}_lr{LEARNING_RATE}")
+=======
+
+nn.test(x_test, y_test, readData)
+nn.save(pref=f"{loss_name}_n{HIDDEN_LAYERS}_ep{EPOCHS}_b{BATCH_SIZE}_lr{LEARNING_RATE}")
+
+>>>>>>> refs/remotes/origin/main:train.py

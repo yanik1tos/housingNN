@@ -53,7 +53,7 @@ class DataLoaderCSV:
                       ):
         data = pd.read_csv(self.path)
 
-        data = data.sample(frac=1, random_state=42).reset_index(drop=True)
+        data = data.sample(frac=1, random_state=52).reset_index(drop=True)
         data = data.dropna(subset=features + [target])
 
         try:
