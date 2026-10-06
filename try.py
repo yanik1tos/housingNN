@@ -44,4 +44,3 @@ nn = NN.fromSave("checkpoint/f3_n0_ep1000_b1_lr0.01-130.195-2026-08-07 21:53:43.
 # print(nn.bias[0][0][0])
 
 nn.test(x_test, y_test, readData)
-

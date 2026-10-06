@@ -88,154 +88,324 @@ three inputs and by multiplying them by their weights and adding a bias. The wei
 and biases are constants.
 
 
-\subsection{Machine Learning and Gradient Descent}
+
+\subsection{Machine Learning}
 
 The goal of machine learning is to find the specific weights and bias that will predict
 the output the most accurate.
+In order to quantify the accuracy of a particular set of weights and biases a loss
+function is used. A loss function $L$ has two independent variables: $y$ and $t$,
+$y$ is the value predicted by the model using those weights and baises and $t$ is
+the target value. There are lots of different loss functions, but I will only be
+comparing three: MSE, MAE and Huber.
 
-In order to calculate the accuracy of weights and biases a loss function is used.
-For this paper I will be using MSE (mean squared error) loss
-that looks like:
-$L(y) = \frac{1}{2}{(y - t)} ^ 2$, where $y$ is the prediction of the model and $t$ is the target output.
-$(y - t)$ calculates the error the model has made, squaring removes any negative results and
-$\frac{1}{2}$ makes the derivative cleaner: ${\partial}L/{\partial}y = y - t$.
 
-Machine learning is the process of finding the correct weights and biases that minimize the loss
-across all of the data points.
-Let's take a look at this diagram of a linear regression model that learns to predict housing prices in
-Amsterdam from the area of the apartment. The input is the area, and the output is the price of
-the house.
+
+\subsection{Loss Functions}
+
+\subsubsection{MSE}
 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{graph_jumps_dots_labels.png}
-    \caption{Gradient Descent with Fixed Bias}
+
+    \begin{minipage}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{desmos-mse.png}
+        \caption{MSE loss}
+        \label{single_pendulum_coordinate}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.55\textwidth}
+        \doublespacing
+
+        \begin{align}
+        L_\mathrm{MSE} &= \frac{1}{2} (y - t) ^ 2
+        \label{eq:loss_mse} \\
+        L_\mathrm{MSE}' &= y - t
+        \notag
+        \end{align}
+    \end{minipage}
 \end{figure}
 
 
-On the graph, the bias is fixed so that it is easier to visualize. Now, to minimize the
-loss, gradient descent is used. It works by finding the gradients of weight(s) and bias(es)
-(here it is fixed) and then moving in the direction of the steepest gradient, achieving the
-minimum of the function.
+MSE uses squaring to create a positive difference between $y$ and $t$:
+$(+5)^2 = (-5)^2$.
+The half $\frac{1}{2}$ is there just to make the derivative look cleaner: $y - t$.
+However, the squaring penalizes large errors disproportionately.
+This could be good, as it gives more importance to cases when the model performs
+the poorest, however squaring makes the learning sensitive to outliers.
 
-At the very start, the weight is random; it is around 0.51. The gradient is calculated and
-subtracted from the weight, because we want to minimize the loss. The same thing is repeated
-as many times as possible to achieve the smallest loss, and the gradient ensures that the loss
-is decreasing.
+
+
+\subsubsection{MAE}
+
+
+\begin{figure}[H]
+    \centering
+
+    \begin{minipage}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{desmos-mae.png}
+        \caption{MAE loss}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.55\textwidth}
+        \doublespacing
+
+        \begin{align}
+        L_\mathrm{MAE} &= |y - t|
+        \label{eq:loss_mae} \\
+        L_\mathrm{MAE}' &= \frac{|y - t|}{y - t}
+        \notag
+        \end{align}
+    \end{minipage}
+\end{figure}
+
+
+MAE uses absolute value to find the error. This makes all of the erros proportionately
+important. This makes it less sensitive to
+outliers. However, in datasets where large errors are significant it would perform
+poorly. Furthermore, this loss function is not differentiable at y = 0, as in
+$\frac{|0|}{0}$ there is division by 0.
+
+
+Another proof that this function is not differentiable at 0 is using limits from
+both sides.
+
+\[
+\begin{split}
+\text{let } &h = y - t \\
+\\
+\lim_{h \to 0^+} \frac{|h|}{h} &= \lim_{h \to 0^+} \frac{+h}{+h} = +1 \\
+\lim_{h \to 0^-} \frac{|h|}{h} &= \lim_{h \to 0^-} \frac{+h}{-h} = -1 \\
++1 &\neq -1 \\
+\lim_{h \to 0^+} L' &\neq \lim_{h \to 0^-} L' \\
+\therefore \lim_{h \to 0} &\text{ does not exist}
+\end{split}
+\]
+
+
+\subsubsection{Huber}
+
+
+\begin{figure}[H]
+    \centering
+
+    \begin{minipage}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{desmos-huber.png}
+        \caption{Huber loss}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.55\textwidth}
+        \doublespacing
+
+        \begin{align}
+        L_\mathrm{Huber} &=
+        \begin{cases}
+        \frac{1}{2} (y - t) ^ 2, & |x| \leq \delta \\
+        \delta |y - t| - \frac{1}{2} \delta^2, & |x| > \delta
+        \end{cases}
+        \label{eq:loss_huber} \\
+        L_\mathrm{Huber}' &=
+        \begin{cases}
+        y - t, & |x| \leq \delta \\
+        \delta \frac{|y - t|}{y - t}, & |x| > \delta
+        \end{cases}
+        \notag
+        \end{align}
+    \end{minipage}
+\end{figure}
+
+
+
+Huber takes advantages of both MSE and MAE, by combining two functions into one
+piecewise, that connects at $x = \delta$. For outliers Huber uses MAE, which makes
+their impact less significant. On the other hand, MSE makes the other data points
+have different importances depending on the errors' magnitude. The only problem is
+finding the most efficient $\delta$. There isn't a straight forward way of finding
+the constant. Usually values like $\delta = 0.5, 1.0, 1.345, 2.0, 5.0$ are used.
+In order to find the best coefficient for my data I have tested the values above.
+
+
+
+\subsection{Gradient Descent}
+
+\subsubsection{Visualize}
+
+Gradient descent is the what calculates a particular weight or bias during the
+machine learning. As shown on the diagram below, we could plot the loss function,
+in this case MSE is used, and drop the weight on a random point. Now, after calculating
+the gradient of the loss function we could change the weight in the correct direction
+to get closer to the local minimum. On this example only one weight varies, and
+every other weight and bias are fixed. In the actual machine learning, which will
+be done further, every weight and bias will have its own curve, in which they
+all will be adjusted to approach the minimum of the function simultaneously.
+
+
+
+
+\begin{figure}[H]
+    \centering
+
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{graph_jumps_dots_labels.png}
+        \caption{Gradient Descent}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{graph_weight_bias_loss_sharp.png}
+        \caption{Countour Map}
+    \end{minipage}
+\end{figure}
+
+
+
+
+% On the graph, the bias is fixed so that it is easier to visualize. Now, to minimize the
+% loss, gradient descent is used. It works by finding the gradients of weight(s) and bias(es)
+% (here it is fixed) and then moving in the direction of the steepest gradient, achieving the
+% minimum of the function.
+
+% At the very start, the weight is random; it is around 0.51. The gradient is calculated and
+% subtracted from the weight, because we want to minimize the loss. The same thing is repeated
+% as many times as possible to achieve the smallest loss, and the gradient ensures that the loss
+% is decreasing.
+
+
+To visualize how gradient descent would look while multiple variables are changing,
+I have computed this contour map where $y$, $t$ are fixed and $w_2$ and $w_3$ are
+random constants, and depending on how $w_1$ and $b$ are tweaked (by the axis)
+the loss is changing (indicated with the color). (I have picked only two variables
+because it would be almost impossible to visualize a five dimensional
+function like $L_\mathrm{MSE}$ even with $y$ and $t$ fixed).
+
+We can see the purple spots on the diagram which represent the minimums or
+the lower loss areas. The gradient descent should, if set up properly, tweak
+$w_1$ and $b$ that way that the loss will move to those areas.
+
+% This diagram illustrates the loss function with parameters of weight and bias, instead of
+% fixing one of them. The x and y axis are weight and bias, respectively, and the color
+% represents loss as shown on the right side with the colorbar.
+
+% \[
+% L(w, b) = \frac{1}{2}{((wx + b) - t)} ^ 2
+% \]
+
+% Apart from showing the dependency of loss on weight and bias, this diagram also highlights
+% the limitation of the learning method. Gradient decent finds the local minimum of loss
+% function, however this particular local minimum that the model would converge to might
+% not be the global minimum.
+
+
+\subsubsection{Differentiate to find the Gradients}
 
 The gradient of weight in this graph is just the partial derivative of the loss by the weight.
 I will start of with writing down all of the equations we have:
 
-\begin{align}
-L(y) &= \frac{1}{2}{(y - t)} ^ 2
-\label{eq:loss} \\
-y &= wx + b
-\label{eq:input1}
-\end{align}
+\[
+\begin{split}
+L(y, t) &= \frac{1}{2}{(y - t)} ^ 2 \\
+y &= w_1x_1 + w_2x_2 + w_3x_3 + b
+\end{split}
+\]
 
-Now we derive:
+In order to derive further I will have to use partial derivatives. A partial derivative
+is a type of derivative that amplies to multi dimensional/variable functions when
+we have to figure out the rate of change of this function in one particular dimension.
+To partially derive a function I have to treat all of the other variables as
+constants just for the derivative.
+First I derive MSE loss with respect to $y$, so treat $t$ as a constant:
 
 \begin{equation}
-{\partial}L/{\partial}y = y - t
+\frac{\partial L}{\partial y} = y - t
 \label{eq:dLdy}
 \end{equation}
 
-Partial derivative by $w$, so I treat $b$ as a constant:
+Now if I want to partially derive $y$ with respects to $w_1$, to see how
+the answer changes with the first weight (this is the one dimension):
 
 \[
-{\partial}y/{\partial}w = x
+\begin{split}
+\frac{\partial y}{\partial w_1} &=
+\frac{\partial y}{\partial w_1} (w_1 x_1) +
+\frac{\partial y}{\partial w_1} (w_2 x_2) +
+\frac{\partial y}{\partial w_1} (w_3 x_3) = \\
+&= x_1 + 0 + 0 = x_1
+\end{split}
 \]
 
-Then combine using chain rule:
+Now using the chain rule $\frac{du}{dv} = \frac{du}{dn} \times \frac{dn}{dv}$,
+I can combine two derivatives and find the gradient of $w_1$ with respect to $L$:
+
 
 \begin{equation}
 \begin{split}
-{\partial}L/{\partial}w &= {\partial}L/{\partial}y {\times} {\partial}y/{\partial}w = \\
-&= (y - t) {\times} x
+\frac{\partial L}{\partial w_1} &=
+\frac{\partial L}{\partial y} \times \frac{\partial y}{\partial w_1} = \\
+&= (y - t) {\times} x_1
 \end{split}
 \label{eq:dLdw}
 \end{equation}
 
-This is how the model knows how to change the weight. In order to minimize loss,
-we substract the derivative from the weight.
+
+This needs to be done with every other weight and the bias:
 
 \[
-w = w - {\partial}L/{\partial}w
+\begin{split}
+\frac{\partial L}{\partial w_2} =
+\frac{\partial L}{\partial y} \times \frac{\partial y}{\partial w_2} &=
+(y - t) \times x_2 \\
+\frac{\partial L}{\partial w_3} =
+\frac{\partial L}{\partial y} \times \frac{\partial y}{\partial w_3} &=
+(y - t) \times x_3 \\
+\frac{\partial L}{\partial b} =
+\frac{\partial L}{\partial y} \times \frac{\partial y}{\partial b} &=
+(y - t)
+\end{split}
 \]
 
-However, the derivative might be a too big, and the weight could change too much. This could
+
+\subsubsection{Tweak the Weights and Biases}
+
+
+This is how the model knows in what direction to change the weights/bias and how
+important it is too change a weight/bias to reduce the loss. To change a
+weight/bias we could just substract the derivative from the weight:
+
+\[
+\begin{split}
+\text{let } h &= \text{weight $w_n$ or bias $b$} \\
+h &= h - \frac{\partial L}{\partial h}
+\end{split}
+\]
+
+However, the derivative might be too big, and the weight/bias could change too much. This could
 cause instability, as the weight could overshoot all the time, and it might never reach the
 minimum. To address this a learning rate constant is introduced - $\eta$. The derivative is
 multiplied by it too ensure that the steps are small so that the minimum is achieved no matter
 what. The formula for weight change becomes:
 
 \begin{equation}
-w = w - {\partial}L/{\partial}w {\times} \eta
+h = h - \frac{\partial L}{\partial h} \times \eta
 \label{eq:w_change}
 \end{equation}
 
-$\eta$ is usually somewhere around 0.1 to 0.001.
+$\eta$ is usually somewhere around 0.1 to 0.001. This is done to every weight/bias
+bias during the machine learning process. So for example, this would be the formula
+for the first weight changing with learning rate $\eta$ of 0.1, using MSE loss:
 
-Now the same thing must be repeated with the bias, although I treated it as a constant
-for the sake of the clean visuals, in the process of learning the bias must also be adjusted. 
-
-The equations:
-
-\begin{align*}
-L &= \frac{1}{2}{(y - t)} ^ 2 \\
-y &= wx + b
-\end{align*}
-
-Derived previously:
 
 \[
-{\partial}L/{\partial}y = y - t
-\]
-
-Patial derivative by bias, treating weight as a constant.
-
-\[
-{\partial}y/{\partial}b = 1
-\]
-
-Chain rule:
-
-\begin{equation}
 \begin{split}
-{\partial}L/{\partial}b &= {\partial}L/{\partial}y {\times} {\partial}y/{\partial}b = \\
-&= (y - t) {\times} 1 = \\
-&= y - t
+w_1 &= w_1 - \frac{\partial L}{\partial w_1} \times 0.1 \\
+w_1 &= w_1 - (y - t) \times x_1 \times 0.1
 \end{split}
-\label{eq:dLdb}
-\end{equation}
-
-And now the bias is changed:
-
-\begin{equation}
-b = b - {\partial}L/{\partial}b {\times} \eta
-\label{eq:b_change}
-\end{equation}
-
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{graph_weight_bias_loss_sharp.png}
-    \caption{Countour Map of $L(w, b)$}
-\end{figure}
-
-This diagram illustrates the loss function with parameters of weight and bias, instead of
-fixing one of them. The x and y axis are weight and bias, respectively, and the color
-represents loss as shown on the right side with the colorbar.
-
-\[
-L(w, b) = \frac{1}{2}{((wx + b) - t)} ^ 2
 \]
 
-Apart from showing the dependency of loss on weight and bias, this diagram also highlights
-the limitation of the learning method. Gradient decent finds the local minimum of loss
-function, however this particular local minimum that the model would converge to might
-not be the global minimum.
 
 
 One of the things I have not mentioned yet is where I got the $x$ and $t$ from. As I said $x$
@@ -252,99 +422,108 @@ therefore, has constant weight and bias, the function will become $y(x) = wx + b
 will be the independent variable again.
 
 
-\subsection{Not Normalized}
+% \subsection{Not Normalized}
 
-Another thing that must be done for a model to work is normalization of inputs and outputs.
-Here is an example, that will explain the importance of normalization:
+% Another thing that must be done for a model to work is normalization of inputs and outputs.
+% Here is an example, that will explain the importance of normalization:
 
-I will take learning rate as 0.001, it is 10 times less than I normally would use because
-this will illustrate the influence of normalization clearer.
+% I will take learning rate as 0.001, it is 10 times less than I normally would use because
+% this will illustrate the influence of normalization clearer.
 
-An apartment that is located at 1061 AV Amsterdam has price is 930 000 {\euro} and it has living
-area of 108 $m^2$. Let $w$ be 8700 and $b$ be 348, those are values that achieve a decent
-amount of accuracy for this example. The function is:
+% An apartment that is located at 1061 AV Amsterdam has price is 930 000 {\euro} and it has living
+% area of 108 $m^2$. Let $w$ be 8700 and $b$ be 348, those are values that achieve a decent
+% amount of accuracy for this example. The function is:
 
-\[
-y(x) = 8700 {\times} x + 348
-\]
+% \[
+% y(x) = 8700 {\times} x + 348
+% \]
 
-$x$ is the living area, so it is 108 $m^2$. $y$ is the predicted price:
+% $x$ is the living area, so it is 108 $m^2$. $y$ is the predicted price:
 
-\[
-y(x) = 8700 {\times} 108 + 348 = 939 948 \text{ \euro}
-\]
+% \[
+% y(x) = 8700 {\times} 108 + 348 = 939 948 \text{ \euro}
+% \]
 
-$t$ is the target price, so it is 930 000 {\euro}. Using $t$ and $y$ we can now
-calculate the loss:
+% $t$ is the target price, so it is 930 000 {\euro}. Using $t$ and $y$ we can now
+% calculate the loss:
 
-\[
-\begin{split}
-L(x) &= \frac{1}{2}{(y(x) - 930000)} ^ 2 \\
-\Rightarrow L(108) &= \frac{1}{2}{(939948 - 930000)} ^ 2 = \\
-&= 4.95 \times 10^{7}
-\end{split}
-\]
-
-
-Now we calculate the gradient decent:
+% \[
+% \begin{split}
+% L(x) &= \frac{1}{2}{(y(x) - 930000)} ^ 2 \\
+% \Rightarrow L(108) &= \frac{1}{2}{(939948 - 930000)} ^ 2 = \\
+% &= 4.95 \times 10^{7}
+% \end{split}
+% \]
 
 
-\[
-\begin{split}
-{\partial}L/{\partial}w &= (y - t) {\times} x = (939948 - 930000) {\times} 108 = 1074.4 \times 10^{3} \\
-w &= w - {\partial}L/{\partial}w {\times} \eta = (8700 - 1074.4 \times 10^{3}) {\times} 0.001 = 7625.616 \\
-{\partial}L/{\partial}b &= (y - t) = (939948 - 930000) = 9.9 \times 10^{3} \\
-b &= b - {\partial}L/{\partial}b {\times} \eta = (348 - 9.9 \times 10^{3}) {\times} 0.001 = 338.052
-\end{split}
-\]
+% Now we calculate the gradient decent:
 
-And calculate the loss again with new weight and bias:
 
-\[
-\begin{split}
-y(108) &= 7625.616 {\times} 108 + 338.052 = \\
-&= 823 904.58 \text{ \euro} \\
-L(108) &= \frac{1}{2}{(y - t)} ^ 2 = \frac{1}{2}{(823904.58 - 930000)} ^ 2 = \\
-&= 562.8 \times 10^{7} \\
-\end{split}
-\]
+% \[
+% \begin{split}
+% {\partial}L/{\partial}w &= (y - t) {\times} x = (939948 - 930000) {\times} 108 = 1074.4 \times 10^{3} \\
+% w &= w - {\partial}L/{\partial}w {\times} \eta = (8700 - 1074.4 \times 10^{3}) {\times} 0.001 = 7625.616 \\
+% {\partial}L/{\partial}b &= (y - t) = (939948 - 930000) = 9.9 \times 10^{3} \\
+% b &= b - {\partial}L/{\partial}b {\times} \eta = (348 - 9.9 \times 10^{3}) {\times} 0.001 = 338.052
+% \end{split}
+% \]
 
-The new loss is significantly larger than the first one:
-$4.95 \times 10^{7} < 562.8 \times 10^{7}$
-Although the gradient descent should have decreased the loss, it overshoot instead.
-The initial weights and biases were definitely wrong, as the first prediction
-was around 54 \euro. However, because of the huge inputs - 108 and the target outputs
-- 930 000, the gradients skyrocketed: $1074.4 \times 10^{3}$, $9.9 \times 10^{3}$. Although the
-learning rate was small - 0.001, smaller then normal, the weight and bias still overshot. This experiment can be
-repeated with any other weights and most of the time, the derivative will overshoot and the
-model will not minimize the loss function and therefore will not learn.
+% And calculate the loss again with new weight and bias:
+
+% \[
+% \begin{split}
+% y(108) &= 7625.616 {\times} 108 + 338.052 = \\
+% &= 823 904.58 \text{ \euro} \\
+% L(108) &= \frac{1}{2}{(y - t)} ^ 2 = \frac{1}{2}{(823904.58 - 930000)} ^ 2 = \\
+% &= 562.8 \times 10^{7} \\
+% \end{split}
+% \]
+
+% The new loss is significantly larger than the first one:
+% $4.95 \times 10^{7} < 562.8 \times 10^{7}$
+% Although the gradient descent should have decreased the loss, it overshoot instead.
+% The initial weights and biases were definitely wrong, as the first prediction
+% was around 54 \euro. However, because of the huge inputs - 108 and the target outputs
+% - 930 000, the gradients skyrocketed: $1074.4 \times 10^{3}$, $9.9 \times 10^{3}$. Although the
+% learning rate was small - 0.001, smaller then normal, the weight and bias still overshot. This experiment can be
+% repeated with any other weights and most of the time, the derivative will overshoot and the
+% model will not minimize the loss function and therefore will not learn.
 
 \subsection{Normalization}
 
-To address this normalization of data is introduced. The goal is to fit any inputs and
-outputs into range from 0 to 1. For that this formula can be used:
+Another thing that must be done for a model to work is normalization of inputs and outputs.
+Normalization is the process of fitting a set of values into the range between
+0 to 1.
 
 \begin{equation}
-x_{\mathrm{norm}} = \frac{x - x_{\min}}{x_{\max} - x_{\min}}
+x_{\mathrm{norm}} = \frac{x_{\mathrm{raw}} - x_{\min}}{x_{\max} - x_{\min}}
 \end{equation}
 
-This is done for every piece of data: both price and living area and other features.
+
+Where $x_{\mathrm{raw}}$ is the value to be normalized; $x_{\min}$ and $x_{\max}$
+are the minimum and maximum values of the same type in the dataset; $x_{\mathrm{norm}}$
+is the normalized value in the range 0 - 1.
+
+
+This is done for every input: price, living area and distance, and the ouput: the
+price of the apartment.
 Normalization will ensure that weights are also in a small range, usually from -1 to 1,
-rarely might reach -2, or 2. This also allows for a larger learning rate, and 0.1 will be
-used here, otherwise the result will be difficult to see.
+rarely might reach -2, or 2.
 
 For my data the min and max for prices and living areas are respectively:
 
 \[
 \begin{split}
-189k &- 9850k \text{ \euro} \\
-19 &- 500 \text{ $m^2$}
+x_1 &= 19 - 500 \text{ $m^2$} \\
+x_2 &= 1507 - 2028 \text{ year} \\
+x_3 &= 0.07 - 9.98 \text{ km} \\
+y &= 189 - 9850 \text{ k\euro}
 \end{split}
 \]
 
-Also, I divide the price by $10^{3}$ to make the difference between prices more significant,
-and it is clearer to visualize the prices in thousand euros instead of just euros, therefore
-I will be using k {\euro} from now on.
+Also, I divide the price by $10^{3}$, keeping it in thousand of euros (k\euro).
+This makes the numbers clearer and potentially has a small impact on the training,
+as the data is shrank by 1000 and the difference between prices is lower.
 
 I will repeat the same example but with normalized values now, the weight and biases are
 also chosen so that the function is somewhat accurate:
@@ -428,6 +607,9 @@ On the other hand, the test dataset is used to test the accuracy of predictions
 of the model. The test process illustrates how good the model performs on
 apartments it has never seen before. To separate the dataset into training and
 test datasets, I will be using a 0.95 ratio - 4348 and 229 entries, respectively.
+
+
+\section{Experiment}
 
 Here is the model I have trained on my dataset with the structure $y = wx + b$,
 learning rate 0.01 and 1000 epochs.
@@ -543,18 +725,8 @@ Predicted $y$ (k {\euro})
 3.749e-04 is the least loss I was able to get while using only one feature of the
 apartments.
 
-\subsection{Building the Model with 3 Inputs}
 
-Now, I can calculate the distance to the center of Amstedam for each apartment. On my
-dataset, I have got the minimum distance 0.07km and the maximum 9.98km. So to normalize
-the distance I will use:
-
-\[
-x_{\mathrm{norm}} = \frac{x - 0.07}{9.98 - 0.07}
-\]
-
-Using the data about the distance from the center of Amsterdam, I can add a new input
-variable for the model - $x_3$. So, the function becomes:
+\section{Building network with 3 inputs}
 
 \[
 y(x_1, x_2, x_3) = w_1x_1 + w_2x_2 + w_3x_3 + b

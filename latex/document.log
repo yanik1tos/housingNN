@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.9.20)  20 SEP 2026 17:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.8.26)  7 OCT 2026 00:15
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/home/pcnikitos/program/housingNN/latex/document.tex
-(/home/pcnikitos/program/housingNN/latex/document.tex
+**/home/lenikitos/program/housingNN/latex/document.tex
+(/home/lenikitos/program/housingNN/latex/document.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -308,77 +308,102 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<../images/input3.jpg, id=61, 1091.07625pt x 922.44624pt>
+<../images/input3.jpg, id=93, 1091.07625pt x 922.44624pt>
 File: ../images/input3.jpg Graphic file (type jpg)
 <use ../images/input3.jpg>
 Package pdftex.def Info: ../images/input3.jpg  used on input line 66.
 (pdftex.def)             Requested size: 310.4979pt x 262.5058pt.
  [2] [3 <../images/input3.jpg>]
-<../images/graph_jumps_dots_labels.png, id=74, 722.7pt x 578.16pt>
+<../images/desmos-mse.png, id=106, 803.0pt x 803.0pt>
+File: ../images/desmos-mse.png Graphic file (type png)
+<use ../images/desmos-mse.png>
+Package pdftex.def Info: ../images/desmos-mse.png  used on input line 114.
+(pdftex.def)             Requested size: 137.9979pt x 137.99078pt.
+ [4 <../images/desmos-mse.png>]
+<../images/desmos-mae.png, id=118, 803.0pt x 803.0pt>
+File: ../images/desmos-mae.png Graphic file (type png)
+<use ../images/desmos-mae.png>
+Package pdftex.def Info: ../images/desmos-mae.png  used on input line 149.
+(pdftex.def)             Requested size: 137.9979pt x 137.99078pt.
+ [5 <../images/desmos-mae.png>]
+<../images/desmos-huber.png, id=126, 803.0pt x 803.0pt>
+File: ../images/desmos-huber.png Graphic file (type png)
+<use ../images/desmos-huber.png>
+Package pdftex.def Info: ../images/desmos-huber.png  used on input line 197.
+(pdftex.def)             Requested size: 137.9979pt x 137.99078pt.
+ [6 <../images/desmos-huber.png>]
+<../images/graph_jumps_dots_labels.png, id=138, 722.7pt x 578.16pt>
 File: ../images/graph_jumps_dots_labels.png Graphic file (type png)
 <use ../images/graph_jumps_dots_labels.png>
-Package pdftex.def Info: ../images/graph_jumps_dots_labels.png  used on input line 112.
-(pdftex.def)             Requested size: 345.0pt x 275.99626pt.
- [4] [5 <../images/graph_jumps_dots_labels.png>] [6] [7]
-<../images/graph_weight_bias_loss_sharp.png, id=102, 722.7pt x 578.16pt>
+Package pdftex.def Info: ../images/graph_jumps_dots_labels.png  used on input line 254.
+(pdftex.def)             Requested size: 169.0519pt x 135.24126pt.
+<../images/graph_weight_bias_loss_sharp.png, id=139, 722.7pt x 578.16pt>
 File: ../images/graph_weight_bias_loss_sharp.png Graphic file (type png)
 <use ../images/graph_weight_bias_loss_sharp.png>
-Package pdftex.def Info: ../images/graph_weight_bias_loss_sharp.png  used on input line 223.
-(pdftex.def)             Requested size: 310.4979pt x 248.40105pt.
- [8 <../images/graph_weight_bias_loss_sharp.png>] [9] [10] [11] [12]
-<../images/orig_vs_norm.png, id=129, 1277.77374pt x 1050.92625pt>
+Package pdftex.def Info: ../images/graph_weight_bias_loss_sharp.png  used on input line 260.
+(pdftex.def)             Requested size: 169.0519pt x 135.24126pt.
+ [7 <../images/graph_jumps_dots_labels.png> <../images/graph_weight_bias_loss_sharp.png>] [8] [9] [10] [11] [12]
+<../images/orig_vs_norm.png, id=175, 1277.77374pt x 1050.92625pt>
 File: ../images/orig_vs_norm.png Graphic file (type png)
 <use ../images/orig_vs_norm.png>
-Package pdftex.def Info: ../images/orig_vs_norm.png  used on input line 407.
+Package pdftex.def Info: ../images/orig_vs_norm.png  used on input line 586.
 (pdftex.def)             Requested size: 310.4979pt x 255.37048pt.
  [13] [14 <../images/orig_vs_norm.png>]
-<../images/graph_area.png, id=141, 2655.9225pt x 2123.935pt>
+<../images/graph_area.png, id=187, 2655.9225pt x 2123.935pt>
 File: ../images/graph_area.png Graphic file (type png)
 <use ../images/graph_area.png>
-Package pdftex.def Info: ../images/graph_area.png  used on input line 440.
+Package pdftex.def Info: ../images/graph_area.png  used on input line 622.
 (pdftex.def)             Requested size: 275.09091pt x 219.99664pt.
-<../images/graph_area_zoom.png, id=142, 2655.9225pt x 2123.935pt>
+<../images/graph_area_zoom.png, id=188, 2655.9225pt x 2123.935pt>
 File: ../images/graph_area_zoom.png Graphic file (type png)
 <use ../images/graph_area_zoom.png>
-Package pdftex.def Info: ../images/graph_area_zoom.png  used on input line 447.
+Package pdftex.def Info: ../images/graph_area_zoom.png  used on input line 629.
 (pdftex.def)             Requested size: 275.09091pt x 219.99664pt.
- [15 <../images/graph_area.png>] [16 <../images/graph_area_zoom.png>] [17] [18]
+ [15 <../images/graph_area.png>] [16 <../images/graph_area_zoom.png>] [17]
+
+LaTeX Warning: Reference `eq:dLdb' on page 18 undefined on input line 736.
+
+[18]
 File: ../images/input3.jpg Graphic file (type jpg)
 <use ../images/input3.jpg>
-Package pdftex.def Info: ../images/input3.jpg  used on input line 580.
+Package pdftex.def Info: ../images/input3.jpg  used on input line 752.
 (pdftex.def)             Requested size: 310.4979pt x 262.5058pt.
  [19] [20] [21]
-<../images/graph_distance.png, id=186, 722.7pt x 578.16pt>
+<../images/graph_distance.png, id=229, 722.7pt x 578.16pt>
 File: ../images/graph_distance.png Graphic file (type png)
 <use ../images/graph_distance.png>
-Package pdftex.def Info: ../images/graph_distance.png  used on input line 676.
+Package pdftex.def Info: ../images/graph_distance.png  used on input line 848.
 (pdftex.def)             Requested size: 310.4979pt x 248.40105pt.
-<../images/graph_distance_nn.png, id=187, 722.7pt x 578.16pt>
+<../images/graph_distance_nn.png, id=230, 722.7pt x 578.16pt>
 File: ../images/graph_distance_nn.png Graphic file (type png)
 <use ../images/graph_distance_nn.png>
-Package pdftex.def Info: ../images/graph_distance_nn.png  used on input line 682.
+Package pdftex.def Info: ../images/graph_distance_nn.png  used on input line 854.
 (pdftex.def)             Requested size: 310.4979pt x 248.40105pt.
  [22 <../images/graph_distance.png>] [23 <../images/graph_distance_nn.png>] (./document.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
+
+
+LaTeX Warning: There were undefined references.
+
 Package rerunfilecheck Info: File `document.out' has not changed.
-(rerunfilecheck)             Checksum: F5D3BFAFBD9D074DD8F7D90AEFB7732C;1996.
+(rerunfilecheck)             Checksum: FCBE9D1B647B12F6FE20770DB1135F77;2937.
  ) 
 Here is how much of TeX's memory you used:
- 9999 strings out of 476182
- 152608 string characters out of 5795595
+ 10049 strings out of 476182
+ 153803 string characters out of 5795595
  1933975 words of memory out of 5000000
- 31822 multiletter control sequences out of 15000+600000
- 565975 words of font info for 69 fonts, out of 8000000 for 9000
+ 31861 multiletter control sequences out of 15000+600000
+ 566283 words of font info for 70 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,20n,79p,585b,450s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb>
-Output written on document.pdf (23 pages, 1962819 bytes).
+ 75i,20n,79p,585b,449s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
+Output written on document.pdf (23 pages, 2092049 bytes).
 PDF statistics:
- 262 PDF objects out of 1000 (max. 8388607)
- 198 compressed objects within 2 object streams
- 56 named destinations out of 1000 (max. 500000)
- 137 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 323 PDF objects out of 1000 (max. 8388607)
+ 244 compressed objects within 3 object streams
+ 66 named destinations out of 1000 (max. 500000)
+ 216 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -36,8 +36,8 @@ ACTIVATION_HID = activation.f
 ACTIVATION_OUT = activation.f
 ACTIVATION_HID_PRIME = activation.f_prime
 ACTIVATION_OUT_PRIME = activation.f_prime
-LOSS_FUNCTION = floss.mae
-LOSS_FUNCTION_PRIME = floss.mae_prime
+LOSS_FUNCTION = floss.huber
+LOSS_FUNCTION_PRIME = floss.huber_prime
 
 
 if LOSS_FUNCTION == floss.mse:
@@ -66,12 +66,5 @@ nn.run(x_train, y_train)
 # print(*[nn.weight[0][0][i] for i in range(len(FEATURES))])
 # print(nn.bias[0][0][0])
 
-<<<<<<< HEAD:main.py
-# nn.test(x_test, y_test, readData)
-# nn.save(pref=f"f{len(FEATURES)}_n{HIDDEN_LAYERS}_ep{EPOCHS}_b{BATCH_SIZE}_lr{LEARNING_RATE}")
-=======
-
 nn.test(x_test, y_test, readData)
 nn.save(pref=f"{loss_name}_n{HIDDEN_LAYERS}_ep{EPOCHS}_b{BATCH_SIZE}_lr{LEARNING_RATE}")
-
->>>>>>> refs/remotes/origin/main:train.py

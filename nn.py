@@ -14,8 +14,10 @@ class NN:
     def __init__(self, learning_rate, epochs, batch_size,
                  input_nodes, hidden_layers, hidden_nodes, output_nodes,
                  act, act_prime, outact, outact_prime,
-                 loss_f=floss.mse, loss_f_prime=floss.mse_prime):
-        print("Initialization...\n")
+                 loss_f=floss.mse, loss_f_prime=floss.mse_prime,
+                 do_print=True, huber_k=303):
+        if do_print:
+            print("Initialization...\n")
 
 
         self.learning_rate = learning_rate
@@ -36,6 +38,9 @@ class NN:
 
         self.loss_f = loss_f
         self.loss_f_prime = loss_f_prime
+
+        self.do_print = do_print
+        self.huber_k = huber_k
 
         self.avg_error = None
 
@@ -66,11 +71,11 @@ class NN:
         self.amnx = [[0, 0] for _ in range(self.hidden_layers + 2)]
 
 
-        print("Weight std:", round(self.weight[0].std(), 3))
-        print("Weight min max:", round(self.weight[0].min(), 3), round(self.weight[0].max(), 3))
+        if do_print:
+            print("Weight std:", round(self.weight[0].std(), 3))
+            print("Weight min max:", round(self.weight[0].min(), 3), round(self.weight[0].max(), 3))
 
-
-        print("Finished initialization\n")
+            print("Finished initialization\n")
 
 
     @classmethod
@@ -117,7 +122,7 @@ class NN:
             self.amnx[i] = [min(self.amnx[i][0], float(self.anode[i].min())),
                             max(self.amnx[i][1], float(self.anode[i].max()))]
 
-            if (test):
+            if test:
                 print(
                     f"Layer {i}: "
                     f"z=[{self.node[i].min():.2f}, {self.node[i].max():.2f}] "
@@ -148,9 +153,9 @@ class NN:
     def learn(self, t, der_weight, der_bias):
         y = self.anode[self.output_layer]
 
-        loss = self.loss_f(y - t)
+        loss = self.loss_f(y - t, self.huber_k)
 
-        dn = self.loss_f_prime(y - t) * self.outact_prime(self.node[-1], self.anode[-1])
+        dn = self.loss_f_prime(y - t, self.huber_k) * self.outact_prime(self.node[-1], self.anode[-1])
 
         # print()
         # print("y:", y)
@@ -239,17 +244,17 @@ class NN:
         return loss
 
 
-    def run(self, data_images, data_labels):
+    def run(self, data_images, data_labels, do_print=True):
         self.data_len = len(data_labels)
-        print(f"Unpacking data {self.data_len}...")
+        if do_print:
+            print(f"Unpacking data {self.data_len}...")
 
         self.data_labels = data_labels
         self.data_images = data_images
 
-        print("Data prepared\n")
-
-
-        print(f"Started learning for {self.epochs} epochs")
+        if do_print:
+            print("Data prepared\n")
+            print(f"Started learning for {self.epochs} epochs")
 
 
         while self.epoch < self.epochs:
@@ -258,44 +263,45 @@ class NN:
 
 
             if self.epoch != 0 and (self.epoch * 10) % self.epochs == 0:
-                for i in range(1, self.hidden_layers + 2):
-                    print(
-                        f"Layer {i}: "
-                        f"z=[{self.nmnx[i][0]:.5f}, {self.nmnx[i][1]:.5f}] "
-                        f"a=[{self.amnx[i][0]:.5f}, {self.amnx[i][1]:.5f}]"
-                    )
+                if do_print:
+                    for i in range(1, self.hidden_layers + 2):
+                        print(
+                            f"Layer {i}: "
+                            f"z=[{self.nmnx[i][0]:.5f}, {self.nmnx[i][1]:.5f}] "
+                            f"a=[{self.amnx[i][0]:.5f}, {self.amnx[i][1]:.5f}]"
+                        )
 
                 self.nmnx = [[0, 0] for _ in range(self.hidden_layers + 2)]
                 self.amnx = [[0, 0] for _ in range(self.hidden_layers + 2)]
 
-
-                print(f"Epoch: {self.epoch * 100 // self.epochs}%")
-                print(f"Learning rate: {self.learning_rate}")
-                print(f"Loss: {loss[0][0]:.10f}")
-
-
-        print("Learning finished\n")
+                if do_print:
+                    print(f"Epoch: {self.epoch * 100 // self.epochs}%")
+                    print(f"Learning rate: {self.learning_rate}")
+                    print(f"Loss: {loss[0][0]:.10f}")
 
 
-        print("Stats:\n")
-        print("Out min:", round(self.anode[-1].min(), 1))
-        print("Out max:", round(self.anode[-1].max(), 1))
+        if do_print:
+            print("Learning finished\n")
 
-        # print("\n###")
+            print("Stats:\n")
+            print("Out min:", round(self.anode[-1].min(), 1))
+            print("Out max:", round(self.anode[-1].max(), 1))
 
-        # print("Weights: ", self.weight)
-        # print("Biases: ", self.bias)
+            # print("\n###")
 
-        # print("Nodes: ", self.node)
-        # print("Anodes: ", self.anode)
+            # print("Weights: ", self.weight)
+            # print("Biases: ", self.bias)
 
-        # print("###")
+            # print("Nodes: ", self.node)
+            # print("Anodes: ", self.anode)
 
-        print()
+            # print("###")
+
+            print()
 
 
 
-    def test(self, test_x, test_t, readData):
+    def test(self, test_x, test_t, readData, do_print=True):
         test_len = len(test_x)
 
         print_i = [r.randint(0, test_len) for _ in range(10)]
@@ -309,7 +315,7 @@ class NN:
         for i in range(test_len):
             x = test_x[i]
             t = test_t[i][0]
-            y = self.testOne(x, test=(i == 0))[0][0]
+            y = self.testOne(x, test=((i == 0) and (do_print == True)))[0][0]
 
             t_n = readData.denormalize_y(t) / 1000
             y_n = readData.denormalize_y(y) / 1000
@@ -328,15 +334,18 @@ class NN:
         self.avg_error = self.avg_error / test_len
         avg_erper = avg_erper / test_len * 100
 
-        print()
-        print("avg_loss :", avg_loss)
-        print("avg_error:", round(self.avg_error, 1))
-        print(f"avg_erper: {round(avg_erper, 1)}%")
+        if do_print:
+            print()
+            print("avg_loss :", avg_loss)
+            print("avg_error:", round(self.avg_error, 1))
+            print(f"avg_erper: {round(avg_erper, 1)}%")
 
-        print()
-        print("---Tests: ")
-        for t, y in zip(print_t, print_y):
-            print("Target:", t, "->", round(y, 1))
+            print()
+            print("---Tests: ")
+            for t, y in zip(print_t, print_y):
+                print("Target:", t, "->", round(y, 1))
+
+        return avg_loss, self.avg_error, avg_erper
 
 
 

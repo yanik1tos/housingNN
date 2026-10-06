@@ -49,11 +49,12 @@ class DataLoaderCSV:
 
     def load_data_raw(self,
                       target="price",
-                      features=["area", "energy", "rooms", "bedrooms", "bathrooms", "year", "distance"]
+                      features=["area", "energy", "rooms", "bedrooms", "bathrooms", "year", "distance"],
+                      rand=52,
                       ):
         data = pd.read_csv(self.path)
 
-        data = data.sample(frac=1, random_state=52).reset_index(drop=True)
+        data = data.sample(frac=1, random_state=rand).reset_index(drop=True)
         data = data.dropna(subset=features + [target])
 
         try:
@@ -68,13 +69,16 @@ class DataLoaderCSV:
 
     def load_data(self, ratio=0.95,
                   target="price",
-                  features=["area", "energy", "rooms", "bedrooms", "bathrooms", "year", "distance"]
+                  features=["area", "energy", "rooms", "bedrooms", "bathrooms", "year", "distance"],
+                  rand=52,
+                  do_print=True,
                   ):
-        print("Loading the data in...")
+        if do_print:
+            print("Loading the data in...")
 
         self.features = features
 
-        x, y = self.load_data_raw(features=features)
+        x, y = self.load_data_raw(features=features, rand=rand)
 
         x = self.normalize_x(x)
         x = x.reshape(
@@ -93,22 +97,24 @@ class DataLoaderCSV:
         x_test = x[train_ln:]
         y_test = y[train_ln:]
 
-        print("Data ready")
 
-        print("Data_ln:", len(x))
-        print("Train_ln:", train_ln)
-        print("Test_ln:", len(x) - train_ln)
+        if do_print:
+            print("Data ready")
 
-        print("X std:", round(x.std(), 3))
-        print("X min max:", x.min(), x.max())
+            print("Data_ln:", len(x))
+            print("Train_ln:", train_ln)
+            print("Test_ln:", len(x) - train_ln)
 
-        print("Y std:", round(y.std(), 1))
-        print("Y min max:", y.min(), y.max())
+            print("X std:", round(x.std(), 3))
+            print("X min max:", x.min(), x.max())
 
-        print("X nan + inf:", np.isnan(x).sum(), np.isinf(x).sum())
-        print("Y nan + inf:", np.isnan(y).sum(), np.isinf(y).sum())
+            print("Y std:", round(y.std(), 1))
+            print("Y min max:", y.min(), y.max())
 
-        print()
+            print("X nan + inf:", np.isnan(x).sum(), np.isinf(x).sum())
+            print("Y nan + inf:", np.isnan(y).sum(), np.isinf(y).sum())
+
+            print()
 
 
         return (x_train, y_train), (x_test, y_test)
