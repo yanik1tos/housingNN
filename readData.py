@@ -1,7 +1,24 @@
 #!/usr/bin/env python3
 
+from ssl import PROTOCOL_TLS_CLIENT
+
 import numpy as np
 import pandas as pd
+
+
+
+def find_outliers(x0):
+    Q1 = np.percentile(x, 25)
+    Q3 = np.percentile(x, 75)
+    IQR = Q3 - Q1
+
+    lower = Q1 - 1.5 * IQR
+    upper = Q3 + 1.5 * IQR
+
+    outliers = x[(x < lower) | (x > upper)]
+
+    return outliers
+
 
 
 class DataLoaderCSV:
@@ -135,3 +152,22 @@ if "__main__" in __name__:
     print("X maxs:", readData.x_max)
     print("Y mins: ", readData.y_min / 1000, "k €", sep="")
     print("Y maxs: ", readData.y_max / 1000, "k €", sep="")
+
+
+
+
+
+    print("\n-----\n")
+
+    data = DataLoaderCSV(pathdata_2021)
+    x, y = data.load_data_raw(features=["area", "year", "distance"])
+
+
+    for i in range(x.shape[1]):
+        out = find_outliers(x[:, i])
+        print(out)
+
+        print(len(out))
+
+
+    # print(x.min(axis = 0))

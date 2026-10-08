@@ -38,26 +38,33 @@ seem to be meaningless numbers can make predictions about something that humans 
 \subsection{Aims of the Investigation}
 
 In this paper, I will explore how a linear regression model can be trained using gradient descent
-and adjusted so that it predicts current prices of apartments in Amsterdam. I will look into three
-features of an apartment: living area, construction year and the distance from the center
-of Amsterdam. I will implement those features as independent variables into the model one
-by one, to see the influence of each of them on the price. The reason I am using gradient descent
-rather than ordinary least squares for solving my model is that I want to resemble
-a neural network, which is what I take my inspiration from for this model. Furthermore, this
-allows me to observe and explore how weights and biases are optimized iteratively using the
-gradients of the loss function.
+to predict prices of apartments in Amsterdam on the moment of June 2026. The features of
+apartments will act as the input data, I will be using living area, construction year, and
+distance from the center of Amsterdam as my independent variables. Gradient descent uses
+loss functions to figure out the direction and magnitude of how the model must be adjusted
+to predict the output more accurately. I will be comparing three loss functions: MSE (mean
+squared error), MAE (mean absolute error) and Huber's, to analyse and experimentally suggest
+which method would be the most efficient for my case.
+
+There is another way of finding parameters for a linear-regression model that is called
+ordinary least squares (OLS), and the reason I am using gradient descent is that in this
+paper I want to resemble the process of machine learning and a neural network, which is
+what I took my inspiration from for this model. Furthermore, this allows me to observe
+how model parameters are optimized iteratively using the gradients of loss functions.
+
 
 \subsection{Research Question}
 
-To what extent does increasing the number of input features for a linear regression
-model improve its accuracy at predicting housing current prices of apartments in
-Amsterdam.
+To what extent different loss functions (MSE, MAE and Huber) affect the
+accuracy of linear-regression models that are trained using gradient descent to
+predict current prices of apartments in Amsterdam.
+
 
 \section{Theory}
 
 \subsection{A Simple Linear Regression Model}
 
-Linear regression is a tool used to predict a continous dependent output variable based on
+Linear regression is a tool used to predict a continuous dependent output variable based on
 one or more independent input variables by fitting a line, a surface or a higher-dimensional
 shape to minimize the loss.
 
@@ -69,13 +76,13 @@ shape to minimize the loss.
 
 This is the structure of the linear regression model I will be using. It consists
 of independent variables $x_1$, $x_2$, $x_3$ called inputs and a dependent variable $y$
-called ouput. Inputs describe features of a particalur apartment: $x_1$ represents the
+called ouput. Inputs describe features of a particular apartment: $x_1$ represents the
 living area, $x_2$ is the construction year and $x_3$ represents the distance between
-the aparment and the center of Amsterdam. The output $y$ is the price of the apartment.
+the apartment and the center of Amsterdam. The output $y$ is the price of the apartment.
 
 A linear function that has three inputs should have three slopes, which in machine
 learning are called weights $w_n$, where $w_n$ is the weight of $x_n$. Weights are constants
-that are used to create the linear funciton. However, a linear function also requires
+that are used to create the linear function. However, a linear function also requires
 a y-intercept, which in machine learning is called a bias $b$. The whole function of y
 looks like:
 
@@ -95,7 +102,7 @@ The goal of machine learning is to find the specific weights and bias that will 
 the output the most accurate.
 In order to quantify the accuracy of a particular set of weights and biases a loss
 function is used. A loss function $L$ has two independent variables: $y$ and $t$,
-$y$ is the value predicted by the model using those weights and baises and $t$ is
+$y$ is the value predicted by the model using those weights and biases and $t$ is
 the target value. There are lots of different loss functions, but I will only be
 comparing three: MSE, MAE and Huber.
 
@@ -163,10 +170,10 @@ the poorest, however squaring makes the learning sensitive to outliers.
 \end{figure}
 
 
-MAE uses absolute value to find the error. This makes all of the erros proportionately
+MAE uses absolute value to find the error. This makes all of the errors proportionately
 important. This makes it less sensitive to
 outliers. However, in datasets where large errors are significant it would perform
-poorly. Furthermore, this loss function is not differentiable at y = 0, as in
+poorly. Furthermore, this loss function is not differentiable at $y = t$, as in
 $\frac{|0|}{0}$ there is division by 0.
 
 
@@ -186,6 +193,9 @@ both sides.
 \]
 
 
+For my calculations I will define the gradient of MAE at $y = t$ as 1, to make the function continuous.
+
+
 \subsubsection{Huber}
 
 
@@ -202,16 +212,18 @@ both sides.
         \doublespacing
 
         \begin{align}
+        \text{let } h &= y - t \\
+        \notag
         L_\mathrm{Huber} &=
         \begin{cases}
-        \frac{1}{2} (y - t) ^ 2, & |x| \leq \delta \\
-        \delta |y - t| - \frac{1}{2} \delta^2, & |x| > \delta
+        \frac{1}{2} (h) ^ 2, & |h| \leq \delta \\
+        \delta |h| - \frac{1}{2} \delta^2, & |h| > \delta
         \end{cases}
         \label{eq:loss_huber} \\
         L_\mathrm{Huber}' &=
         \begin{cases}
-        y - t, & |x| \leq \delta \\
-        \delta \frac{|y - t|}{y - t}, & |x| > \delta
+        h, & |h| \leq \delta \\
+        \delta \frac{|h|}{h}, & |h| > \delta
         \end{cases}
         \notag
         \end{align}
@@ -258,7 +270,7 @@ all will be adjusted to approach the minimum of the function simultaneously.
     \begin{minipage}{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{graph_weight_bias_loss_sharp.png}
-        \caption{Countour Map}
+        \caption{Contour Map}
     \end{minipage}
 \end{figure}
 
@@ -354,27 +366,28 @@ I can combine two derivatives and find the gradient of $w_1$ with respect to $L$
 
 This needs to be done with every other weight and the bias:
 
-\[
-\begin{split}
+\begin{align}
 \frac{\partial L}{\partial w_2} =
 \frac{\partial L}{\partial y} \times \frac{\partial y}{\partial w_2} &=
-(y - t) \times x_2 \\
+(y - t) \times x_2
+\notag \\
 \frac{\partial L}{\partial w_3} =
 \frac{\partial L}{\partial y} \times \frac{\partial y}{\partial w_3} &=
-(y - t) \times x_3 \\
+(y - t) \times x_3
+\notag \\
 \frac{\partial L}{\partial b} =
 \frac{\partial L}{\partial y} \times \frac{\partial y}{\partial b} &=
 (y - t)
-\end{split}
-\]
+\label{eq:dLdb}
+\end{align}
 
 
 \subsubsection{Tweak the Weights and Biases}
 
 
 This is how the model knows in what direction to change the weights/bias and how
-important it is too change a weight/bias to reduce the loss. To change a
-weight/bias we could just substract the derivative from the weight:
+important it is to change a weight/bias to reduce the loss. To change a
+weight/bias we could just subtract the derivative from the weight:
 
 \[
 \begin{split}
@@ -386,12 +399,12 @@ h &= h - \frac{\partial L}{\partial h}
 However, the derivative might be too big, and the weight/bias could change too much. This could
 cause instability, as the weight could overshoot all the time, and it might never reach the
 minimum. To address this a learning rate constant is introduced - $\eta$. The derivative is
-multiplied by it too ensure that the steps are small so that the minimum is achieved no matter
+multiplied by it to ensure that the steps are small so that the minimum is achieved no matter
 what. The formula for weight change becomes:
 
 \begin{equation}
 h = h - \frac{\partial L}{\partial h} \times \eta
-\label{eq:w_change}
+\label{eq:wb_change}
 \end{equation}
 
 $\eta$ is usually somewhere around 0.1 to 0.001. This is done to every weight/bias
@@ -410,7 +423,7 @@ w_1 &= w_1 - (y - t) \times x_1 \times 0.1
 
 One of the things I have not mentioned yet is where I got the $x$ and $t$ from. As I said $x$
 is the living area, and $t$ is the price of an apartment. I have collected data from funda.nl
-and I only picked the apartments that are in Amsterdam and that are for sale in July of 2026.
+and I only picked the apartments that are in Amsterdam and that are for sale in June of 2026.
 In total, I have collected around 4500 apartments with their respective prices and features.
 
 Because the function does calculation of only one apartment at a time, I took average of all
@@ -525,353 +538,351 @@ Also, I divide the price by $10^{3}$, keeping it in thousand of euros (k\euro).
 This makes the numbers clearer and potentially has a small impact on the training,
 as the data is shrank by 1000 and the difference between prices is lower.
 
-I will repeat the same example but with normalized values now, the weight and biases are
-also chosen so that the function is somewhat accurate:
+All of the data must be normalized before it is used in the training, this is
+how the function for $x_1$ looks like:
 
 \[
-\begin{split}
-w &= 0.5 \\
-b &= -0.03 \\
-\\
-x &= 108 \text{ $m^2$} \\
-t &= 930k \text{ \euro} \\
-\\
-x_{\mathrm{norm}} &= (x - x_{\min}) / (x_{\max} - x_{\min}) \\
-&= (108 - 19) / (500 - 19) = 0.185 \\
-t_{\mathrm{norm}} &= (t - t_{\min}) / (t_{\max} - t_{\min}) \\
-&= (930 - 189) / (9850 - 189) = 0.0767
-\end{split}
+x_1 = \frac{x_{\mathrm{raw}} - 19}{500 - 19}
 \]
 
 
-Since all of the values will be normalized from now on, I will not use the \_norm suffix.
+% I will repeat the same example but with normalized values now, the weight and biases are
+% also chosen so that the function is somewhat accurate:
 
-\[
-\begin{split}
-y &= 0.5 {\times} x - 0.03 = 0.5 {\times} 0.185 - 0.03 = 0.0625 \\
-L &= \frac{1}{2}{(y - t)} ^ 2 = \frac{1}{2}{(0.0625 - 0.0767)} ^ 2 = 1.006 {\times} 10^{-4}
-\end{split}
-\]
-
-\[
-\begin{split}
-{\partial}L/{\partial}w &= (y - t) {\times} x = (0.0625 - 0.0767) {\times} 0.185 = -2.62 {\times} 10^{-3} \\
-w &= w - {\partial}L/{\partial}w {\times} \eta = 0.5 - -0.00262 {\times} 0.1 = 0.50026 \\
-\\
-{\partial}L/{\partial}b &= (y - t) = 0. 0625 - 0.0767 = -1.42 {\times} 10^{-2} \\
-b &= b - {\partial}L/{\partial}b {\times} \eta = -0.03 - -0.0142 {\times} 0.1 = -0.0286
-\end{split}
-\]
-
-\[
-\begin{split}
-y &= wx + b = 0.50026 {\times} 0.185 - 0.0286 = 0.064 \\
-L &= \frac{1}{2}{(y - t)} ^ 2 = \frac{1}{2}{(0.064 - 0.0767)} ^ 2 = 0.809 {\times} 10^{-4}
-\end{split}
-\]
+% \[
+% \begin{split}
+% w &= 0.5 \\
+% b &= -0.03 \\
+% \\
+% x &= 108 \text{ $m^2$} \\
+% t &= 930k \text{ \euro} \\
+% \\
+% x_{\mathrm{norm}} &= (x - x_{\min}) / (x_{\max} - x_{\min}) \\
+% &= (108 - 19) / (500 - 19) = 0.185 \\
+% t_{\mathrm{norm}} &= (t - t_{\min}) / (t_{\max} - t_{\min}) \\
+% &= (930 - 189) / (9850 - 189) = 0.0767
+% \end{split}
+% \]
 
 
-As can be seen here the loss decreased from $1.00 {\times} 10^{-4}$ to
-$0.81 {\times} 10^{-4}$. Normalization allows for a more stable learning process and
-less overshooting during the gradient descent. Moreover, normalization helps with weights
-and biases initialization, as we can assume that they are going to be most frequently
-around -1.0 to 1.0. On the other hand, without normalization the weights might go to
-thousands like in the last example. The diagram below shows how centered the blue
-graph (normalized data) to the zero compared to the red graph (not normalized data).
-Furthermore, the gradient is much less steep for the blue graph, which again shows that
-the gradient descent will be more smooth and less overshooting.
+% Since all of the values will be normalized from now on, I will not use the \_norm suffix.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{orig_vs_norm.png}
-    \caption{Normalized vs not Normalized}
-\end{figure}
+% \[
+% \begin{split}
+% y &= 0.5 {\times} x - 0.03 = 0.5 {\times} 0.185 - 0.03 = 0.0625 \\
+% L &= \frac{1}{2}{(y - t)} ^ 2 = \frac{1}{2}{(0.0625 - 0.0767)} ^ 2 = 1.006 {\times} 10^{-4}
+% \end{split}
+% \]
+
+% \[
+% \begin{split}
+% {\partial}L/{\partial}w &= (y - t) {\times} x = (0.0625 - 0.0767) {\times} 0.185 = -2.62 {\times} 10^{-3} \\
+% w &= w - {\partial}L/{\partial}w {\times} \eta = 0.5 - -0.00262 {\times} 0.1 = 0.50026 \\
+% \\
+% {\partial}L/{\partial}b &= (y - t) = 0. 0625 - 0.0767 = -1.42 {\times} 10^{-2} \\
+% b &= b - {\partial}L/{\partial}b {\times} \eta = -0.03 - -0.0142 {\times} 0.1 = -0.0286
+% \end{split}
+% \]
+
+% \[
+% \begin{split}
+% y &= wx + b = 0.50026 {\times} 0.185 - 0.0286 = 0.064 \\
+% L &= \frac{1}{2}{(y - t)} ^ 2 = \frac{1}{2}{(0.064 - 0.0767)} ^ 2 = 0.809 {\times} 10^{-4}
+% \end{split}
+% \]
 
 
-\subsection{Learning Process}
+% As can be seen here the loss decreased from $1.00 {\times} 10^{-4}$ to
+% $0.81 {\times} 10^{-4}$. Normalization allows for a more stable learning process and
+% less overshooting during the gradient descent. Moreover, normalization helps with weights
+% and biases initialization, as we can assume that they are going to be most frequently
+% around -1.0 to 1.0. On the other hand, without normalization the weights might go to
+% thousands like in the last example. The diagram below shows how centered the blue
+% graph (normalized data) to the zero compared to the red graph (not normalized data).
+% Furthermore, the gradient is much less steep for the blue graph, which again shows that
+% the gradient descent will be more smooth and less overshooting.
+
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.9\textwidth]{orig_vs_norm.png}
+%     \caption{Normalized vs not Normalized}
+% \end{figure}
+
+
+\subsection{Training Process}
 
 I have a few thousand apartments data from which my model must learn.
 The term epoch is introduced at this point, which refers to a single, complete
-pass of the entire training dataset through the model. In this case, gradient
-descent will be done for each apartment in the dataset. $x$ is the living area,
-and $t$ is the respective price for the apartments. This will make the model
-find the middle ground for weight and bias to minimize the loss across
-all the apartments. For a model to minimize loss as much as possible, numerous
-epochs are done. Depending on the length of the dataset this number can range,
-but I will be doing around 100-1000 epochs.
+pass of the entire training dataset through the model. I will usually be doing
+30-100 epochs for this model.
+The dataset includes
+values: $(x_1, x_2, x_3, t)$ for each apartment. I have created a program that
+will do the training so I don't have to do it manually.
+
+% In this case, gradient
+% descent will be done for each apartment in the dataset. $x$ is the living area,
+% and $t$ is the respective price for the apartments. This will make the model
+% find the middle ground for weight and bias to minimize the loss across
+% all the apartments. For a model to minimize loss as much as possible, numerous
+% epochs are done. Depending on the length of the dataset this number can range,
+% but I will be doing around 100-1000 epochs.
 
 As I mentioned earlier, the dataset includes around 4500 entries; it is exactly
-4577 apartments. I have separated the data into training and test datasets. The
+4577 apartments. The data must be separated into training and test datasets. The
 training entries are used to train the model, in the process mentioned above.
 On the other hand, the test dataset is used to test the accuracy of predictions
 of the model. The test process illustrates how good the model performs on
 apartments it has never seen before. To separate the dataset into training and
 test datasets, I will be using a 0.95 ratio - 4348 and 229 entries, respectively.
 
+Here is step by step overview of how my program works:
+
+\begin{itemize}
+    \item Prepare datasets
+
+Find min and max for each variable $x_1$, $x_2$, $x_3$, $t$ and normalize the them.
+Separate the dataset randomly into two parts: test and training. The ratio is
+0.95, therefore there are 229/4348 data entries.
+
+
+    \item Initialize the weights and bias
+
+\[
+\begin{split}
+w_n &\sim \frac{1}{3} U(0, 1) \\
+b &= 0
+\end{split}
+\]
+
+$U(0, 1)$ - uniform distribution from 0 to 1. $\frac{1}{3}$ because there are
+3 inputs, making the initial prediction smaller.
+
+
+    \item Training
+
+
+One epoch:
+
+I extract $(x_1, x_2, x_3, t)$ from a entry in the dataset, with
+those I calculate gradients for the weights and the bias
+using equations~\ref{eq:dLdw} and~\ref{eq:dLdb}.
+Using those gradients new weights and bias are calculated using
+equations~\ref{eq:wb_change}. Then I extract the next entry from the dataset,
+and repeat the process until I do that for the whole training dataset.
+
+This is done for a certain number of epochs. As a result I get certain values for
+$w_1, w_2, w_3, b$. The model is ready to predict house prices.
+
+
+    \item Testing
+
+For each of the entries from the testing dataset extract $(x_1, x_2, x_3, t)$,
+using them I calculate $y$, using $w_1x_1 + w_2x_2 + w_3x_3 + b$. To compare
+predicted $y$ and the actual $t$ I use two methods: normalized losses such as
+MSE, MAE or Huber depending on what I have used during the training; and non
+normalized mean average error:
+
+\[
+\frac{1}{n} \sum^{n}_{i=1} |y_i - t_i|
+\]
+
+Where $n$ is the number of entries in the testing dataset.
+
+
+\end{itemize}
+
 
 \section{Experiment}
 
-Here is the model I have trained on my dataset with the structure $y = wx + b$,
-learning rate 0.01 and 1000 epochs.
-Blue points are the entries from the dataset, and the red dots are the predictions
-made by the model.
+\subsection{Dataset Problem}
 
+As I have mentioned earlier, I split the total dataset into two: training and testing.
+However, this approach might result in incorrect comparison of different losses
+as training set might have more outliers in some cases which would affect MSE loss
+differently than MAE loss. This forced me to instead of training one model, train
+several, each shuffled differently and then compare the mean results with other
+models. Furthemore the shuffling random seeds are synchronized acrros losses. This
+improves analytical accuracy of the results I will get.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[height=0.4\textheight]{graph_area.png}
-    \caption{Model Results}
-\end{figure}
-
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[height=0.4\textheight]{graph_area_zoom.png}
-    \caption{Model Results Without Outliers}
-\end{figure}
-
-
-This model has converged its weight and bias values to around 0.553 and -0.0197,
-respectively. This achieved the loss of $4.798 {\times} 10^{-4}$. I want to remind you that in
-previous example I achieved less loss, $0.81 {\times} 10^{-4}$ because the loss was calculated
-across one entry which practically has a certain weight and bias that achieves
-0 loss. $y = wx + b$ where $y$ and $x$ are constants means that there are infinitely many
-solutions.
-
-On the other hand, here are 4500 entries that are impossible to cover with a linear
-equation like this. This line that my model has learned is just the best perfect line.
-Furthermore, the blue dots are arranged in a mostly chaotic way with a tendency of the
-price increasing as the area increases. This suggests that only area is not enough to
-fully predict price of house.
-
-Nevertheless, this model can predict housing, although accuracy is limited. I can build
-a function according to the weight and bias I got:
+The mean absolute value accross mutliple models looks like:
 
 \[
-y(x) = 0.5497 {\times} x - 0.0186
+\frac{1}{n m} \sum^n_{i=1} \sum^m_{j=1} {|y_{ij} - t_{ij}|}
 \]
 
-Let's test it on this example:
-
-\[
-\begin{split}
-\text{Area } &- \text{ 79 $m^2$} \\
-\text{Target price } &- \text{700k {\euro}}
-\end{split}
-\]
-
-First normalize the data:
-
-\[
-x = \frac{79 - 19}{500 - 19} = 0.1247
-\]
-
-Use the function:
-
-\[
-\begin{split}
-y(x) &= 0.5497 {\times} x - 0.0186 \\
-{\Rightarrow} \: y(0.1247) &= 0.5497 {\times} 0.1247 - 0.0186 = 0.0499
-\end{split}
-\]
-
-Now we can denormalize $y$ by rearranging the normalization function:
-
-\begin{equation}
-\begin{split}
-y_{\mathrm{norm}} &= \frac{y - y_{\min}}{y_{\max} - y_{\min}} \\
-y_{\mathrm{norm}} {\times} (y_{\max} - y_{\min}) &= y - y_{\min} \\
-y &= y_{\mathrm{norm}} {\times} (y_{\max} - y_{\min}) + y_{\min} \\
-\end{split}
-\label{eq:y_norm}
-\end{equation}
-
-\[
-y = 0.0493 {\times} (9850 - 189) + 189 = 671.46
-\]
-
-The target was 700k and the model predicted 671.46k which is not
-too bad for a model that only has the information about living
-area.
-
-To assess how good this model actually is, this process must be done for
-more than one apartment. I put this model through my test dataset, with the
-results I got I can calculate the mean absolute error $\mathrm{MAE}$ and mean
-percentage absolute error $\mathrm{MAPE}$.
-
-\begin{align}
-{\mathrm{MAE}}  = \frac{1}{n} \sum_{i=1}^{n} |y_i - t_i|
-\label{eq:MAE} \\
-{\mathrm{MAPE}} = \frac{100\%}{n} \sum_{i=1}^{n} \frac{|y_i - t_i|}{t_i}
-\label{eq:MAPE}
-\end{align}
-
-I got $\mathrm{MAE} = 162.0k$ and $\mathrm{MAPE} = 25.5\%$. Here are few other examples of
-predictions this model has made:
+Where $n$ is the number of differently trained models, and $m$ is the number of
+entries in training dataset.
 
 
-\begin{table}[h]
-\centering
-\begin{tabular}{c|c|c|c|c|c|c}
-Target $t$ (k {\euro})
-& 359.0 & 450.0 & 475.0 & 650.0 & 685.0 & 880.0 \\
-\hline
-Predicted $y$ (k {\euro})
-& 454.1 & 357.5 & 378.9 & 604.3 & 840.4 & 1205.3 \\
-\end{tabular}
-\end{table}
+\subsection{Goal}
+
+My goal is to compare linear-regression models that use MSE, MAE and Huber losses
+on how well they perform at predicting housing prices. The quantity that I will
+be comparing is the non-normalized mean absolute error - the average
+difference between the predicted and actual prices in k\euro.
 
 
-3.749e-04 is the least loss I was able to get while using only one feature of the
-apartments.
+\subsection{Huber Constant}
 
+As I have mentioned earlier Huber loss requires the constant $\delta$, however
+it is difficult to analytically find it. Therefore I have wrote a script that trains
+this model using huber loss with different $\delta$. I have trained 50 models
+for each huber constant with different shuffles and with the training of 50 epochs.
+This is the results I got:
 
-\section{Building network with 3 inputs}
-
-\[
-y(x_1, x_2, x_3) = w_1x_1 + w_2x_2 + w_3x_3 + b
-\]
-
-From here I can get all the derivatives necessary, using derivatives from Equations
-~\ref{eq:dLdy}, ~\ref{eq:dLdw} and ~\ref{eq:dLdb}. As always, while deriviving partially,
-I treat other variables as constants:
-
-
-\[
-\begin{split}
-{\partial}L/{\partial}w_1 &= (y - t) * x_1 \\
-{\partial}L/{\partial}w_2 &= (y - t) * x_2 \\
-{\partial}L/{\partial}w_3 &= (y - t) * x_3 \\
-{\partial}L/{\partial}b &= y - t
-\end{split}
-\]
-
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{input3.jpg}
-    \caption{3 Input Model}
-\end{figure}
-
-
-With this I can train a model for 1000 epochs. These are the weights and the bias,
-the model has converged to:
-
-\[
-\begin{split}
-w_1 &= 0.5429 \\
-w_2 &= -0.0077 \\
-w_3 &= -0.0534 \\
-b &= 0.0072
-\end{split}
-\]
-
-
-Let's test it on the previous example:
-
-\[
-\begin{split}
-\text{Area } &- \text{ 79 $m^2$} \\
-\text{Year } &- \text{2005} \\
-\text{Distance} &- \text{1.806 km} \\
-\text{Target price} &- \text{700k {\euro}}
-\end{split}
-\]
-
-Normalize inputs:
-
-\[
-\begin{split}
-x_1 = \frac{79 - 19}{500 - 19} = 0.1247 \\
-x_2 = \frac{2005 - 1507}{2028 - 1507} = 0.9559 \\
-x_3 = \frac{1.806 - 0.07}{9.98 - 0.07} = 0.1752
-\end{split}
-\]
-
-Calculate:
-
-\[
-\begin{split}
-y(0.1247, 0.9559, 0.1752) &= 0.5429 {\times} 0.1247 + \\
-&+ -0.0077 {\times} 0.9559 + \\
-&+ -0.0534 {\times} 0.1752 + \\
-&+ 0.0072 = \\
-&= 0.0582
-\end{split}
-\]
-
-Denormalize according to Equation~\ref{eq:y_norm}:
-
-\[
-y {\times} (9850 - 189) + 189 = 751.34
-\]
-
-This time the model overshot the price, but this model has achieved the best
-results with the test dataset on average making $3.01 {\times} 10^{-4}$ loss, and having
-the $\mathrm{MAE}$ and $\mathrm{MAPE}$ of 130.2 and 18.3\%, respectively.
-
-Here are some other results:
-
-\begin{table}[h]
-\centering
-\begin{tabular}{c|c|c|c|c|c|c}
-Target $t$ (k {\euro})
-& 359.0 & 450.0 & 475.0 & 650.0 & 685.0 & 880.0 \\
-\hline
-Predicted $y$ (k {\euro})
-& 317.0 & 467.3 & 354.6 & 587.3 & 890.9 & 1105.1 \\
-\end{tabular}
-\end{table}
-
-\subsection{Influence of Distance on Price}
-
-Just like last time we can measure the influence of each input by the absolute
-values of their weights:
-
-\[
-\begin{split}
-| w_1 | = 0.5429 \\
-| w_2 | = 0.0077 \\
-| w_3 | = 0.0534
-\end{split}
-\]
-
-We can see that the most influential input is still area, but the importance of
-construction year dramatically fell from 0.05 to 0.008, and the influence of
-distance is in middle of two other inputs.
-
-Here is how the distribution of distance across the dataset looks like,
-(I have removed few outliers again):
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{graph_distance.png}
-    \caption{Distance against Price Data}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{graph_distance_nn.png}
-    \caption{Distance against Price Predictions}
-\end{figure}
-
-The model was able to even capture the two spikes in price at distance 0 - 4km and 6 - 8km.
 
 
 \begin{table}[H]
 \centering
-\begin{tabular}{|c|c|c|c|}
+\begin{tabular}{c|c|c|c|c|c}
+$\delta$ & 0.1 & 0.175 & 0.25 & 0.325 & 0.4 \\
 \hline
-\# of inputs & average loss & $\mathrm{MAE}$ & $\mathrm{MAPE}$ \\
+$L_{\mathrm{Huber}}$ $(10^{-4})$ & 4.9901 & 4.9066 & 4.8946 & 4.8942 & 4.8961 \\
 \hline
-1 & $3.7487 {\times} 10^{-4}$ & 162.0 & 25.5\% \\
-\hline
-2 & $3.4844 {\times} 10^{-4}$ & 149.5 & 22.9\% \\
-\hline
-3 & $3.0009 {\times} 10^{-4}$ & 130.2 & 18.3\% \\
-\hline
+$MAE_{\mathrm{norm}}$ (k\euro) & 138.68 & 144.58 & 147.46 & 149.56 & 150.53 \\
 \end{tabular}
 \end{table}
+
+
+
+\subsection{Results}
+
+Finally everything is set up. I have trained 100 models with each loss function for
+100 epochs. These are the results:
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c|c}
+& loss & $MAE_{\mathrm{norm}}$ \\
+\hline
+MSE & 0.00050421 & 152.32 \\
+\hline
+MAE & 0.00076356 & 189.12 \\
+\hline
+Huber & 0.00061698 & 144.87 \\
+\end{tabular}
+\end{table}
+
+
+MSE had the least loss, and Huber performed with the least $MAE_{\mathrm{norm}}$.
+
+
+\section{Evaluation}
+
+
+\subsection{Achieving the Aim}
+
+The aim for this paper was to figure out whether a linear regression model could
+accurately predict prices of apartments in Amsterdam and compare performance of
+different loss functions on the mean absolute error after testing. The experiment
+resulted with the least $MAE_{\mathrm{norm}}$ being achieved by the Huber loss.
+The model can predict apartment prices with the error of 144.87 k\euro.
+
+
+
+\subsection{Data}
+
+
+I have collected my data from funda.nl, which is a website that provides a
+marketplace for various housing options in Netherlands. For my dataset I have
+collected information only about apartments in Amsterdam that were being on sale
+on the moment of June 2026. The fact that this data is collected from a marketplace
+which is not controlled externelly, and the people can name their own prices for
+their products, suggests that the value of the house is accurate as it is made up
+by free market forces. On the other hand, the prices are the advertsided prices
+rather than the actual transaction prices. This could potentially create a
+bias that pushes predicted prices higher than the actual price of the worth.
+
+
+The data entries for each apartment consists of more information than just
+living area, construction year and distance from Amsterdam, a part of it will
+be included in the appendix.
+
+
+Furthermore, I have analyzed the data for outliers and there was none, where a
+statistical outlier is an entry in the dataset that value is lower than
+$Q_1 - \mathrm{IQR} \times 1.5$ or higher than $Q_3 + \mathrm{IQR} \times 1.5$.
+This means that the disadvantage of MSE loss, which is prioritizing outliers
+largerly due to the squared error, might not have a significant impact on
+the outcome. This is supported by the results as MSE scored the lowest on the
+mean loss property. On the other hand, the Huber constant that achieved lowest
+normalized MAE is very low: 0.1. This suggests that MAE loss works efficiently
+for the most part except for the area around the kink, below $\delta = 0.1$.
+
+
+Another problem with the data is that there might be a selection bias, as the
+training and testing sets
+were chosed randomly. The inaccuracy created by this bias might create an error
+of $\pm 20$ k{\euro} depending on which dataset model was trained and tested.
+To face this problem I have trained multiple models with the same parameters, with
+the only difference of training and testing sets and then taking the average of
+the results. This helped comparing loss methods because otherwise selection error
+might be higher than or close to the difference in results for different
+loss methods: $\pm 20 \text{ k\euro } > \pm 25 \text{ k\euro}$.
+
+
+One of the limitations of this experiment is the number of inputs, features about
+the apartment. For this paper I have used only three features, which in my opinion
+has achieved incredibly high results for the amount of information provided.
+However, the number of features is fixed for this paper, therefore loss method is
+one of the other improvements I can make to this model to improve its performance
+without giving it more information.
+
+
+\subsection{Loss Function Choice}
+
+Huber loss achieved the best results due to its compromise between MSE and MAE losses.
+MSE can be disproportionately impacted by extreme prediction errors. On the other
+hand, MAE is more robust as it treats any error the same.
+
+
+\subsection{Normalization}
+
+I use min-max normalization for my training. This means that all of the values get
+compressed into 0-1 interval, preventing large numerical values from dominating the
+gradients. However, this interval limits the impact of extreme values.
+
+
+\subsection{Alternate Approaches}
+
+Calculating the exact weights and bias could be done using Ordinary Least Squares (OLS),
+which is an analytical solution for this problem of finding parameters that fit
+a multidimensional linear function. The reason I have used gradient descent is
+mostly educational, as it allows for an introduction into more complex topic of
+machine learning with non-linear functions, which do not have a simple analytical
+solution.
+
+
+\subsection{Real-World Usefullness}
+
+To an extent, this model can be used to check prices of housing in Amsterdam.
+However, the inputs are extremely simplified and, although the mathematical model
+behind calculating the parameters might not be the most efficient, a more
+important limitation are the features of the apartments that were not included or
+simply can not be quantified, such as architectural quality, neighbourhood reputation
+or buyer's preferences. The model tries to predict the behaviour of real prices,
+however it should not be count as a reliable source of information about
+worth of an apartment.
+
+
+\section{Conclusion}
+
+I have successfully learned the theory behind linear-regression models and trained
+models that use gradient descent as the the training method, to predict prices of
+apartments in Amsterdam on the moment of June of 2026, with the input data of
+living area, construction year and the distance from the center of Amsterdam.
+I have used three different methods of finding loss: MSE, MAE and Huber. The results
+I got is that Huber has performed the best according to normalized mean absolute
+error across 100 different dataset permutations. One the other hand, MAE performed
+the poorest with the worst loss and $MAE_{\mathrm{norm}}$.
+The theory states that MSE is significantly affected by outliers, and will perform
+well on datasets where outliers do not have a great impact on the outcome.
+MAE treats every error the same with the gradient being only proportionate to the
+sign of the error. The results of the experiment is a great example of how the Huber
+loss with a correctly adjusted constant $\delta$ can combine MSE and MAE losses,
+and performing the best.
 
 
 \end{document}

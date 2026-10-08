@@ -10,6 +10,10 @@ from nn import NN
 from readData import DataLoaderCSV
 
 
+
+np.set_printoptions(suppress=True)
+
+
 TARGET = "price"
 # FEATURES = ["area", "energy", "rooms", "bedrooms", "bathrooms", "year", "distance"]
 FEATURES = ["area", "year", "distance"]
@@ -88,14 +92,27 @@ print("Finished HUBER")
 print()
 print()
 
+print(res_mse)
+print(res_mae)
+print(res_huber)
 
-np.set_printoptions(suppress=True)
+print()
+
 
 print("----------MSE")
-print(np.mean(res_mse, axis=0))
+print("Mean:", np.mean(res_mse, axis=0))
+print("Std :", np.std(res_mse, axis=0, ddof=1))
+print("Min :", np.min(res_mse, axis=0))
+print("Max :", np.max(res_mse, axis=0))
 
 print("----------MAE")
-print(np.mean(res_mae, axis=0))
+print("Mean:", np.mean(res_mae, axis=0))
+print("Std :", np.std(res_mae, axis=0, ddof=1))
+print("Min :", np.min(res_mae, axis=0))
+print("Max :", np.max(res_mae, axis=0))
 
 print("----------HUBER")
-print(np.mean(res_huber, axis=0))
+print("Mean:", np.mean(res_huber, axis=0))
+print("Std :", np.std(res_huber, axis=0, ddof=1))
+print("Min :", np.min(res_huber, axis=0))
+print("Max :", np.max(res_huber, axis=0))

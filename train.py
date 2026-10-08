@@ -36,8 +36,8 @@ ACTIVATION_HID = activation.f
 ACTIVATION_OUT = activation.f
 ACTIVATION_HID_PRIME = activation.f_prime
 ACTIVATION_OUT_PRIME = activation.f_prime
-LOSS_FUNCTION = floss.huber
-LOSS_FUNCTION_PRIME = floss.huber_prime
+LOSS_FUNCTION = floss.mse
+LOSS_FUNCTION_PRIME = floss.mse_prime
 
 
 if LOSS_FUNCTION == floss.mse:
